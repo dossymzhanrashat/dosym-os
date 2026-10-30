@@ -1,4 +1,4 @@
-/* Shared controls and FreezeFront component styles. Colours come only from tokens.css. */
+/* Shared components (brand/DESIGN.md "Deep Blue"). Colours come only from tokens.css. */
 
 .sr-only {
   position: absolute;
@@ -12,91 +12,373 @@
   border: 0;
 }
 
+/* ---------- AppBackground: page gradient + two corner glows ---------- */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--glow-tl), var(--glow-br), var(--bg);
+}
+
 /* ---------- Type helpers ---------- */
 .display {
   font-family: var(--font-display);
   font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
-  line-height: 1;
+  font-stretch: 125%;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  color: var(--text);
 }
-.mono {
-  font-family: var(--font-mono);
+.tnum {
   font-variant-numeric: tabular-nums;
 }
-.num-key {
-  color: var(--amber-text);
+.eyebrow {
+  margin: 0;
+  font: 700 0.75rem/1.3 var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+/* Gradient words: wordmark and hero words at 28 px+ only, never body text. */
+.gradient-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 125%;
+  background: var(--pure-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  white-space: nowrap;
 }
 
-/* ---------- Card ---------- */
+/* ---------- GlassCard ---------- */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
-  padding: 1rem;
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow), inset 0 1px 0 var(--card-edge);
+  padding: var(--space-5);
+  color: var(--text-2);
+}
+.card--md {
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .card {
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
 }
 .card-title {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-2);
-  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 112%;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  color: var(--text);
+}
+/* Blueprint grid texture (reference: "Unique value" card). Use on one feature card per page. */
+.card--grid {
+  overflow: hidden;
+}
+.card--grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--card-border-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--card-border-soft) 1px, transparent 1px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(80% 70% at 50% 80%, #000 0%, transparent 100%);
+  mask-image: radial-gradient(80% 70% at 50% 80%, #000 0%, transparent 100%);
+}
+.card--grid > * {
+  position: relative;
+}
+/* Hero words: white line + gradient line (reference: "The cold does / the work.") */
+.hero-words {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 125%;
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.card strong,
+.card h3 {
+  color: var(--text);
+}
+.divider {
+  height: 1px;
+  border: 0;
+  margin: var(--space-4) 0;
+  background: var(--card-border-soft);
 }
 
-/* ---------- Pill buttons ---------- */
+/* ---------- StepBadge ---------- */
+.step-badge {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 1.75rem;
+  height: 1.625rem;
+  padding: 0 0.25rem;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: var(--badge-fill);
+  color: var(--on-accent);
+  font: 800 0.75rem/1 var(--font-display);
+  font-stretch: 112%;
+  font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 10px rgba(95, 184, 255, 0.35);
+}
+
+/* ---------- PillButton ---------- */
 .pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--space-2);
   min-height: var(--target);
-  padding: 0 1.25rem;
+  padding: 0 1.375rem;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--accent);
-  background: var(--accent);
-  color: var(--accent-on);
-  font: 500 1rem/1 var(--font-sans);
+  border: 0;
+  background: var(--pure-gradient);
+  color: var(--on-accent);
+  font: 700 1rem/1 var(--font-sans);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 120ms ease;
+  box-shadow: 0 8px 24px rgba(95, 140, 255, 0.28);
+  transition:
+    transform 120ms ease,
+    box-shadow 160ms ease;
+}
+.pill:hover {
+  box-shadow: 0 10px 30px rgba(127, 136, 255, 0.42);
 }
 .pill:active {
   transform: scale(0.97);
 }
-.pill--ghost {
-  background: transparent;
-  color: var(--link);
-  border-color: var(--border);
+.pill--secondary {
+  background: var(--chip);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+  font-weight: 600;
+  box-shadow: none;
+}
+.pill--secondary:hover {
+  border-color: var(--ice);
+  box-shadow: none;
 }
 .pill:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+/* Round icon button with a thin line icon */
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--target);
+  height: var(--target);
+  padding: 0;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  box-shadow: inset 0 1px 0 var(--card-edge);
+  color: var(--text);
+  cursor: pointer;
+}
+.icon-btn:hover {
+  border-color: var(--ice);
+}
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- Chip: tone shows as a dot and border, the text stays readable ---------- */
 .chip {
+  --tone: var(--text-3);
   display: inline-flex;
   flex: none;
+  gap: 0.375rem;
   white-space: nowrap;
   align-items: center;
   min-height: 1.75rem;
   padding: 0 0.625rem;
-  border-radius: var(--radius-pill);
-  border: 1px solid var(--border);
-  font: 500 0.75rem/1 var(--font-mono);
-  color: var(--text-2);
+  border-radius: var(--radius-sm);
+  background: var(--chip);
+  border: 1px solid var(--card-border-soft);
+  font: 600 0.75rem/1 var(--font-sans);
+  color: var(--text);
+}
+.chip--dot::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tone);
+  box-shadow: 0 0 6px var(--tone);
+}
+.chip--ice {
+  --tone: var(--ice);
+  border-color: color-mix(in srgb, var(--ice) 40%, transparent);
+}
+.chip--violet {
+  --tone: var(--violet);
+  border-color: color-mix(in srgb, var(--violet) 40%, transparent);
+}
+.chip--warm {
+  --tone: var(--warm);
+  border-color: color-mix(in srgb, var(--warm) 45%, transparent);
+}
+.chip--good {
+  --tone: var(--good);
+  border-color: color-mix(in srgb, var(--good) 40%, transparent);
+}
+.chip--danger {
+  --tone: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 45%, transparent);
 }
 
-/* ---------- FreezeFrontBar ---------- */
+/* ---------- StatTile ---------- */
+.stat {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+}
+.stat-value {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 125%;
+  font-size: 2.5rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.stat-unit {
+  margin-left: 0.25rem;
+  font-size: 1rem;
+  font-stretch: 100%;
+  letter-spacing: 0;
+  font-weight: 600;
+  color: var(--text-2);
+}
+.stat-label {
+  margin: 0;
+  color: var(--text-2);
+  font-size: 0.875rem;
+}
+.stat-chart:empty {
+  display: none;
+}
+.stat--row {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.125rem var(--space-3);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+}
+.stat--row .stat-value {
+  font-size: 1.75rem; /* gradient numbers stay at 28 px+ */
+}
+.stat--row .stat-label {
+  font-size: 0.8125rem;
+}
+.stat--row .stat-icon {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+}
+.stat--row > :not(.stat-icon) {
+  grid-column: 1;
+}
+
+/* ---------- DropletMeter ---------- */
+.droplet-meter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.droplet-meter svg {
+  display: block;
+  width: 14px;
+  height: 19px;
+}
+.droplet--clean {
+  fill: var(--ice);
+  filter: drop-shadow(0 0 4px color-mix(in srgb, var(--ice) 55%, transparent));
+}
+.droplet--salty {
+  fill: var(--violet);
+}
+
+/* ---------- Mascot ---------- */
+.mascot {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+}
+.mascot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.mascot--bounce {
+  animation: mascot-bounce 1.4s ease-in-out 2;
+  transform-origin: 50% 100%;
+}
+@keyframes mascot-bounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  30% {
+    transform: translateY(-10%) scale(0.97, 1.03);
+  }
+  55% {
+    transform: translateY(0) scale(1.04, 0.96);
+  }
+  75% {
+    transform: translateY(-3%) scale(1, 1);
+  }
+}
+
+/* ---------- FreezeFrontBar: ice on top, glowing front, violet brine with salt below ---------- */
 .ff-bar {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--ice);
+  border: 1px solid var(--card-border);
+  background: var(--ff-track);
 }
 .ff-ice {
   display: flex;
@@ -114,17 +396,21 @@
 .ff-col-fill {
   position: absolute;
   inset: 0 0 auto 0; /* ice grows from the top down */
-  background: var(--ice-column);
+  background: var(--ff-ice);
+  border-radius: 0 0 2px 2px;
   transition: height 400ms ease;
 }
 .ff-front {
-  height: 3px;
-  background: var(--front-line);
+  position: relative;
+  z-index: 1;
+  height: 2px;
+  background: var(--ff-front);
+  box-shadow: var(--ff-glow);
 }
 .ff-brine {
   position: relative;
   height: 1.5rem;
-  background: var(--brine);
+  background: var(--ff-brine);
 }
 .ff-salt {
   position: absolute;
@@ -133,6 +419,7 @@
   margin-left: -2.5px;
   border-radius: 50%;
   background: var(--salt);
+  opacity: 0.8;
   animation: ff-sink 1.6s ease-out both;
   top: var(--depth);
 }
@@ -141,7 +428,7 @@
   right: 0.375rem;
   top: 50%;
   transform: translateY(-50%);
-  font: 500 0.6875rem/1 var(--font-mono);
+  font: 700 0.6875rem/1 var(--font-sans);
   color: var(--salt);
 }
 @keyframes ff-sink {
@@ -151,63 +438,67 @@
   }
   to {
     top: var(--depth);
-    opacity: 1;
+    opacity: 0.8;
   }
 }
 
 /* ---------- FreezeFrontHeader ---------- */
 .ff-header {
   display: grid;
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
 }
-.ff-eyebrow {
-  margin: 0;
-  font: 500 0.8125rem/1.2 var(--font-mono);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+/* On the bare page (under the corner glow) the eyebrow uses --text-2 to keep 4.5:1 contrast. */
+.ff-header .eyebrow {
   color: var(--text-2);
 }
 .ff-title {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.5rem, 9vw, 4rem);
-  line-height: 0.95;
-  text-transform: uppercase;
+  font-stretch: 125%;
+  font-size: clamp(2.25rem, 8vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.25rem 0.75rem;
+  overflow-wrap: anywhere;
 }
 .ff-gloss {
-  font: 400 1rem/1 var(--font-sans);
-  text-transform: none;
+  font: 500 1rem/1.2 var(--font-sans);
+  letter-spacing: 0;
   color: var(--text-2);
 }
 .ff-header-body {
   color: var(--text-2);
+  max-width: 40rem;
 }
 
-/* ---------- SaltDotsLoader ---------- */
+/* ---------- SaltDotsLoader: a tiny tank with salt sinking ---------- */
 .ff-loader {
   display: inline-grid;
   width: 3rem;
   grid-template-rows: 0.5rem 2px 1.25rem;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--card-border);
   vertical-align: middle;
 }
 .ff-loader-ice {
-  background: var(--ice-column);
+  background: var(--ff-ice);
 }
 .ff-loader-front {
-  background: var(--front-line);
+  position: relative;
+  z-index: 1;
+  background: var(--ff-front);
+  box-shadow: var(--ff-glow);
 }
 .ff-loader-brine {
   position: relative;
-  background: var(--brine);
+  background: var(--ff-brine);
 }
 .ff-loader-dot {
   position: absolute;
@@ -235,7 +526,7 @@
     opacity: 0;
   }
   30% {
-    opacity: 1;
+    opacity: 0.85;
   }
   100% {
     top: calc(100% - 5px);
@@ -245,18 +536,19 @@
 
 /* ---------- IceWallGrid ---------- */
 .ff-wall {
-  border: 1px solid var(--border);
-  border-radius: var(--radius-card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: var(--surface);
+  background: var(--card);
+  box-shadow: var(--card-shadow);
 }
 .ff-wall ul {
   list-style: none;
   margin: 0;
-  padding: 0.5rem;
+  padding: var(--space-3);
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
-  gap: 4px;
+  gap: 6px;
 }
 .ff-wall-empty {
   margin: 0;
@@ -268,24 +560,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   width: 100%;
   min-height: var(--target);
   padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  background: var(--ice);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--ice) 30%, transparent);
+  background: var(--ff-frozen);
   color: var(--text);
-  font: 400 0.75rem/1.2 var(--font-mono);
+  font: 500 0.8125rem/1.2 var(--font-sans);
   text-align: center;
   overflow-wrap: break-word;
 }
 button.ff-brick {
   cursor: pointer;
 }
+button.ff-brick:hover {
+  border-color: var(--ice);
+}
 .ff-brick--thawing {
   position: relative;
-  background: var(--ice-column);
-  color: var(--night-steppe);
+  background: var(--ff-ice);
+  border-color: transparent;
+  color: var(--on-accent);
+  font-weight: 700;
+}
+:root[data-theme='light'] .ff-brick--thawing {
+  color: var(--text);
 }
 .ff-brick--thawing::after {
   /* single drip: "thawing, review soon" */
@@ -297,7 +598,7 @@ button.ff-brick {
   height: 6px;
   margin-left: -2px;
   border-radius: 0 0 50% 50%;
-  background: var(--ice-column);
+  background: var(--ff-front);
   animation: ff-drip 2.4s ease-in infinite;
 }
 @keyframes ff-drip {
@@ -312,13 +613,12 @@ button.ff-brick {
   }
 }
 .ff-wall-brine {
-  background: var(--brine);
+  background: var(--ff-brine-soft);
   min-height: 2.5rem;
 }
 .ff-brick--salt {
   border-color: transparent;
   background: transparent;
-  color: var(--text);
   justify-content: flex-start;
   gap: 0.375rem;
 }
@@ -328,13 +628,6 @@ button.ff-brick {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--salt);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .ff-brick--salt::before {
-    background: var(--snow);
-  }
-}
-:root[data-theme='dark'] .ff-brick--salt::before {
-  background: var(--snow);
+  background: var(--violet);
+  box-shadow: 0 0 6px var(--violet);
 }

@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 /*
- * The Freeze Front motif: ice on top, a front line, salt sinking into amber brine below.
- * Never flipped. Used for progress, memory and deadlines across every module.
+ * The Freeze Front motif (the tank): ice on top, a glowing cyan front line, violet brine below
+ * with dark salt dots sinking. Never flipped. Used for progress, memory and deadlines across every module.
  */
 
 const ICE_COLUMNS = 20;
@@ -81,7 +81,7 @@ export function FreezeFrontBar({ value, label, salt = 0, size = 'thin', valueTex
 
 interface FreezeFrontHeaderProps {
   title: string;
-  /** Small mono line above the title, e.g. the date or the section name. */
+  /** Small uppercase line above the title, e.g. the date or the section name. */
   eyebrow?: string;
   /** Kazakh / Russian gloss shown beside the title. */
   gloss?: string;
@@ -95,7 +95,7 @@ interface FreezeFrontHeaderProps {
 export function FreezeFrontHeader({ title, eyebrow, gloss, value, valueLabel, valueText, salt, children }: FreezeFrontHeaderProps) {
   return (
     <header className="ff-header">
-      {eyebrow && <p className="ff-eyebrow">{eyebrow}</p>}
+      {eyebrow && <p className="eyebrow">{eyebrow}</p>}
       <h1 className="ff-title">
         {title}
         {gloss && <span className="ff-gloss" lang="kk">{gloss}</span>}

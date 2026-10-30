@@ -38,8 +38,8 @@ export function RadarPage() {
         {feed.status === 'loading' && <SaltDotsLoader label="Checking the feed" />}
         {feed.status === 'ok' && (
           <p className="m-0">
-            Reachable · <span className="mono">{feed.items} changes</span>
-            {feed.checkedAt && <span className="mono text-ink-2"> · checked {fmt.format(new Date(feed.checkedAt))}</span>}
+            Reachable · <span className="tnum">{feed.items} changes</span>
+            {feed.checkedAt && <span className="tnum text-ink-2"> · checked {fmt.format(new Date(feed.checkedAt))}</span>}
           </p>
         )}
         {feed.status === 'error' && <p className="m-0">Feed not reachable right now. Radar will work from local data.</p>}

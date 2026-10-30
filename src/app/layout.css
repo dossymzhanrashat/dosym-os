@@ -1,3 +1,8 @@
+.app-shell {
+  position: relative;
+  z-index: 1; /* above the fixed AppBackground layer */
+}
+
 .skip-link {
   position: absolute;
   left: 1rem;
@@ -5,8 +10,9 @@
   z-index: 50;
   padding: 0.75rem 1rem;
   border-radius: var(--radius-pill);
-  background: var(--accent);
-  color: var(--accent-on);
+  background: var(--pure-gradient);
+  color: var(--on-accent);
+  font-weight: 700;
 }
 .skip-link:focus {
   top: calc(env(safe-area-inset-top) + 0.5rem);
@@ -17,19 +23,21 @@
   width: 100%;
   max-width: 60rem;
   margin: 0 auto;
-  padding: calc(env(safe-area-inset-top) + 1.25rem) max(1rem, env(safe-area-inset-right))
+  padding: calc(env(safe-area-inset-top) + 1.5rem) max(1rem, env(safe-area-inset-right))
     calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 1.5rem) max(1rem, env(safe-area-inset-left));
   outline: none;
 }
 
-/* ---- Phones: bottom tab bar ---- */
+/* ---- Phones: TabBar (glass, fixed to the bottom) ---- */
 .app-nav {
   position: fixed;
   inset: auto 0 0 0;
   z-index: 40;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
+  background: var(--nav-glass);
+  border-top: 1px solid var(--card-border-soft);
   padding-bottom: env(safe-area-inset-bottom);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  backdrop-filter: blur(18px) saturate(1.4);
 }
 .app-brand {
   display: none;
@@ -42,6 +50,7 @@
   list-style: none;
 }
 .app-nav-link {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,18 +59,36 @@
   min-height: var(--tabbar-h);
   min-width: var(--target);
   color: var(--text-2);
-  font: 500 0.6875rem/1.1 var(--font-sans);
+  font: 600 0.6875rem/1.1 var(--font-sans);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
 }
+.app-nav-link svg {
+  color: var(--text-3);
+}
 .app-nav-link.active {
-  color: var(--link);
+  color: var(--text);
 }
 .app-nav-link.active svg {
-  stroke-width: 2.4;
+  color: var(--ice);
+  stroke-width: 2.2;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ice) 60%, transparent));
+}
+/* Selected item: gradient bar with a glow along the top edge of the tab bar */
+.app-nav-link.active::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 2rem;
+  height: 3px;
+  margin-left: -1rem;
+  border-radius: 0 0 3px 3px;
+  background: var(--pure-gradient);
+  box-shadow: 0 0 12px 1px rgba(127, 136, 255, 0.7);
 }
 
-/* ---- Laptops: side navigation ---- */
+/* ---- Laptops: SideNav ---- */
 @media (min-width: 56rem) {
   .app-shell {
     display: grid;
@@ -73,14 +100,16 @@
     inset: auto;
     height: 100dvh;
     border-top: 0;
-    border-right: 1px solid var(--border);
+    border-right: 1px solid var(--card-border-soft);
     padding: 1.5rem 0.75rem;
     box-sizing: border-box;
   }
   .app-brand {
-    display: block;
-    margin: 0 0.75rem 1.5rem;
-    font-size: 1.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin: 0 0.75rem 1.75rem;
+    font-size: 1.375rem;
   }
   .app-nav ul {
     grid-template-columns: 1fr;
@@ -92,16 +121,27 @@
     justify-content: flex-start;
     gap: 0.75rem;
     min-height: var(--target);
-    padding: 0 0.75rem;
-    border-radius: var(--radius-pill);
+    padding: 0 0.875rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
     font-size: 1rem;
   }
   .app-nav-link:hover {
-    background: var(--surface);
+    background: var(--chip);
+    color: var(--text);
   }
   .app-nav-link.active {
-    background: var(--accent);
-    color: var(--accent-on);
+    background: var(--chip);
+    border-color: var(--card-border);
+  }
+  /* Selected item: gradient bar with a glow on the left edge */
+  .app-nav-link.active::before {
+    top: 50%;
+    left: -1px;
+    width: 3px;
+    height: 1.5rem;
+    margin: -0.75rem 0 0;
+    border-radius: 0 3px 3px 0;
   }
   .app-main {
     padding: 2.5rem 2rem 3rem;

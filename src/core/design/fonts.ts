@@ -1,9 +1,6 @@
-// Self-hosted fonts (no Google Fonts request). IBM Plex files include latin, cyrillic and
-// cyrillic-ext, so Kazakh (Ә Ғ Қ Ң Ө Ұ Ү Һ І) and Russian render in Plex. Big Shoulders is latin-only:
-// keep Cyrillic out of display titles (glosses use Plex Sans).
-import '@fontsource/big-shoulders-display/800';
-import '@fontsource/ibm-plex-sans/400';
-import '@fontsource/ibm-plex-sans/500';
-import '@fontsource/ibm-plex-sans/600';
-import '@fontsource/ibm-plex-mono/400';
-import '@fontsource/ibm-plex-mono/500';
+// Self-hosted fonts (no Google Fonts request).
+// Archivo with the width axis, so headings can use font-stretch: 125% (extended). Archivo has no
+// Cyrillic: Kazakh/Russian words in headings fall back to Manrope (see --font-display).
+// Manrope ships cyrillic + cyrillic-ext, which covers Kazakh (Ә Ғ Қ Ң Ө Ұ Ү Һ І) and Russian.
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/manrope/wght.css';

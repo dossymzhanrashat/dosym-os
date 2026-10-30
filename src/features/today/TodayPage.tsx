@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { FreezeFrontHeader, SaltDotsLoader } from '../../core/design/FreezeFront';
 import { firstOpenedAt } from '../../core/db/db';
+import { Mascot } from '../../core/design/Mascot';
 
 const almatyDate = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'Asia/Almaty',
@@ -39,7 +40,10 @@ export function TodayPage() {
           <h2 id="now-next" className="card-title">
             Now / Next
           </h2>
-          <p className="m-0 text-ink-2">The Planner arrives in Phase 1. Your day will show up here.</p>
+          <div className="flex items-center gap-4">
+            <Mascot mood="sleepy" size={56} />
+            <p className="m-0">The Planner arrives in Phase 1. Your day will show up here.</p>
+          </div>
         </section>
 
         <section className="card" aria-labelledby="this-device">
@@ -50,7 +54,7 @@ export function TodayPage() {
             <p className="m-0">Local storage is blocked in this browser (private mode?). Data will not be kept.</p>
           ) : dbSince ? (
             <p className="m-0">
-              Offline storage ready <span className="mono text-ink-2">· since {shortDate.format(new Date(dbSince))}</span>
+              Offline storage ready <span className="tnum text-ink-2">· since {shortDate.format(new Date(dbSince))}</span>
             </p>
           ) : (
             <SaltDotsLoader label="Opening local storage" />
@@ -73,7 +77,7 @@ export function TodayPage() {
       </div>
 
       <p className="mt-6">
-        <Link to="/design" className="pill pill--ghost">
+        <Link to="/design" className="pill pill--secondary">
           Design system and theme
         </Link>
       </p>

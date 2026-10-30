@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { FreezeFrontHeader } from '../core/design/FreezeFront';
+import { Chip, StepBadge } from '../core/design/components';
 
 interface Props {
   title: string;
@@ -24,10 +25,11 @@ export function SectionPlaceholder({ title, gloss, intro, pages, children }: Pro
             Coming next
           </h2>
           <ul className="m-0 grid list-none gap-2 p-0">
-            {pages.map((p) => (
-              <li key={p.name} className="flex items-center justify-between gap-3">
-                <span>{p.name}</span>
-                <span className="chip">Phase {p.phase}</span>
+            {pages.map((p, i) => (
+              <li key={p.name} className="flex items-center gap-3">
+                <StepBadge n={i + 1} />
+                <span className="flex-1 text-ink">{p.name}</span>
+                <Chip>Phase {p.phase}</Chip>
               </li>
             ))}
           </ul>

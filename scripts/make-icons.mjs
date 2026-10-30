@@ -1,112 +1,65 @@
-// Draws the app icons (Freeze Front motif) as PNGs with no dependencies.
+// Draws the app icons from the droplet mascot (brand/droplet.svg) on the Deep Blue background.
 // Run: npm run icons   → writes public/icons/*.png and public/favicon.svg
-import { deflateSync } from 'node:zlib';
-import { mkdirSync, writeFileSync } from 'node:fs';
+// Uses headless Google Chrome to rasterise the SVG (its soft blurs need a real renderer), so no
+// npm dependency. Set CHROME=/path/to/chrome if Chrome is not in the default macOS location.
+import { execFileSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 
-const C = {
-  night: [0x0f, 0x1e, 0x2c],
-  front: [0x0b, 0x6a, 0x94],
-  glacier: [0x4f, 0xa7, 0xcf],
-  ice: [0xdf, 0xf1, 0xf9],
-  amber: [0xd9, 0x8a, 0x2b],
-};
+const CHROME = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-// Motif in unit coordinates (0–1) inside the icon; `scale` shrinks it for the maskable safe zone.
-function shapes(scale) {
-  const m = (v) => 0.5 + (v - 0.5) * scale;
-  const L = m(0.2), R = m(0.8);
-  const cols = 5, gap = 0.018 * scale, w = (R - L - gap * (cols - 1)) / cols;
-  const out = [];
-  for (let i = 0; i < cols; i++) {
-    const x = L + i * (w + gap);
-    out.push({ rect: [x, m(0.2), x + w, m(0.47)], color: C.ice });
-  }
-  out.push({ rect: [L, m(0.47), R, m(0.53)], color: C.front });
-  out.push({ rect: [L, m(0.53), R, m(0.8)], color: C.amber });
-  for (const [cx, cy] of [[0.33, 0.62], [0.55, 0.7], [0.69, 0.6], [0.43, 0.74]]) {
-    out.push({ circle: [m(cx), m(cy), 0.03 * scale], color: C.night });
-  }
-  return out;
+// Droplet artwork without the XML header and provenance metadata
+const droplet = readFileSync('brand/droplet.svg', 'utf8')
+  .replace(/<\?xml[^>]*>\s*/, '')
+  .replace(/<metadata>[\s\S]*?<\/metadata>/, '');
+const inner = droplet.replace(/^<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+
+// Page background + corner glows, same as --bg, --glow-tl, --glow-br in tokens.css
+const BG = `radial-gradient(55% 70% at 0% 0%, rgba(70,110,255,0.6), rgba(70,110,255,0) 62%),
+  radial-gradient(50% 65% at 100% 100%, rgba(0,180,255,0.42), rgba(0,180,255,0) 62%),
+  linear-gradient(160deg, #0d1834 0%, #081022 55%, #050a16 100%)`;
+
+/** `height` = droplet height as a share of the icon (smaller for the maskable safe zone). */
+function page(size, height) {
+  const h = size * height;
+  const w = (h * 200) / 240;
+  return `<!doctype html><html><head><style>
+    html,body{margin:0;width:${size}px;height:${size}px;overflow:hidden;background:${BG};}
+    svg{position:absolute;left:${(size - w) / 2}px;top:${(size - h) / 2 - h * 0.02}px;width:${w}px;height:${h}px;overflow:visible}
+  </style></head><body>${droplet.replace(/ width="200" height="240"/, '')}</body></html>`;
 }
 
-function hit(s, x, y) {
-  if (s.rect) {
-    const [x0, y0, x1, y1] = s.rect;
-    return x >= x0 && x < x1 && y >= y0 && y < y1;
-  }
-  const [cx, cy, r] = s.circle;
-  return (x - cx) ** 2 + (y - cy) ** 2 <= r * r;
-}
-
-function render(size, scale) {
-  const list = shapes(scale);
-  const SS = 4; // 4×4 supersampling for smooth edges
-  const px = Buffer.alloc(size * size * 3);
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const acc = [0, 0, 0];
-      for (let sy = 0; sy < SS; sy++) {
-        for (let sx = 0; sx < SS; sx++) {
-          const u = (x + (sx + 0.5) / SS) / size, v = (y + (sy + 0.5) / SS) / size;
-          let col = C.night;
-          for (const s of list) if (hit(s, u, v)) col = s.color;
-          acc[0] += col[0]; acc[1] += col[1]; acc[2] += col[2];
-        }
-      }
-      const i = (y * size + x) * 3;
-      for (let k = 0; k < 3; k++) px[i + k] = Math.round(acc[k] / (SS * SS));
-    }
-  }
-  return png(size, px);
-}
-
-function png(size, rgb) {
-  const raw = Buffer.alloc((size * 3 + 1) * size);
-  for (let y = 0; y < size; y++) rgb.copy(raw, y * (size * 3 + 1) + 1, y * size * 3, (y + 1) * size * 3);
-  const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(size, 0);
-  ihdr.writeUInt32BE(size, 4);
-  ihdr[8] = 8; // bit depth
-  ihdr[9] = 2; // RGB
-  return Buffer.concat([
-    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-    chunk('IHDR', ihdr),
-    chunk('IDAT', deflateSync(raw, { level: 9 })),
-    chunk('IEND', Buffer.alloc(0)),
-  ]);
-}
-
-const CRC = Array.from({ length: 256 }, (_, n) => {
-  let c = n;
-  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
-  return c >>> 0;
-});
-function chunk(type, data) {
-  const td = Buffer.concat([Buffer.from(type, 'ascii'), data]);
-  let c = 0xffffffff;
-  for (const b of td) c = CRC[(c ^ b) & 0xff] ^ (c >>> 8);
-  const len = Buffer.alloc(4), crc = Buffer.alloc(4);
-  len.writeUInt32BE(data.length);
-  crc.writeUInt32BE((c ^ 0xffffffff) >>> 0);
-  return Buffer.concat([len, td, crc]);
-}
-
-function svg(scale) {
-  const hex = (c) => '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
-  const body = shapes(scale)
-    .map((s) =>
-      s.rect
-        ? `<rect x="${s.rect[0] * 64}" y="${s.rect[1] * 64}" width="${(s.rect[2] - s.rect[0]) * 64}" height="${(s.rect[3] - s.rect[1]) * 64}" fill="${hex(s.color)}"/>`
-        : `<circle cx="${s.circle[0] * 64}" cy="${s.circle[1] * 64}" r="${s.circle[2] * 64}" fill="${hex(s.color)}"/>`,
-    )
-    .join('');
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="${hex(C.night)}"/>${body}</svg>\n`;
+const work = mkdtempSync(join(tmpdir(), 'dosym-icons-'));
+function render(out, size, height) {
+  const html = join(work, `${size}-${height}.html`);
+  writeFileSync(html, page(size, height));
+  execFileSync(CHROME, [
+    '--headless=new',
+    '--disable-gpu',
+    '--hide-scrollbars',
+    '--force-device-scale-factor=1',
+    `--window-size=${size},${size}`,
+    `--screenshot=${resolve(out)}`,
+    `file://${html}`,
+  ], { stdio: 'ignore' });
 }
 
 mkdirSync('public/icons', { recursive: true });
-writeFileSync('public/icons/icon-192.png', render(192, 1));
-writeFileSync('public/icons/icon-512.png', render(512, 1));
-writeFileSync('public/icons/icon-maskable-512.png', render(512, 0.72));
-writeFileSync('public/icons/apple-touch-icon.png', render(180, 0.9));
-writeFileSync('public/favicon.svg', svg(1));
+render('public/icons/icon-192.png', 192, 0.66);
+render('public/icons/icon-512.png', 512, 0.66);
+render('public/icons/icon-maskable-512.png', 512, 0.5); // inside the 80% safe circle
+render('public/icons/apple-touch-icon.png', 180, 0.62); // iOS rounds the corners itself
+rmSync(work, { recursive: true, force: true });
+
+// Favicon: rounded deep-blue tile with the droplet (SVG, so it stays sharp at every size)
+writeFileSync(
+  'public/favicon.svg',
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs><linearGradient id="fav-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a2b66"/><stop offset="0.55" stop-color="#081022"/><stop offset="1" stop-color="#050a16"/></linearGradient></defs>
+<rect width="64" height="64" rx="14" fill="url(#fav-bg)"/>
+<svg x="13" y="6" width="38" height="46" viewBox="0 0 200 240" overflow="visible">${inner}</svg>
+</svg>
+`,
+);
 console.log('Icons written to public/icons and public/favicon.svg');

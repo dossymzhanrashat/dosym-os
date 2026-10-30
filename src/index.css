@@ -2,35 +2,41 @@
 @import './core/design/tokens.css';
 @import './core/design/components.css';
 
-/* Expose brand tokens to Tailwind utilities: bg-surface, text-ink-2, border-rule, font-display… */
+/* Expose brand tokens to Tailwind utilities: text-ink-2, border-rule, text-ice, font-display… */
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-raised: var(--surface-raised);
   --color-ink: var(--text);
   --color-ink-2: var(--text-2);
-  --color-rule: var(--border);
-  --color-accent: var(--accent);
+  --color-ink-3: var(--text-3);
+  --color-rule: var(--card-border);
+  --color-rule-soft: var(--card-border-soft);
+  --color-chip: var(--chip);
+  --color-ice: var(--ice);
+  --color-sky: var(--sky);
+  --color-periwinkle: var(--periwinkle);
+  --color-violet: var(--violet);
+  --color-warm: var(--warm);
+  --color-good: var(--good);
+  --color-danger: var(--danger);
   --color-link: var(--link);
-  --color-amber: var(--amber-text);
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
 }
 
 html {
-  background: var(--bg);
+  background: var(--bg-deep);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 100%; /* rem sizes follow browser zoom and text-size settings */
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--bg);
+  background: transparent; /* the AppBackground layer paints the page */
+  font-size: 1rem;
   line-height: 1.5;
 }
 

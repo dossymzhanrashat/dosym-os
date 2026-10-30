@@ -1,87 +1,114 @@
 /*
- * FrostPure brand tokens (SPEC.md › Design system).
- * Brand colours never change; the semantic tokens below map them to light and dark mode.
- * Theme follows the OS (prefers-color-scheme) unless <html data-theme="light|dark"> is set.
+ * "Deep Blue" brand tokens (brand/DESIGN.md — replaces the old ice-and-amber board).
+ * Dark is the default. <html data-theme="light"> switches to the optional light theme;
+ * theme.ts sets it for "Light", or for "Auto" when the phone/laptop is in light mode.
  */
 :root {
-  /* Brand palette */
-  --night-steppe: #0f1e2c;
-  --freeze-front: #0b6a94;
-  --glacier: #4fa7cf;
-  --clear-ice: #dff1f9;
-  --brine-amber: #d98a2b;
-  --snow: #f4f9fb;
-  --ink-2: #4a6272;
-  --rule: #c3d8e2;
-  --deep-card: #16283a;
+  /* Surfaces */
+  --bg-deep: #050a16;
+  --bg: linear-gradient(160deg, #0d1834 0%, #081022 55%, #050a16 100%);
+  --glow-tl: radial-gradient(55% 70% at 0% 0%, rgba(70, 110, 255, 0.6), rgba(70, 110, 255, 0) 62%);
+  --glow-br: radial-gradient(50% 65% at 100% 100%, rgba(0, 180, 255, 0.42), rgba(0, 180, 255, 0) 62%);
+  --card: linear-gradient(180deg, rgba(30, 42, 74, 0.72) 0%, rgba(14, 22, 44, 0.8) 100%);
+  --card-border: rgba(143, 200, 255, 0.18);
+  --card-border-soft: rgba(143, 200, 255, 0.1);
+  --card-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+  --card-edge: rgba(200, 225, 255, 0.07); /* faint top highlight on glass */
+  --chip: rgba(143, 200, 255, 0.08);
+  --badge-fill: linear-gradient(135deg, #8ff1ff 0%, #5fb8ff 45%, #7f88ff 100%);
+  --nav-glass: rgba(5, 10, 22, 0.78);
 
-  /* Semantic tokens — light */
-  --bg: var(--snow);
-  --surface: var(--clear-ice);
-  --surface-raised: #ffffff;
-  --text: var(--night-steppe);
-  --text-2: var(--ink-2);
-  --border: var(--rule);
-  --accent: var(--freeze-front); /* primary buttons, selected tab */
-  --accent-on: #ffffff; /* text on --accent */
-  --link: var(--freeze-front);
-  --line: var(--glacier); /* chart strokes, icons */
-  --ice: var(--clear-ice);
-  --ice-column: var(--glacier);
-  --front-line: var(--freeze-front);
-  --brine: rgb(217 138 43 / 0.3);
-  --salt: var(--night-steppe);
-  /* Amber as text: brand amber is 2.6:1 on Snow, so light mode uses a darker shade of it (5.7:1). */
-  --amber-text: #8f5510;
-  --focus: var(--freeze-front);
+  /* Text */
+  --text: #ffffff;
+  --text-2: rgba(222, 233, 255, 0.74);
+  --text-3: rgba(170, 200, 255, 0.78);
+
+  /* Accents */
+  --ice: #8ff1ff;
+  --sky: #5fb8ff;
+  --periwinkle: #7f88ff;
+  --violet: #c27bff;
+  --pure-gradient: linear-gradient(100deg, #8ff1ff 0%, #5fb8ff 30%, #7f88ff 62%, #c27bff 100%);
+  /* Gradient for display words (28 px+ only). Same as the fill in dark; darker in light. */
+  --pure-text: var(--pure-gradient);
+  --warm: #ffb36b;
+  --good: #7dffb0;
+  --danger: #ff7a9a;
+
+  /* Roles */
+  --link: var(--sky);
+  --focus: var(--ice);
+  --on-accent: #050a16; /* text on --pure-gradient */
+
+  /* Freeze front (tank): ice on top, glowing front line, violet brine with dark salt below */
+  --ff-track: rgba(143, 200, 255, 0.06);
+  --ff-ice: linear-gradient(180deg, #e4ecff 0%, #8ff1ff 100%);
+  --ff-front: #8ff1ff;
+  --ff-glow: 0 0 10px 2px rgba(143, 241, 255, 0.75);
+  --ff-brine: linear-gradient(180deg, #c27bff 0%, #9a6bff 100%);
+  --ff-brine-soft: linear-gradient(180deg, rgba(194, 123, 255, 0.26) 0%, rgba(154, 107, 255, 0.14) 100%);
+  --ff-frozen: linear-gradient(180deg, rgba(228, 236, 255, 0.14) 0%, rgba(143, 241, 255, 0.06) 100%);
+  --salt: #050a16;
 
   /* Shape and size */
-  --radius-card: 16px;
+  --radius-lg: 26px;
+  --radius-md: 18px;
+  --radius-sm: 10px;
+  --radius-badge: 9px;
   --radius-pill: 999px;
   --target: 44px;
   --nav-rail: 15rem;
   --tabbar-h: 4rem;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
 
-  /* Type */
-  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
-  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* Type. Archivo has no Cyrillic, so Kazakh/Russian words in headings fall back to Manrope. */
+  --font-display: 'Archivo Variable', 'Manrope Variable', system-ui, sans-serif;
+  --font-sans: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  color-scheme: dark;
+}
+
+/* Optional light theme: same hues, darker accent shades so text stays at 4.5:1 or better. */
+:root[data-theme='light'] {
+  --bg-deep: #e6edfd;
+  --bg: linear-gradient(160deg, #f5f8ff 0%, #eef3ff 55%, #e6edfd 100%);
+  --glow-tl: radial-gradient(55% 70% at 0% 0%, rgba(70, 110, 255, 0.2), rgba(70, 110, 255, 0) 62%);
+  --glow-br: radial-gradient(50% 65% at 100% 100%, rgba(0, 180, 255, 0.16), rgba(0, 180, 255, 0) 62%);
+  --card: #ffffff;
+  --card-border: rgba(60, 90, 180, 0.14);
+  --card-border-soft: rgba(60, 90, 180, 0.09);
+  --card-shadow: 0 12px 30px rgba(20, 40, 110, 0.1);
+  --card-edge: rgba(255, 255, 255, 0.9);
+  --chip: rgba(60, 90, 180, 0.06);
+  --nav-glass: rgba(255, 255, 255, 0.82);
+
+  --text: #0b1430;
+  --text-2: #33466e;
+  --text-3: #45598a;
+
+  --ice: #0e8fb0;
+  --sky: #1859ae; /* 5:1 even under the corner glow, so links stay readable */
+  --periwinkle: #4f57e0;
+  --violet: #8a3fd6;
+  --pure-text: linear-gradient(100deg, #0e7fa0 0%, #1f6fd0 30%, #4f57e0 62%, #8a3fd6 100%);
+  --warm: #9a4d00;
+  --good: #11743f;
+  --danger: #c0264f;
+
+  --ff-track: #e3e9f8;
+  --ff-ice: linear-gradient(180deg, #c9f3ff 0%, #0e8fb0 100%);
+  --ff-front: #0e8fb0;
+  --ff-glow: 0 0 8px 1px rgba(14, 143, 176, 0.55);
+  --ff-brine: linear-gradient(180deg, #8a3fd6 0%, #a77cf0 100%);
+  --ff-brine-soft: linear-gradient(180deg, rgba(138, 63, 214, 0.12) 0%, rgba(138, 63, 214, 0.06) 100%);
+  --ff-frozen: linear-gradient(180deg, rgba(14, 143, 176, 0.1) 0%, rgba(14, 143, 176, 0.04) 100%);
+  --salt: #0b1430;
 
   color-scheme: light;
-}
-
-/* Semantic tokens — dark (cards #16283A on Night Steppe) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: var(--night-steppe);
-    --surface: var(--deep-card);
-    --surface-raised: #1c3247;
-    --text: var(--snow);
-    --text-2: #a9c0cd;
-    --border: #2b4458;
-    --link: var(--glacier);
-    --ice: #22405a;
-    --front-line: var(--glacier);
-    --brine: rgb(217 138 43 / 0.55);
-    --salt: var(--night-steppe);
-    --amber-text: var(--brine-amber);
-    --focus: var(--glacier);
-    color-scheme: dark;
-  }
-}
-:root[data-theme='dark'] {
-  --bg: var(--night-steppe);
-  --surface: var(--deep-card);
-  --surface-raised: #1c3247;
-  --text: var(--snow);
-  --text-2: #a9c0cd;
-  --border: #2b4458;
-  --link: var(--glacier);
-  --ice: #22405a;
-  --front-line: var(--glacier);
-  --brine: rgb(217 138 43 / 0.55);
-  --salt: var(--night-steppe);
-  --amber-text: var(--brine-amber);
-  --focus: var(--glacier);
-  color-scheme: dark;
 }
