@@ -30,29 +30,17 @@ function Account() {
   const status = useSyncStatus();
   const pending = useLive(() => db.outbox.count(), [], 0);
   const [email, setEmail] = useState('');
-  const [code, setCode] = useState('');
-  const [sentTo, setSentTo] = useState<string | null>(null);
+  const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
 
-  const sendLink = async () => {
+  const signIn = async () => {
     setBusy(true);
     setMessage('');
-    const { error } = await supabase.auth.signInWithOtp({
-      email: email.trim(),
-      options: { emailRedirectTo: `${location.origin}${import.meta.env.BASE_URL}settings`, shouldCreateUser: true },
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
-    if (error) setMessage(error.message);
-    else setSentTo(email.trim());
-  };
-
-  const verify = async () => {
-    setBusy(true);
-    setMessage('');
-    const { error } = await supabase.auth.verifyOtp({ email: sentTo!, token: code.trim(), type: 'email' });
-    setBusy(false);
-    if (error) setMessage(error.message);
+    if (error) setMessage(error.message === 'Invalid login credentials' ? 'Wrong email or password.' : error.message);
+    else setPassword('');
   };
 
   if (status.email) {
@@ -76,11 +64,11 @@ function Account() {
           <PillButton variant="secondary" onClick={() => void syncNow()}>
             Sync now
           </PillButton>
-          <PillButton variant="secondary" onClick={() => void supabase.auth.signOut()}>
+          <PillButton variant="secondary" onClick={() => void supabase.auth.signOut({ scope: 'local' })}>
             Sign out
           </PillButton>
         </div>
-        <p className="m-0 text-sm">Signing out keeps the data on this device; it just stops syncing.</p>
+        <p className="m-0 text-sm">This device stays signed in until you tap Sign out (other devices are not affected). Signing out keeps the data on this device; it just stops syncing.</p>
       </GlassCard>
     );
   }
@@ -91,58 +79,35 @@ function Account() {
         Sign in to sync
       </h2>
       <p className="m-0">Your plans already work on this device. Sign in to keep phone and laptop the same and to get reminders.</p>
-      {!sentTo ? (
-        <form
-          className="grid gap-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            void sendLink();
-          }}
-        >
-          <label className="field">
-            <span className="field-label">Email</span>
-            <input className="input" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-          </label>
-          <div>
-            <PillButton type="submit" disabled={busy || !email.includes('@')}>
-              Email me a login link
-            </PillButton>
-          </div>
-        </form>
-      ) : (
-        <form
-          className="grid gap-3"
-          onSubmit={(e) => {
-            e.preventDefault();
-            void verify();
-          }}
-        >
-          <p className="notice m-0">
-            Sent to <strong>{sentTo}</strong>. On this browser, tap the link in the email. In the <strong>iPhone Home Screen app</strong>, type the code from the
-            email here instead (the link would open Safari, which is a separate app).
-          </p>
-          <label className="field">
-            <span className="field-label">Code from the email</span>
-            <input
-              className="input tnum"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              pattern="[0-9]*"
-              maxLength={10}
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-            />
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <PillButton type="submit" disabled={busy || code.length < 6}>
-              Sign in with code
-            </PillButton>
-            <PillButton variant="secondary" onClick={() => setSentTo(null)}>
-              Use another email
-            </PillButton>
-          </div>
-        </form>
-      )}
+      <form
+        className="grid gap-3"
+        onSubmit={(e) => {
+          e.preventDefault();
+          void signIn();
+        }}
+      >
+        <label className="field">
+          <span className="field-label">Email</span>
+          <input className="input" type="email" name="email" autoComplete="username" required value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        <label className="field">
+          <span className="field-label">Password</span>
+          <input
+            className="input"
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <div>
+          <PillButton type="submit" disabled={busy || !email.includes('@') || !password}>
+            Sign in
+          </PillButton>
+        </div>
+      </form>
       {message && <p className="notice notice--danger m-0 text-sm">{message}</p>}
     </GlassCard>
   );
@@ -159,7 +124,7 @@ function InstallGuide() {
           'Open this site in Safari.',
           'Tap the Share button (the square with an arrow up).',
           'Scroll down and tap “Add to Home Screen”, then “Add”.',
-          'Open Dosym OS from the new Home Screen icon, sign in with the code, and come back here.',
+          'Open Dosym OS from the new Home Screen icon, sign in, and come back here.',
         ].map((t, i) => (
           <li key={t} className="flex gap-3">
             <StepBadge n={i + 1} />

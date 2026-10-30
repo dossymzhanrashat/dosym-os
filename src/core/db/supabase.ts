@@ -8,13 +8,13 @@ export const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_ju-cdaQVUy-UqSZt__rDwA_n
 /** VAPID public key (application server key) for Web Push subscriptions. */
 export const VAPID_PUBLIC_KEY = 'BIFje4uSvtk-UbSeWJ2dh8adQuViqKHtBIQG3OvBecOSroWyHEvJGpHEFnWEYlktNPNFCqe5m7KKV-WI6DpjNvA';
 
+// Email + password login (sign-ups are switched off in Supabase; the one account was made in the
+// dashboard). The session is kept in this browser's storage and refreshed automatically, so each
+// device stays signed in until "Sign out".
 export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
     persistSession: true,
     autoRefreshToken: true,
-    // Implicit flow: a login link works even when opened in a different browser than the one that
-    // asked for it. The iPhone Home Screen app signs in with the emailed code instead (see Settings).
-    flowType: 'implicit',
-    detectSessionInUrl: true,
+    detectSessionInUrl: false, // no login links
   },
 });
