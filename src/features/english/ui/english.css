@@ -1,0 +1,260 @@
+/* Module 1 — English. Deep Blue tokens only (brand/DESIGN.md). */
+
+.en-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ---------- Review session ---------- */
+.rv-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+.rv-count,
+.rv-timer {
+  font: 700 0.9375rem/1 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+.rv-card {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: var(--space-4);
+  min-height: 18rem;
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  cursor: pointer;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: transform 160ms ease;
+}
+.rv-card:focus-visible {
+  outline: 3px solid var(--focus);
+}
+.rv-kind {
+  position: absolute;
+  top: var(--space-4);
+  left: var(--space-5);
+}
+.rv-head {
+  margin: 0;
+  font: 800 clamp(1.75rem, 7vw, 2.75rem) / 1.08 var(--font-display);
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.rv-sub {
+  margin: 0;
+  color: var(--text-2);
+}
+.rv-def {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--text);
+}
+.rv-gloss {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  color: var(--text-2);
+}
+.rv-gloss span[lang] {
+  color: var(--text);
+}
+.rv-example {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--text-2);
+}
+.rv-example mark {
+  background: none;
+  color: var(--ice);
+  font-weight: 700;
+}
+.rv-blank {
+  display: inline-block;
+  min-width: 4ch;
+  border-bottom: 2px solid var(--ice);
+  color: var(--ice);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.rv-divider {
+  width: 3rem;
+  height: 2px;
+  margin: 0 auto;
+  background: var(--ff-front);
+  box-shadow: var(--ff-glow);
+  border: 0;
+}
+.rv-hint {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+.rv-speak {
+  justify-self: center;
+}
+.rv-letters {
+  font: 700 1.5rem/1.2 var(--font-sans);
+  letter-spacing: 0.06em;
+}
+.rv-letters .bad {
+  color: var(--warm);
+  text-decoration: underline wavy;
+}
+.rv-ladder {
+  display: grid;
+  gap: 0.375rem;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rv-rung {
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--radius-pill);
+  background: var(--chip);
+  border: 1px solid var(--card-border);
+  color: var(--text);
+}
+.rv-rung--high {
+  border-color: color-mix(in srgb, var(--violet) 55%, transparent);
+}
+
+.grades {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+}
+.grade {
+  display: grid;
+  gap: 0.125rem;
+  justify-items: center;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  background: var(--chip);
+  color: var(--text);
+  font: 700 1rem/1.1 var(--font-sans);
+  cursor: pointer;
+}
+.grade small {
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.grade:hover {
+  border-color: var(--ice);
+}
+.grade--again {
+  border-color: color-mix(in srgb, var(--warm) 55%, transparent);
+}
+.grade[aria-pressed='true'] {
+  background: var(--pure-gradient);
+  border-color: transparent;
+  color: var(--on-accent);
+}
+.grade[aria-pressed='true'] small {
+  color: var(--on-accent);
+}
+
+/* ---------- Word sheet ---------- */
+.word-head {
+  margin: 0;
+  font: 800 clamp(2rem, 8vw, 3rem) / 1.02 var(--font-display);
+  font-stretch: 118%;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.375rem var(--space-4);
+  margin: 0;
+}
+.kv dt {
+  color: var(--text-3);
+  font-size: 0.875rem;
+}
+.kv dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.data-table th,
+.data-table td {
+  padding: 0.5rem 0.625rem;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border-soft);
+  white-space: nowrap;
+}
+.data-table th {
+  color: var(--text-3);
+  font-weight: 600;
+}
+.data-table td {
+  color: var(--text);
+}
+
+/* Charts: recessive axes, tooltips in a glass card */
+.chart {
+  width: 100%;
+  height: 16rem;
+}
+.chart--tall {
+  height: 18.75rem; /* 300 px forgetting curve */
+}
+.chart text {
+  fill: var(--text-3);
+  font: 500 0.75rem var(--font-sans);
+}
+.chart-tip {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--card-border);
+  background: var(--bg-deep);
+  color: var(--text);
+  font: 600 0.8125rem/1.4 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  box-shadow: var(--card-shadow);
+}
+.chart-tip span {
+  color: var(--text-2);
+  font-weight: 500;
+}
+.chart-caption {
+  margin: var(--space-2) 0 0;
+  font: 600 0.8125rem/1.4 var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+.swatch {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.375rem;
+  border-radius: 3px;
+  vertical-align: -1px;
+}

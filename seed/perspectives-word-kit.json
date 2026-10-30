@@ -1,0 +1,499 @@
+{
+  "source": "Perspectives Word Kit (Dosym's Claude artifact)",
+  "perspectivesWordKit": [
+    {
+      "word": "Indispensable to",
+      "pos": "adj",
+      "definition": "absolutely necessary for something",
+      "ru": "незаменимый для, необходимый",
+      "kk": "...үшін таптырмас, аса қажет",
+      "example": "Exposure to diverse perspectives is indispensable to developing critical thinking.",
+      "exampleTarget": "indispensable to",
+      "tip": "Spelling: indisp-E-nsable."
+    },
+    {
+      "word": "Disregarded",
+      "pos": "adj / v (past)",
+      "definition": "ignored; treated as unimportant",
+      "ru": "проигнорированный, оставленный без внимания",
+      "kk": "елеусіз қалған, ескерілмеген",
+      "example": "Minority viewpoints are often disregarded in public debate.",
+      "exampleTarget": "disregarded",
+      "tip": ""
+    },
+    {
+      "word": "Insurmountable",
+      "pos": "adj",
+      "definition": "too great to be overcome",
+      "ru": "непреодолимый",
+      "kk": "еңсерілмейтін, жеңуге болмайтын",
+      "example": "Cultural differences are rarely an insurmountable barrier to understanding.",
+      "exampleTarget": "insurmountable",
+      "tip": ""
+    },
+    {
+      "word": "To amplify",
+      "pos": "v",
+      "definition": "to make stronger, louder or more intense",
+      "ru": "усиливать",
+      "kk": "күшейту",
+      "example": "Social media can amplify a single perspective until it drowns out all others.",
+      "exampleTarget": "amplify",
+      "tip": ""
+    },
+    {
+      "word": "To enhance",
+      "pos": "v",
+      "definition": "to improve the quality or value of something",
+      "ru": "улучшать, повышать",
+      "kk": "жақсарту, арттыру",
+      "example": "Studying abroad can enhance one’s ability to see an issue from several angles.",
+      "exampleTarget": "enhance",
+      "tip": ""
+    },
+    {
+      "word": "To foster",
+      "pos": "v",
+      "definition": "to encourage the development of something",
+      "ru": "способствовать, развивать",
+      "kk": "дамыту, қалыптастыру",
+      "example": "Schools should foster open discussion between students with opposing views.",
+      "exampleTarget": "foster",
+      "tip": ""
+    },
+    {
+      "word": "Pitfall",
+      "pos": "n",
+      "definition": "a hidden danger or common mistake",
+      "ru": "подводный камень, ловушка",
+      "kk": "жасырын қауіп, тұзақ",
+      "example": "A common pitfall of relying on one news source is confirmation bias.",
+      "exampleTarget": "pitfall",
+      "tip": ""
+    },
+    {
+      "word": "Resonate with",
+      "pos": "v",
+      "definition": "to feel familiar or meaningful to someone",
+      "ru": "находить отклик у",
+      "kk": "көңілінен шығу, үндес болу",
+      "example": "Personal stories tend to resonate with readers more deeply than statistics.",
+      "exampleTarget": "resonate with",
+      "tip": ""
+    },
+    {
+      "word": "Susceptible",
+      "pos": "adj",
+      "definition": "easily influenced or harmed (+ to)",
+      "ru": "восприимчивый, подверженный",
+      "kk": "бейім, оңай берілетін",
+      "example": "Teenagers are particularly susceptible to the opinions of their peers.",
+      "exampleTarget": "susceptible",
+      "tip": "Collocation: susceptible TO."
+    },
+    {
+      "word": "Capacity",
+      "pos": "n",
+      "definition": "the ability to do or understand something",
+      "ru": "способность",
+      "kk": "қабілет, мүмкіндік",
+      "example": "Empathy expands our capacity to understand people unlike ourselves.",
+      "exampleTarget": "capacity",
+      "tip": ""
+    },
+    {
+      "word": "Urged",
+      "pos": "v (past)",
+      "definition": "strongly advised or encouraged",
+      "ru": "настоятельно призывал",
+      "kk": "шақырды, қатты кеңес берді",
+      "example": "Experts have urged teachers to show students how to evaluate competing viewpoints.",
+      "exampleTarget": "urged",
+      "tip": ""
+    },
+    {
+      "word": "Venture",
+      "pos": "v / n",
+      "definition": "to dare to go or say something risky; a risky project",
+      "ru": "осмелиться; рискованное предприятие",
+      "kk": "батылы жету; тәуекелді іс",
+      "example": "Few people venture beyond the comfort of their own opinions.",
+      "exampleTarget": "venture",
+      "tip": ""
+    },
+    {
+      "word": "Dissidence",
+      "pos": "n",
+      "definition": "disagreement with an official or widely accepted view",
+      "ru": "инакомыслие, несогласие",
+      "kk": "келіспеушілік, қарсы пікір",
+      "example": "A healthy society tolerates dissidence rather than silencing it.",
+      "exampleTarget": "dissidence",
+      "tip": ""
+    },
+    {
+      "word": "Candid",
+      "pos": "adj",
+      "definition": "honest and direct",
+      "ru": "откровенный, искренний",
+      "kk": "ашық, шыншыл",
+      "example": "A candid exchange of views reveals assumptions we did not know we held.",
+      "exampleTarget": "candid",
+      "tip": ""
+    },
+    {
+      "word": "Idleness",
+      "pos": "n",
+      "definition": "laziness; doing nothing",
+      "ru": "безделье, праздность",
+      "kk": "жалқаулық, бос жүрушілік",
+      "example": "Intellectual idleness leads people to accept the first opinion they hear.",
+      "exampleTarget": "idleness",
+      "tip": "Spelling: idl-E-ness."
+    },
+    {
+      "word": "Instill in",
+      "pos": "v",
+      "definition": "to gradually put an idea or feeling into someone",
+      "ru": "прививать, внушать",
+      "kk": "бойына сіңіру",
+      "example": "Parents should instill in children respect for views different from their own.",
+      "exampleTarget": "instill in",
+      "tip": ""
+    },
+    {
+      "word": "To embody",
+      "pos": "v",
+      "definition": "to represent or express an idea in a visible form",
+      "ru": "воплощать",
+      "kk": "бейнелеу, бойына жинау",
+      "example": "Great literature can embody the perspective of people from another era.",
+      "exampleTarget": "embody",
+      "tip": ""
+    },
+    {
+      "word": "Uneasy",
+      "pos": "adj",
+      "definition": "slightly worried or uncomfortable",
+      "ru": "тревожный, неловкий",
+      "kk": "мазасыз, алаңдаулы",
+      "example": "Meeting a very different worldview can make us feel uneasy at first.",
+      "exampleTarget": "uneasy",
+      "tip": ""
+    },
+    {
+      "word": "Suspenseful",
+      "pos": "adj",
+      "definition": "creating tension about what will happen",
+      "ru": "напряжённый, захватывающий",
+      "kk": "шиеленісті, тартымды",
+      "example": "The novel’s suspenseful plot is told from three alternating perspectives.",
+      "exampleTarget": "suspenseful",
+      "tip": ""
+    },
+    {
+      "word": "Unsettling",
+      "pos": "adj",
+      "definition": "making you feel anxious or disturbed",
+      "ru": "тревожащий, выбивающий из колеи",
+      "kk": "мазасыздандыратын",
+      "example": "It is unsettling to realise that our beliefs depend on where we were born.",
+      "exampleTarget": "unsettling",
+      "tip": ""
+    },
+    {
+      "word": "Detached",
+      "pos": "adj",
+      "definition": "emotionally distant; objective",
+      "ru": "отстранённый, беспристрастный",
+      "kk": "бейтарап, салқын",
+      "example": "A detached observer may judge a conflict more fairly than those involved.",
+      "exampleTarget": "detached",
+      "tip": ""
+    },
+    {
+      "word": "Amused",
+      "pos": "adj",
+      "definition": "finding something funny",
+      "ru": "позабавленный, развеселённый",
+      "kk": "қызық көрген, күлкісін келтірген",
+      "example": "Some readers were amused by the satire, while others were deeply offended.",
+      "exampleTarget": "amused",
+      "tip": ""
+    },
+    {
+      "word": "Lighthearted",
+      "pos": "adj",
+      "definition": "cheerful and not serious",
+      "ru": "беззаботный, лёгкий",
+      "kk": "көңілді, жеңіл",
+      "example": "A lighthearted tone can make a controversial idea easier to accept.",
+      "exampleTarget": "lighthearted",
+      "tip": ""
+    },
+    {
+      "word": "Zeal for",
+      "pos": "n",
+      "definition": "great enthusiasm for something",
+      "ru": "рвение, страсть к",
+      "kk": "...ға деген құлшыныс",
+      "example": "Her zeal for debate pushed her to read authors she disagreed with.",
+      "exampleTarget": "zeal for",
+      "tip": ""
+    },
+    {
+      "word": "Unabated",
+      "pos": "adj",
+      "definition": "continuing without becoming weaker",
+      "ru": "не ослабевающий",
+      "kk": "бәсеңдемеген, толастамаған",
+      "example": "Despite decades of research, the debate continues unabated.",
+      "exampleTarget": "unabated",
+      "tip": ""
+    },
+    {
+      "word": "Apprehensive",
+      "pos": "adj",
+      "definition": "worried that something bad may happen",
+      "ru": "опасающийся, встревоженный",
+      "kk": "қауіптенген, алаңдаған",
+      "example": "Many people are apprehensive about sharing unpopular opinions online.",
+      "exampleTarget": "apprehensive",
+      "tip": ""
+    },
+    {
+      "word": "Self-sufficiency",
+      "pos": "n",
+      "definition": "the ability to manage without help from others",
+      "ru": "самодостаточность",
+      "kk": "өзін-өзі қамтамасыз ету",
+      "example": "Intellectual self-sufficiency should not become an excuse for ignoring others.",
+      "exampleTarget": "self-sufficiency",
+      "tip": ""
+    },
+    {
+      "word": "Contempt",
+      "pos": "n",
+      "definition": "a feeling that someone or something is worthless",
+      "ru": "презрение",
+      "kk": "менсінбеушілік, жеккөрушілік",
+      "example": "Treating opposing opinions with contempt shuts down dialogue.",
+      "exampleTarget": "contempt",
+      "tip": ""
+    },
+    {
+      "word": "Translucent",
+      "pos": "adj",
+      "definition": "letting some light through, not fully clear",
+      "ru": "полупрозрачный",
+      "kk": "жартылай мөлдір",
+      "example": "Our perspective is like translucent glass: it lets the world in but colours everything.",
+      "exampleTarget": "translucent",
+      "tip": ""
+    },
+    {
+      "word": "Afflicted",
+      "pos": "adj",
+      "definition": "suffering from something bad (+ by/with)",
+      "ru": "поражённый, страдающий",
+      "kk": "зардап шеккен",
+      "example": "Societies afflicted by polarisation struggle to find common ground.",
+      "exampleTarget": "afflicted",
+      "tip": ""
+    },
+    {
+      "word": "Assure",
+      "pos": "v",
+      "definition": "to tell someone confidently so they stop doubting",
+      "ru": "уверять, заверять",
+      "kk": "сендіру, кепілдік беру",
+      "example": "I can assure the reader that listening to both sides does not mean giving up your own.",
+      "exampleTarget": "assure",
+      "tip": ""
+    },
+    {
+      "word": "Solely",
+      "pos": "adv",
+      "definition": "only; and nothing else",
+      "ru": "исключительно, единственно",
+      "kk": "тек қана, жалғыз",
+      "example": "Forming opinions solely from headlines is a dangerous habit.",
+      "exampleTarget": "solely",
+      "tip": ""
+    },
+    {
+      "word": "Versatility",
+      "pos": "n",
+      "definition": "the ability to adapt to many situations",
+      "ru": "разносторонность, гибкость",
+      "kk": "жан-жақтылық, икемділік",
+      "example": "The versatility to switch perspectives is a mark of a mature thinker.",
+      "exampleTarget": "versatility",
+      "tip": ""
+    },
+    {
+      "word": "Immersive",
+      "pos": "adj",
+      "definition": "deeply involving all your senses or attention",
+      "ru": "погружающий, захватывающий",
+      "kk": "терең енгізетін, ішіне тартатын",
+      "example": "Immersive experiences such as living abroad transform how we see our own culture.",
+      "exampleTarget": "Immersive",
+      "tip": ""
+    },
+    {
+      "word": "Convey",
+      "pos": "v",
+      "definition": "to communicate an idea or feeling",
+      "ru": "передавать, доносить",
+      "kk": "жеткізу",
+      "example": "Art can convey a perspective that words alone cannot.",
+      "exampleTarget": "convey",
+      "tip": ""
+    },
+    {
+      "word": "Unfold",
+      "pos": "v",
+      "definition": "to develop or become clear gradually",
+      "ru": "разворачиваться, раскрываться",
+      "kk": "өрбу, біртіндеп ашылу",
+      "example": "As the story unfolds, the reader begins to sympathise with the villain.",
+      "exampleTarget": "unfolds",
+      "tip": ""
+    },
+    {
+      "word": "Comprehensive",
+      "pos": "adj",
+      "definition": "complete; including all parts",
+      "ru": "всесторонний, исчерпывающий",
+      "kk": "жан-жақты, толық",
+      "example": "A comprehensive understanding of any issue requires hearing every side.",
+      "exampleTarget": "comprehensive",
+      "tip": ""
+    }
+  ],
+  "linkingDevices": [
+    {
+      "job": "Adding",
+      "basic": [
+        "Also",
+        "moreover"
+      ],
+      "highLevel": [
+        "Furthermore",
+        "In addition to this",
+        "Not only … but also …",
+        "What is more"
+      ]
+    },
+    {
+      "job": "Contrast",
+      "basic": [
+        "But",
+        "however"
+      ],
+      "highLevel": [
+        "Nevertheless",
+        "Conversely",
+        "On the contrary",
+        "Whereas",
+        "Notwithstanding"
+      ]
+    },
+    {
+      "job": "Concession",
+      "basic": [
+        "Although"
+      ],
+      "highLevel": [
+        "Admittedly",
+        "Granted, …",
+        "While it is true that …",
+        "Despite the fact that …"
+      ]
+    },
+    {
+      "job": "Cause",
+      "basic": [
+        "Because"
+      ],
+      "highLevel": [
+        "Owing to",
+        "Given that",
+        "On account of",
+        "Stemming from"
+      ]
+    },
+    {
+      "job": "Result",
+      "basic": [
+        "So"
+      ],
+      "highLevel": [
+        "Consequently",
+        "As a result",
+        "Thus",
+        "Hence",
+        "This in turn leads to"
+      ]
+    },
+    {
+      "job": "Example",
+      "basic": [
+        "For example"
+      ],
+      "highLevel": [
+        "To illustrate",
+        "A case in point is",
+        "This is exemplified by",
+        "Namely"
+      ]
+    },
+    {
+      "job": "Emphasis",
+      "basic": [
+        "Really"
+      ],
+      "highLevel": [
+        "Indeed",
+        "Undeniably",
+        "It is worth emphasising that",
+        "Above all"
+      ]
+    },
+    {
+      "job": "Clarifying",
+      "basic": [
+        "I mean"
+      ],
+      "highLevel": [
+        "In other words",
+        "That is to say",
+        "To put it simply"
+      ]
+    },
+    {
+      "job": "Opinion",
+      "basic": [
+        "I think"
+      ],
+      "highLevel": [
+        "I am convinced that",
+        "From my perspective",
+        "It is my firm belief that"
+      ]
+    },
+    {
+      "job": "Concluding",
+      "basic": [
+        "To sum up"
+      ],
+      "highLevel": [
+        "In conclusion",
+        "All things considered",
+        "On balance",
+        "Taking everything into account"
+      ]
+    }
+  ]
+}

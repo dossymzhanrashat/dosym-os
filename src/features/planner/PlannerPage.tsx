@@ -3,10 +3,11 @@ import { Link, useSearchParams } from 'react-router';
 import { Chip, GlassCard, PillButton } from '../../core/design/components';
 import { anchorOf, entriesInRange, entryDayKey, type PlannerEntry } from '../../core/planner/entries';
 import { LOAD_LIMIT_MIN, plannedMinutes } from '../../core/planner/layout';
+import { isGeneratedRepeat } from '../../core/planner/providers';
 import { pushToTomorrow, useFixedBlocks, usePlannerItems } from '../../core/planner/store';
 import { addDays, addMonths, dayKey, fromDayKey, startOfDay, startOfWeek } from '../../core/planner/time';
 import type { FixedBlock, PlannerItem } from '../../core/planner/types';
-import { EntryRow } from './EntryRow';
+import { EntryRow, entryHref } from './EntryRow';
 import { HourLabels, TimelineColumn } from './TimelineColumn';
 import './planner.css';
 
@@ -42,7 +43,7 @@ function DayView({ day, items, blocks }: { day: Date; items: PlannerItem[]; bloc
     if (!isToday) return [];
     const today = startOfDay(new Date());
     const undated = items.filter((i) => !i.deletedAt && !i.done && !anchorOf(i)).map((i) => ({ ...i, baseId: i.id }));
-    const overdue = entriesInRange(items, addDays(today, -30), today).filter((e) => !e.done);
+    const overdue = entriesInRange(items, addDays(today, -30), today).filter((e) => !e.done && !isGeneratedRepeat(e));
     return [...overdue, ...undated];
   }, [items, isToday]);
 
@@ -117,7 +118,7 @@ function WeekView({ day, items, blocks }: { day: Date; items: PlannerItem[]; blo
                 {(grouped.get(k) ?? [])
                   .filter((e) => !e.start)
                   .map((e) => (
-                    <Link key={e.id} to={`/planner/item/${e.baseId}${e.occurrence ? `?on=${e.occurrence}` : ''}`} className={`week-allday mod-${e.source}`}>
+                    <Link key={e.id} to={entryHref(e)} className={`week-allday mod-${e.source}`}>
                       {e.kind === 'deadline' ? '◆ ' : ''}
                       {e.title}
                     </Link>

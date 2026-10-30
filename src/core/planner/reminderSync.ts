@@ -2,7 +2,7 @@ import { db, getMeta, setMeta } from '../db/db';
 import { supabase } from '../db/supabase';
 import { onSynced } from '../db/sync';
 import { computeReminders, type ReminderDraft } from './reminderEngine';
-import { FIXED_BLOCKS, schoolDays } from './store';
+import { allPlannerItems, FIXED_BLOCKS, schoolDays } from './store';
 import type { FixedBlock } from './types';
 
 /*
@@ -11,12 +11,22 @@ import type { FixedBlock } from './types';
  * (item done, moved or deleted) are removed while still unsent.
  */
 
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const REFRESH_MS = 30 * 60_000; // re-upload unchanged reminders at most every 30 min
 
+/** Extra reminders a module computes itself (English morning review). */
+type ReminderSource = (now: Date, days: number) => Promise<ReminderDraft[]>;
+const sources: ReminderSource[] = [];
+export function registerReminderSource(fn: ReminderSource): void {
+  if (!sources.includes(fn)) sources.push(fn);
+}
+
 export async function localReminders(now = new Date(), days = 14): Promise<ReminderDraft[]> {
-  const items = await db.plannerItems.toArray();
+  const items = await allPlannerItems();
   const blocks = ((await db.settings.get(FIXED_BLOCKS))?.value as FixedBlock[] | undefined) ?? [];
-  return computeReminders(items, { now, base: import.meta.env.BASE_URL, schoolDays: schoolDays(blocks), days });
+  const planner = computeReminders(items, { now, base: import.meta.env.BASE_URL, schoolDays: schoolDays(blocks), days });
+  const extra = (await Promise.all(sources.map((fn) => fn(now, days)))).flat();
+  return [...planner, ...extra].sort((a, b) => a.fireAt.localeCompare(b.fireAt));
 }
 
 export async function uploadReminders(): Promise<void> {
@@ -38,7 +48,7 @@ export async function uploadReminders(): Promise<void> {
 
   const rows = drafts.map((d) => ({
     id: d.id,
-    planner_item_id: d.plannerItemId,
+    planner_item_id: d.plannerItemId && UUID.test(d.plannerItemId) ? d.plannerItemId : null, // generated items have text ids
     fire_at: d.fireAt,
     title: d.title,
     body: d.body,

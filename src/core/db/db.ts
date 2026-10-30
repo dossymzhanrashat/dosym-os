@@ -44,6 +44,13 @@ db.version(2).stores({
   outbox: 'key, table',
 });
 
+// Module 1 (English): typed accessors live in features/english/data/db.ts.
+db.version(3).stores({
+  vocabNotes: 'id, key, packId',
+  vocabCards: 'id, noteId, due',
+  reviewLogs: 'id, cardId, noteId, reviewedAt',
+});
+
 /** Records the first time this device opened the app and returns it. */
 export async function firstOpenedAt(): Promise<string> {
   const row = await db.meta.get('firstOpenedAt');

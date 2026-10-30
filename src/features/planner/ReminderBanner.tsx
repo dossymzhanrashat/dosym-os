@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router';
 import { GlassCard, PillButton } from '../../core/design/components';
 import { db } from '../../core/db/db';
 import { anchorOf, entriesInRange, entryFor } from '../../core/planner/entries';
-import { computeReminders } from '../../core/planner/reminderEngine';
+import { isGeneratedRepeat } from '../../core/planner/providers';
+import { localReminders } from '../../core/planner/reminderSync';
 import { setDone, snooze, usePlannerItems } from '../../core/planner/store';
+import { todayPlan, useEnglishData, useEnglishSettings } from '../english/data/store';
 import { addDays, startOfDay } from '../../core/planner/time';
 
 /*
@@ -39,8 +41,7 @@ export function ReminderBanner() {
   useEffect(() => {
     const tick = async () => {
       const now = new Date();
-      const all = await db.plannerItems.toArray();
-      const due = computeReminders(all, { now: lastCheck.current, base: import.meta.env.BASE_URL, days: 1 }).filter((d) => new Date(d.fireAt) <= now);
+      const due = (await localReminders(lastCheck.current, 1)).filter((d) => new Date(d.fireAt) <= now);
       lastCheck.current = now;
       const next = due.find((d) => !shown.current.has(d.id));
       if (next && document.visibilityState === 'visible') {
@@ -72,13 +73,17 @@ export function ReminderBanner() {
   // Home Screen badge: open items due today or overdue.
   const dueCount = useMemo(() => {
     const today = startOfDay(new Date());
-    return entriesInRange(items, addDays(today, -30), addDays(today, 1)).filter((e) => !e.done && anchorOf(e)).length;
+    return entriesInRange(items, addDays(today, -30), addDays(today, 1)).filter((e) => !e.done && anchorOf(e) && !isGeneratedRepeat(e)).length;
   }, [items]);
+  const english = useEnglishData();
+  const englishSettings = useEnglishSettings();
+  const englishDue = useMemo(() => todayPlan(english, englishSettings).queue.order.length, [english, englishSettings]);
+  const badge = dueCount + englishDue;
   useEffect(() => {
     const nav = navigator as Navigator & { setAppBadge?: (n: number) => Promise<void>; clearAppBadge?: () => Promise<void> };
-    if (dueCount > 0) nav.setAppBadge?.(dueCount).catch(() => {});
+    if (badge > 0) nav.setAppBadge?.(badge).catch(() => {});
     else nav.clearAppBadge?.().catch(() => {});
-  }, [dueCount]);
+  }, [badge]);
 
   if (!banner) return null;
 

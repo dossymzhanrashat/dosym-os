@@ -3,6 +3,7 @@ import { saveLocal } from '../db/sync';
 import { plannerTable, settingsTable } from '../db/syncTables';
 import { useLive } from '../db/useLive';
 import { anchorOf, type PlannerEntry } from './entries';
+import { GENERATED_DONE, generatedItems, isGenerated } from './providers';
 import { addDays, DAY, HOUR } from './time';
 import type { FixedBlock, PlannerItem } from './types';
 
@@ -31,9 +32,14 @@ export async function updateItem(id: string, change: (item: PlannerItem) => Plan
   if (item) await saveItem(change(item));
 }
 
-/** All items that are not deleted, live. */
+/** All items that are not deleted, plus the ones modules generate (English vocab, mocks, …), live. */
 export function usePlannerItems(): PlannerItem[] {
-  return useLive(() => db.plannerItems.filter((i) => !i.deletedAt).toArray(), [], []);
+  return useLive(async () => [...(await db.plannerItems.filter((i) => !i.deletedAt).toArray()), ...(await generatedItems())], [], []);
+}
+
+/** Stored and generated items, for the reminder engine. */
+export async function allPlannerItems(): Promise<PlannerItem[]> {
+  return [...(await db.plannerItems.toArray()), ...(await generatedItems())];
 }
 
 export function usePlannerItem(id: string | undefined): PlannerItem | null | undefined {
@@ -45,6 +51,15 @@ const shiftDay = (iso: string | undefined, days: number) => (iso ? addDays(new D
 
 export async function setDone(entry: PlannerEntry, done: boolean): Promise<void> {
   const completedAt = done ? new Date().toISOString() : undefined;
+  if (isGenerated(entry.baseId)) {
+    // Repeating generated items (daily vocab) are done by their module; one-offs are ticked here.
+    if (entry.recurrence) return;
+    const ticks = { ...(((await db.settings.get(GENERATED_DONE))?.value ?? {}) as Record<string, string>) };
+    if (done) ticks[entry.baseId] = completedAt!;
+    else delete ticks[entry.baseId];
+    await saveSetting(GENERATED_DONE, ticks);
+    return;
+  }
   await updateItem(entry.baseId, (item) => {
     if (!entry.occurrence) return { ...item, done, completedAt, snoozedUntil: undefined };
     const rest = (item.completions ?? []).filter((d) => d !== entry.occurrence);
@@ -54,6 +69,7 @@ export async function setDone(entry: PlannerEntry, done: boolean): Promise<void>
 
 /** "Snooze 1 h": remind again in an hour (the plan itself keeps its time). */
 export async function snooze(entry: PlannerEntry, ms = HOUR): Promise<void> {
+  if (isGenerated(entry.baseId)) return; // generated items change in their module
   await updateItem(entry.baseId, (item) => ({ ...item, snoozedUntil: new Date(Date.now() + ms).toISOString() }));
 }
 
@@ -66,6 +82,7 @@ async function detachOccurrence(entry: PlannerEntry, times: Pick<PlannerItem, 's
 
 /** "Tomorrow" / "push to tomorrow". A repeat skips today's occurrence and gets a one-off copy instead. */
 export async function pushToTomorrow(entry: PlannerEntry, days = 1): Promise<void> {
+  if (isGenerated(entry.baseId)) return; // generated items change in their module
   if (entry.occurrence) {
     await detachOccurrence(entry, { start: shiftDay(entry.start, days), end: shiftDay(entry.end, days), dueDate: shiftDay(entry.dueDate, days) });
     return;
@@ -81,6 +98,7 @@ export async function pushToTomorrow(entry: PlannerEntry, days = 1): Promise<voi
 
 /** Delete an item, or only this day of a repeating one. Soft delete, so it syncs. */
 export async function deleteEntry(entry: PlannerEntry): Promise<void> {
+  if (isGenerated(entry.baseId)) return; // generated items change in their module
   await updateItem(entry.baseId, (item) =>
     entry.occurrence
       ? { ...item, exceptions: [...(item.exceptions ?? []), entry.occurrence] }
@@ -90,6 +108,7 @@ export async function deleteEntry(entry: PlannerEntry): Promise<void> {
 
 /** Moves or resizes a timed item (drag in Day/Week). Without `end`, keeps its length. */
 export async function moveTo(entry: PlannerEntry, start: Date, end?: Date): Promise<void> {
+  if (isGenerated(entry.baseId)) return; // generated items change in their module
   const length = entry.start && entry.end ? new Date(entry.end).getTime() - new Date(entry.start).getTime() : HOUR;
   const times = { start: start.toISOString(), end: (end ?? new Date(start.getTime() + length)).toISOString(), dueDate: entry.dueDate };
   if (entry.occurrence) await detachOccurrence(entry, times);

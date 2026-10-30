@@ -52,6 +52,7 @@ const KIND_LABEL: Record<PlannerItem['kind'], string> = {
 };
 
 function itemUrl(base: string, e: PlannerEntry): string {
+  if (e.sourceRef?.startsWith('/')) return `${base}${e.sourceRef.slice(1)}`; // generated item → its module page
   return `${base}planner/item/${e.baseId}${e.occurrence ? `?on=${e.occurrence}` : ''}`;
 }
 

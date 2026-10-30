@@ -2,10 +2,13 @@ import type { ReactNode } from 'react';
 import { Link } from 'react-router';
 import { Chip } from '../../core/design/components';
 import type { PlannerEntry } from '../../core/planner/entries';
+import { isGenerated } from '../../core/planner/providers';
 import { setDone } from '../../core/planner/store';
 import { fmtTime } from '../../core/planner/time';
 
-export const entryHref = (e: PlannerEntry) => `/planner/item/${e.baseId}${e.occurrence ? `?on=${e.occurrence}` : ''}`;
+/** Generated items open their module page (sourceRef "/english/review"); the user's own open the item page. */
+export const entryHref = (e: PlannerEntry) =>
+  e.sourceRef?.startsWith('/') ? e.sourceRef : `/planner/item/${e.baseId}${e.occurrence ? `?on=${e.occurrence}` : ''}`;
 
 const dayFmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 
@@ -28,6 +31,8 @@ export function EntryRow({ entry, withDate = false, extra }: { entry: PlannerEnt
         type="checkbox"
         className="check"
         checked={entry.done}
+        disabled={isGenerated(entry.baseId) && !!entry.recurrence}
+        title={isGenerated(entry.baseId) && entry.recurrence ? 'Done automatically when the module’s minimum is met' : undefined}
         onChange={(e) => void setDone(entry, e.target.checked)}
         aria-label={`Done: ${entry.title}`}
       />

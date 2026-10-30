@@ -1,3 +1,4 @@
+import type { z } from 'zod';
 import { plannerItemSchema } from '../planner/schema';
 import type { PlannerItem } from '../planner/types';
 import type { SettingRow } from './db';
@@ -111,4 +112,45 @@ export function remoteWins(remoteUpdatedAt: string, localUpdatedAt?: string, pen
   if (localUpdatedAt && localUpdatedAt >= remoteUpdatedAt) return false;
   if (pendingUpdatedAt && pendingUpdatedAt >= remoteUpdatedAt) return false;
   return true;
+}
+
+const snake = (k: string) => k.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+
+/**
+ * A sync table whose columns are the zod schema's fields in snake_case ("glossKK" → "gloss_k_k" is
+ * avoided by `columns` overrides). Date fields are normalised to "…Z" ISO, null becomes undefined.
+ */
+export function autoTable<L extends { updatedAt: string }>(opts: {
+  local: string;
+  remote: string;
+  schema: z.ZodObject<z.ZodRawShape> & z.ZodType<L>;
+  dates: string[];
+  columns?: Record<string, string>;
+  onConflict?: string;
+  key?: (row: L) => string;
+}): SyncTableDef<L> {
+  const fields = Object.keys(opts.schema.shape);
+  const col = (f: string) => opts.columns?.[f] ?? snake(f);
+  const dates = new Set(opts.dates);
+  return {
+    local: opts.local,
+    remote: opts.remote,
+    onConflict: opts.onConflict ?? 'id',
+    key: opts.key ?? ((r) => (r as unknown as { id: string }).id),
+    toRemote: (row) => Object.fromEntries(fields.map((f) => [col(f), (row as Record<string, unknown>)[f] ?? null])),
+    fromRemote: (r) => {
+      const candidate: Record<string, unknown> = {};
+      for (const f of fields) {
+        const v = r[col(f)];
+        if (v === null || v === undefined) continue;
+        candidate[f] = dates.has(f) && typeof v === 'string' ? new Date(v).toISOString() : v;
+      }
+      const parsed = opts.schema.safeParse(candidate);
+      if (!parsed.success) {
+        console.warn(`[sync] skipped invalid ${opts.remote} row`, r.id, parsed.error.issues);
+        return null;
+      }
+      return parsed.data as L;
+    },
+  };
 }

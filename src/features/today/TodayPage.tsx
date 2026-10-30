@@ -9,6 +9,7 @@ import { usePlannerItems } from '../../core/planner/store';
 import { addDays, startOfDay } from '../../core/planner/time';
 import { EntryRow, whenText } from '../planner/EntryRow';
 import { useQuickAdd } from '../planner/QuickAdd';
+import { todayPlan, useEnglishData, useEnglishSettings } from '../english/data/store';
 import '../planner/planner.css';
 
 const almatyDate = new Intl.DateTimeFormat('en-GB', {
@@ -19,7 +20,6 @@ const almatyDate = new Intl.DateTimeFormat('en-GB', {
 });
 
 const COMING = [
-  { name: 'Due English reviews', phase: 2 },
   { name: "Today's practice quota", phase: 2 },
   { name: 'Daily Radar card', phase: 4 },
   { name: 'FrostPure test moment', phase: 5 },
@@ -41,6 +41,11 @@ export function TodayPage() {
     () => entriesInRange(items, now, addDays(today, 120)).filter((e) => e.kind === 'deadline' && !e.done).slice(0, 3),
     [items, today.getTime()],
   );
+
+  const english = useEnglishData();
+  const englishSettings = useEnglishSettings();
+  const englishPlan = useMemo(() => todayPlan(english, englishSettings, now), [english, englishSettings, now]);
+  const englishLeft = englishPlan.queue.order.length;
 
   const done = todays.filter((e) => e.done).length;
   const timed = todays.filter((e) => e.start && !e.done);
@@ -83,6 +88,23 @@ export function TodayPage() {
               <Mascot mood={todays.length && done === todays.length ? 'happy' : 'sleepy'} size={56} />
               <p className="m-0">{todays.length && done === todays.length ? 'Everything for today is done.' : 'No timed plans left today.'}</p>
             </div>
+          )}
+        </GlassCard>
+
+        <GlassCard aria-labelledby="due-reviews">
+          <h2 id="due-reviews" className="card-title">
+            Due reviews · English
+          </h2>
+          {!english.notes.length ? (
+            <p className="m-0">
+              No words yet. <Link to="/english/packs">Add a seed pack</Link> to start.
+            </p>
+          ) : englishLeft ? (
+            <Link to="/english/review" className="pill">
+              Start · {englishLeft} due · ~{englishPlan.minutes} min
+            </Link>
+          ) : (
+            <p className="m-0">All of today's cards are done.</p>
           )}
         </GlassCard>
 

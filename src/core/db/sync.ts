@@ -23,6 +23,11 @@ export interface SyncStatus {
 }
 
 const TABLES: SyncTableDef[] = [plannerTable, settingsTable] as SyncTableDef[];
+
+/** Modules add their synced tables here at start-up (before startSync). */
+export function registerSyncTable<T extends { updatedAt: string }>(def: SyncTableDef<T>): void {
+  if (!TABLES.some((t) => t.remote === def.remote)) TABLES.push(def as unknown as SyncTableDef);
+}
 const PAGE = 1000;
 const OVERLAP_MS = 60_000; // re-read the last minute: rows committed slightly out of order are not missed
 

@@ -3,6 +3,7 @@ import { GlassCard, PillButton, StatTile } from '../../core/design/components';
 import { FreezeFrontHeader } from '../../core/design/FreezeFront';
 import { Mascot } from '../../core/design/Mascot';
 import { anchorOf, entriesInRange } from '../../core/planner/entries';
+import { isGeneratedRepeat } from '../../core/planner/providers';
 import { pushToTomorrow, saveSetting, usePlannerItems, useSetting } from '../../core/planner/store';
 import { addDays, dayKey, startOfWeek } from '../../core/planner/time';
 import { EntryRow } from './EntryRow';
@@ -51,7 +52,7 @@ export function WeeklyReviewPage() {
 
   const week = useMemo(() => entriesInRange(items, monday, nextMonday), [items, monday.getTime()]);
   const done = week.filter((e) => e.done);
-  const slipped = week.filter((e) => !e.done && new Date(anchorOf(e)!) < now);
+  const slipped = week.filter((e) => !e.done && new Date(anchorOf(e)!) < now && !isGeneratedRepeat(e));
   const [skip, setSkip] = useState<Set<string>>(new Set());
   const [moved, setMoved] = useState<number | null>(null);
   const toMove = slipped.filter((e) => !skip.has(e.id));
