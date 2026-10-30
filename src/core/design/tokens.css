@@ -1,0 +1,87 @@
+/*
+ * FrostPure brand tokens (SPEC.md › Design system).
+ * Brand colours never change; the semantic tokens below map them to light and dark mode.
+ * Theme follows the OS (prefers-color-scheme) unless <html data-theme="light|dark"> is set.
+ */
+:root {
+  /* Brand palette */
+  --night-steppe: #0f1e2c;
+  --freeze-front: #0b6a94;
+  --glacier: #4fa7cf;
+  --clear-ice: #dff1f9;
+  --brine-amber: #d98a2b;
+  --snow: #f4f9fb;
+  --ink-2: #4a6272;
+  --rule: #c3d8e2;
+  --deep-card: #16283a;
+
+  /* Semantic tokens — light */
+  --bg: var(--snow);
+  --surface: var(--clear-ice);
+  --surface-raised: #ffffff;
+  --text: var(--night-steppe);
+  --text-2: var(--ink-2);
+  --border: var(--rule);
+  --accent: var(--freeze-front); /* primary buttons, selected tab */
+  --accent-on: #ffffff; /* text on --accent */
+  --link: var(--freeze-front);
+  --line: var(--glacier); /* chart strokes, icons */
+  --ice: var(--clear-ice);
+  --ice-column: var(--glacier);
+  --front-line: var(--freeze-front);
+  --brine: rgb(217 138 43 / 0.3);
+  --salt: var(--night-steppe);
+  /* Amber as text: brand amber is 2.6:1 on Snow, so light mode uses a darker shade of it (5.7:1). */
+  --amber-text: #8f5510;
+  --focus: var(--freeze-front);
+
+  /* Shape and size */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --target: 44px;
+  --nav-rail: 15rem;
+  --tabbar-h: 4rem;
+
+  /* Type */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  color-scheme: light;
+}
+
+/* Semantic tokens — dark (cards #16283A on Night Steppe) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: var(--night-steppe);
+    --surface: var(--deep-card);
+    --surface-raised: #1c3247;
+    --text: var(--snow);
+    --text-2: #a9c0cd;
+    --border: #2b4458;
+    --link: var(--glacier);
+    --ice: #22405a;
+    --front-line: var(--glacier);
+    --brine: rgb(217 138 43 / 0.55);
+    --salt: var(--night-steppe);
+    --amber-text: var(--brine-amber);
+    --focus: var(--glacier);
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: var(--night-steppe);
+  --surface: var(--deep-card);
+  --surface-raised: #1c3247;
+  --text: var(--snow);
+  --text-2: #a9c0cd;
+  --border: #2b4458;
+  --link: var(--glacier);
+  --ice: #22405a;
+  --front-line: var(--glacier);
+  --brine: rgb(217 138 43 / 0.55);
+  --salt: var(--night-steppe);
+  --amber-text: var(--brine-amber);
+  --focus: var(--glacier);
+  color-scheme: dark;
+}

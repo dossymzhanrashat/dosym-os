@@ -1,0 +1,109 @@
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 50;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-on);
+}
+.skip-link:focus {
+  top: calc(env(safe-area-inset-top) + 0.5rem);
+}
+
+.app-main {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 1.25rem) max(1rem, env(safe-area-inset-right))
+    calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 1.5rem) max(1rem, env(safe-area-inset-left));
+  outline: none;
+}
+
+/* ---- Phones: bottom tab bar ---- */
+.app-nav {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.app-brand {
+  display: none;
+}
+.app-nav ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 0;
+  padding: 0 max(0.25rem, env(safe-area-inset-left));
+  list-style: none;
+}
+.app-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  min-height: var(--tabbar-h);
+  min-width: var(--target);
+  color: var(--text-2);
+  font: 500 0.6875rem/1.1 var(--font-sans);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.app-nav-link.active {
+  color: var(--link);
+}
+.app-nav-link.active svg {
+  stroke-width: 2.4;
+}
+
+/* ---- Laptops: side navigation ---- */
+@media (min-width: 56rem) {
+  .app-shell {
+    display: grid;
+    grid-template-columns: var(--nav-rail) 1fr;
+  }
+  .app-nav {
+    position: sticky;
+    top: 0;
+    inset: auto;
+    height: 100dvh;
+    border-top: 0;
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 0.75rem;
+    box-sizing: border-box;
+  }
+  .app-brand {
+    display: block;
+    margin: 0 0.75rem 1.5rem;
+    font-size: 1.75rem;
+  }
+  .app-nav ul {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding: 0;
+  }
+  .app-nav-link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    min-height: var(--target);
+    padding: 0 0.75rem;
+    border-radius: var(--radius-pill);
+    font-size: 1rem;
+  }
+  .app-nav-link:hover {
+    background: var(--surface);
+  }
+  .app-nav-link.active {
+    background: var(--accent);
+    color: var(--accent-on);
+  }
+  .app-main {
+    padding: 2.5rem 2rem 3rem;
+  }
+}

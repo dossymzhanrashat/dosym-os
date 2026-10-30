@@ -1,0 +1,340 @@
+/* Shared controls and FreezeFront component styles. Colours come only from tokens.css. */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Type helpers ---------- */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.num-key {
+  color: var(--amber-text);
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 1rem;
+}
+.card-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  margin: 0 0 0.5rem;
+}
+
+/* ---------- Pill buttons ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--target);
+  padding: 0 1.25rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--accent-on);
+  font: 500 1rem/1 var(--font-sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+.pill:active {
+  transform: scale(0.97);
+}
+.pill--ghost {
+  background: transparent;
+  color: var(--link);
+  border-color: var(--border);
+}
+.pill:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chip {
+  display: inline-flex;
+  flex: none;
+  white-space: nowrap;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  font: 500 0.75rem/1 var(--font-mono);
+  color: var(--text-2);
+}
+
+/* ---------- FreezeFrontBar ---------- */
+.ff-bar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--ice);
+}
+.ff-ice {
+  display: flex;
+  gap: 2px;
+  height: 0.5rem;
+  padding: 0 2px;
+}
+.ff-bar--band .ff-ice {
+  height: 1.25rem;
+}
+.ff-col {
+  flex: 1;
+  position: relative;
+}
+.ff-col-fill {
+  position: absolute;
+  inset: 0 0 auto 0; /* ice grows from the top down */
+  background: var(--ice-column);
+  transition: height 400ms ease;
+}
+.ff-front {
+  height: 3px;
+  background: var(--front-line);
+}
+.ff-brine {
+  position: relative;
+  height: 1.5rem;
+  background: var(--brine);
+}
+.ff-salt {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: var(--salt);
+  animation: ff-sink 1.6s ease-out both;
+  top: var(--depth);
+}
+.ff-salt-more {
+  position: absolute;
+  right: 0.375rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 500 0.6875rem/1 var(--font-mono);
+  color: var(--salt);
+}
+@keyframes ff-sink {
+  from {
+    top: 0;
+    opacity: 0;
+  }
+  to {
+    top: var(--depth);
+    opacity: 1;
+  }
+}
+
+/* ---------- FreezeFrontHeader ---------- */
+.ff-header {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+.ff-eyebrow {
+  margin: 0;
+  font: 500 0.8125rem/1.2 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.ff-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.5rem, 9vw, 4rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.75rem;
+}
+.ff-gloss {
+  font: 400 1rem/1 var(--font-sans);
+  text-transform: none;
+  color: var(--text-2);
+}
+.ff-header-body {
+  color: var(--text-2);
+}
+
+/* ---------- SaltDotsLoader ---------- */
+.ff-loader {
+  display: inline-grid;
+  width: 3rem;
+  grid-template-rows: 0.5rem 2px 1.25rem;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  vertical-align: middle;
+}
+.ff-loader-ice {
+  background: var(--ice-column);
+}
+.ff-loader-front {
+  background: var(--front-line);
+}
+.ff-loader-brine {
+  position: relative;
+  background: var(--brine);
+}
+.ff-loader-dot {
+  position: absolute;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--salt);
+  animation: ff-loader-sink 1.2s ease-in infinite;
+}
+.ff-loader-dot:nth-child(1) {
+  left: 20%;
+}
+.ff-loader-dot:nth-child(2) {
+  left: 47%;
+  animation-delay: 0.2s;
+}
+.ff-loader-dot:nth-child(3) {
+  left: 74%;
+  animation-delay: 0.4s;
+}
+@keyframes ff-loader-sink {
+  0% {
+    top: -5px;
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 5px);
+    opacity: 0.2;
+  }
+}
+
+/* ---------- IceWallGrid ---------- */
+.ff-wall {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: var(--surface);
+}
+.ff-wall ul {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+  gap: 4px;
+}
+.ff-wall-empty {
+  margin: 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  color: var(--text-2);
+}
+.ff-brick {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--target);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--ice);
+  color: var(--text);
+  font: 400 0.75rem/1.2 var(--font-mono);
+  text-align: center;
+  overflow-wrap: break-word;
+}
+button.ff-brick {
+  cursor: pointer;
+}
+.ff-brick--thawing {
+  position: relative;
+  background: var(--ice-column);
+  color: var(--night-steppe);
+}
+.ff-brick--thawing::after {
+  /* single drip: "thawing, review soon" */
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 4px;
+  height: 6px;
+  margin-left: -2px;
+  border-radius: 0 0 50% 50%;
+  background: var(--ice-column);
+  animation: ff-drip 2.4s ease-in infinite;
+}
+@keyframes ff-drip {
+  0%,
+  60% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+}
+.ff-wall-brine {
+  background: var(--brine);
+  min-height: 2.5rem;
+}
+.ff-brick--salt {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text);
+  justify-content: flex-start;
+  gap: 0.375rem;
+}
+.ff-brick--salt::before {
+  content: '';
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--salt);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .ff-brick--salt::before {
+    background: var(--snow);
+  }
+}
+:root[data-theme='dark'] .ff-brick--salt::before {
+  background: var(--snow);
+}

@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+@import './core/design/tokens.css';
+@import './core/design/components.css';
+
+/* Expose brand tokens to Tailwind utilities: bg-surface, text-ink-2, border-rule, font-display… */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-ink: var(--text);
+  --color-ink-2: var(--text-2);
+  --color-rule: var(--border);
+  --color-accent: var(--accent);
+  --color-link: var(--link);
+  --color-amber: var(--amber-text);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 100%; /* rem sizes follow browser zoom and text-size settings */
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--bg);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--link);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

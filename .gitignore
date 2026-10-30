@@ -1,0 +1,15 @@
+node_modules
+dist
+dev-dist
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage
+test-results
+playwright-report
+*.tsbuildinfo
+
+# Private planning doc: stays on this Mac only
+SPEC.md
