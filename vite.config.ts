@@ -35,6 +35,8 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         navigateFallback: `${BASE}index.html`,
+        // Web Push: show reminders and open the item when a notification is tapped.
+        importScripts: ['push-sw.js'],
         runtimeCaching: [
           {
             // Radar feed written daily by the Claude scheduled task: fresh when online, last copy offline.

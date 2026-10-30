@@ -7,6 +7,10 @@ import { EnglishPage } from '../features/english/EnglishPage';
 import { FrostPurePage } from '../features/frostpure/FrostPurePage';
 import { TagylymPage } from '../features/tagylym/TagylymPage';
 import { RadarPage } from '../features/radar/RadarPage';
+import { PlannerPage } from '../features/planner/PlannerPage';
+import { ItemPage } from '../features/planner/ItemPage';
+import { WeeklyReviewPage } from '../features/planner/WeeklyReviewPage';
+import { SettingsPage } from '../features/settings/SettingsPage';
 
 const router = createBrowserRouter(
   [
@@ -15,6 +19,10 @@ const router = createBrowserRouter(
       errorElement: <NotFound />,
       children: [
         { index: true, element: <TodayPage /> },
+        { path: 'planner', element: <PlannerPage /> },
+        { path: 'planner/item/:id', element: <ItemPage /> },
+        { path: 'planner/review', element: <WeeklyReviewPage /> },
+        { path: 'settings', element: <SettingsPage /> },
         { path: 'english', element: <EnglishPage /> },
         { path: 'frostpure', element: <FrostPurePage /> },
         { path: 'tagylym', element: <TagylymPage /> },

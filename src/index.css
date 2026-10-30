@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './core/design/tokens.css';
 @import './core/design/components.css';
+@import './core/design/forms.css';
 
 /* Expose brand tokens to Tailwind utilities: text-ink-2, border-rule, text-ice, font-display… */
 @theme inline {
