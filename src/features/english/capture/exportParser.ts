@@ -65,8 +65,19 @@ function conversation(c: unknown): ExportConversation | null {
   return { id, title: str(c.name) ?? str(c.title) ?? '', createdAt: date(c.created_at), updatedAt: date(c.updated_at) ?? date(c.created_at), messages };
 }
 
+/** The conversation objects inside one parsed file: an array, { conversations: [...] }, or one conversation. */
+export function conversationList(raw: unknown): unknown[] | null {
+  if (Array.isArray(raw)) return raw;
+  if (isObj(raw) && Array.isArray(raw.conversations)) return raw.conversations;
+  if (isObj(raw) && (Array.isArray(raw.chat_messages) || Array.isArray(raw.messages))) return [raw];
+  return null;
+}
+
+/** The 2026 export comes as a manifest JSON that only lists download links. */
+export const isExportManifest = (raw: unknown) => isObj(raw) && Array.isArray(raw.data_files);
+
 export function parseConversations(raw: unknown): ParseResult {
-  const list = Array.isArray(raw) ? raw : isObj(raw) && Array.isArray(raw.conversations) ? raw.conversations : null;
+  const list = conversationList(raw);
   if (list) {
     const conversations: ExportConversation[] = [];
     let skipped = 0;
@@ -103,4 +114,50 @@ export function isNewOrChanged(c: ExportConversation, processed: Record<string, 
   const before = processed[c.id];
   if (!before) return true;
   return !!c.updatedAt && c.updatedAt > before;
+}
+
+export type CollectResult =
+  | { ok: true; conversations: ExportConversation[]; skipped: number; files: number }
+  | { ok: false; reason: 'manifest' | 'notJson' | 'unknownFormat'; structure?: string };
+
+/**
+ * Gathers conversations from every file of an export: one conversations.json (the documented
+ * shape), or the 2026 split export (conversations-000.zip, -001.zip …) with any number of JSON or
+ * JSON Lines files inside. Files that are not conversations (projects, memories, metadata) are skipped.
+ */
+export function collectConversations(files: { name: string; text: string }[]): CollectResult {
+  const list: unknown[] = [];
+  let manifest = false;
+  let parsedAny = false;
+  let firstUnknown: unknown;
+  for (const f of files) {
+    const values: unknown[] = [];
+    try {
+      values.push(JSON.parse(f.text));
+    } catch {
+      // JSON Lines: one object per line.
+      for (const line of f.text.split('\n')) {
+        if (!line.trim()) continue;
+        try {
+          values.push(JSON.parse(line));
+        } catch {
+          /* not JSON */
+        }
+      }
+    }
+    if (values.length) parsedAny = true;
+    for (const v of values) {
+      if (isExportManifest(v)) manifest = true;
+      const convs = conversationList(v);
+      if (convs) list.push(...convs);
+      else if (firstUnknown === undefined) firstUnknown = v;
+    }
+  }
+  if (!list.length) {
+    if (manifest) return { ok: false, reason: 'manifest' };
+    if (!parsedAny) return { ok: false, reason: 'notJson' };
+    return { ok: false, reason: 'unknownFormat', structure: structureOf(firstUnknown) };
+  }
+  const parsed = parseConversations(list);
+  return parsed.ok ? { ...parsed, files: files.length } : { ok: false, reason: 'unknownFormat', structure: parsed.structure };
 }

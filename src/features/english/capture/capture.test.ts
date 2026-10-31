@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { parseConversations, structureOf } from './exportParser';
+import { collectConversations, parseConversations, structureOf } from './exportParser';
 import { buildIndex, isKnownForm, lemmatize, loadIndex } from './lemma';
 import { pickCandidates } from './picker';
 import { englishScore, englishSentences, findTarget, stripNoise } from './text';
-import { readFileFromZip } from './zip';
+import { readFileFromZip, readJsonEntries } from './zip';
 
 const index = await loadIndex();
 const known = (w: string) => isKnownForm(index, w);
@@ -205,3 +205,75 @@ describe('from pick to note', () => {
     expect(new Set(input.examples.map((e) => e.source.title)).size).toBeGreaterThan(1);
   });
 });
+
+describe('2026 split export (manifest + conversations-000.zip, -001 …)', () => {
+  const [a, b] = EXPORT;
+
+  it('explains when only the manifest was chosen', () => {
+    const manifest = { instructions: 'Download each file…', created_at: '2026-10-31T07:48:11Z', total_files: 6, data_files: [{ batch_index: 5, export_url: 'https://claude.ai/x', category: 'conversations', part: 0, filename: 'conversations-000.zip' }], version: '1.0' };
+    expect(collectConversations([{ name: 'manifest.json', text: JSON.stringify(manifest) }])).toEqual({ ok: false, reason: 'manifest' });
+  });
+
+  it('gathers chats from several parts, one chat per file, and JSON Lines', () => {
+    const r = collectConversations([
+      { name: 'conversations-000/a.json', text: JSON.stringify(a) },
+      { name: 'conversations-001/part.jsonl', text: `${JSON.stringify(b)}\n\n${JSON.stringify({ ...b, uuid: 'c9' })}\n` },
+      { name: 'conversations-001/all.json', text: JSON.stringify({ conversations: [{ ...a, uuid: 'c8' }] }) },
+    ]);
+    expect(r.ok && r.conversations.map((c) => c.id).sort()).toEqual(['c1', 'c2', 'c8', 'c9']);
+    expect(r.ok && r.files).toBe(3);
+  });
+
+  it('reports a new format as keys only', () => {
+    const r = collectConversations([{ name: 'x.json', text: JSON.stringify({ threads: [{ body: 'private words' }] }) }]);
+    expect(r).toMatchObject({ ok: false, reason: 'unknownFormat' });
+    expect(r.ok === false && r.structure).not.toContain('private');
+    expect(collectConversations([{ name: 'x.json', text: 'not json at all' }])).toEqual({ ok: false, reason: 'notJson' });
+  });
+
+  it('reads only the conversation JSON files out of a zip', async () => {
+    const zip = await makeZipMany([
+      ['conversations/conversations-000.json', JSON.stringify([a])],
+      ['memories.json', '{"memory":"x"}'],
+      ['__MACOSX/conversations/._conversations-000.json', 'junk'],
+    ]);
+    const entries = await readJsonEntries(zip, /conversation/i);
+    expect(entries.map((e) => e.name)).toEqual(['conversations/conversations-000.json']);
+    expect(collectConversations(entries).ok).toBe(true);
+  });
+});
+
+/** A stored (uncompressed) zip with several entries, for the reader tests. */
+async function makeZipMany(files: [string, string][]): Promise<Blob> {
+  const enc = new TextEncoder();
+  const parts: BlobPart[] = [];
+  const central: BlobPart[] = [];
+  let offset = 0;
+  let cdSize = 0;
+  for (const [name, text] of files) {
+    const n = enc.encode(name);
+    const d = enc.encode(text);
+    const loc = new DataView(new ArrayBuffer(30));
+    loc.setUint32(0, 0x04034b50, true);
+    loc.setUint32(18, d.length, true);
+    loc.setUint32(22, d.length, true);
+    loc.setUint16(26, n.length, true);
+    const cen = new DataView(new ArrayBuffer(46));
+    cen.setUint32(0, 0x02014b50, true);
+    cen.setUint32(20, d.length, true);
+    cen.setUint32(24, d.length, true);
+    cen.setUint16(28, n.length, true);
+    cen.setUint32(42, offset, true);
+    parts.push(loc, n, d);
+    central.push(cen, n);
+    offset += 30 + n.length + d.length;
+    cdSize += 46 + n.length;
+  }
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true);
+  end.setUint16(8, files.length, true);
+  end.setUint16(10, files.length, true);
+  end.setUint32(12, cdSize, true);
+  end.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, end]);
+}

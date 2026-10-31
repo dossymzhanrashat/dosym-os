@@ -68,6 +68,15 @@ export async function readZipEntry(blob: Blob, entry: ZipEntry): Promise<string>
   return new Response(stream).text();
 }
 
+/** Every JSON / JSON Lines entry, as [name, text]; `prefer` picks e.g. names with "conversation". */
+export async function readJsonEntries(blob: Blob, prefer?: RegExp): Promise<{ name: string; text: string }[]> {
+  const entries = (await listZip(blob)).filter((e) => /\.jsonl?$/i.test(e.name) && !e.name.endsWith('/') && !/(^|\/)__MACOSX\//.test(e.name));
+  const preferred = prefer ? entries.filter((e) => prefer.test(e.name)) : [];
+  const out: { name: string; text: string }[] = [];
+  for (const e of preferred.length ? preferred : entries) out.push({ name: e.name, text: await readZipEntry(blob, e) });
+  return out;
+}
+
 /** The text of the first entry whose name ends with `fileName` (any folder). */
 export async function readFileFromZip(blob: Blob, fileName: string): Promise<string> {
   const entries = await listZip(blob);

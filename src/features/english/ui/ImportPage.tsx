@@ -37,8 +37,8 @@ function ExportImport() {
 
   useEffect(() => () => worker.current?.terminate(), []);
 
-  const run = async (file?: File) => {
-    if (!file) return;
+  const run = async (files: File[]) => {
+    if (!files.length) return;
     worker.current?.terminate();
     setError('');
     setStructure('');
@@ -65,7 +65,7 @@ function ExportImport() {
       setStep('');
       setError(e.message || 'The import stopped unexpectedly.');
     };
-    w.postMessage({ file, options: { includeMine, processed: state.processed, knownLemmas: [...lemmas], rescanAll: rescan } } satisfies WorkerIn);
+    w.postMessage({ files, options: { includeMine, processed: state.processed, knownLemmas: [...lemmas], rescanAll: rescan } } satisfies WorkerIn);
   };
 
   const send = async () => {
@@ -111,7 +111,7 @@ function ExportImport() {
         Claude data export
       </h2>
       <p className="m-0">
-        Claude can email you a copy of your data: open claude.ai → <strong>Settings</strong> → <strong>Privacy</strong> → <strong>Export data</strong>. You get a link to a .zip. Open that .zip (or the conversations.json inside it) here.
+        Claude can send you a copy of your data: open claude.ai → <strong>Settings</strong> → <strong>Privacy</strong> → <strong>Export data</strong>. When it is ready, download the <strong>conversations</strong> file(s) — <em>conversations-000.zip</em>, and -001, -002 … if there are more — while signed in, within 24 hours. Choose them all here at once (an older single .zip or conversations.json works too).
       </p>
       <p className="m-0 text-sm">The file is read only in this browser. Nothing from it is uploaded: only the words you choose go to your inbox, with one example sentence each.</p>
       <label className="flex items-center gap-3">
@@ -124,15 +124,16 @@ function ExportImport() {
       </label>
       <div>
         <PillButton disabled={!!step} onClick={() => fileRef.current?.click()}>
-          Choose export (.zip or .json)
+          Choose export files
         </PillButton>
         <input
           ref={fileRef}
           type="file"
-          accept=".zip,.json,application/zip,application/json"
+          accept=".zip,.json,.jsonl,application/zip,application/json"
+          multiple
           hidden
           onChange={(e) => {
-            void run(e.target.files?.[0]);
+            void run([...(e.target.files ?? [])]);
             e.target.value = '';
           }}
         />
