@@ -37,8 +37,10 @@ describe('checkAnswer', () => {
     expect(r.problems[1]).toMatch(/^items\[1\]\.level: /);
   });
 
-  it('shows Claude’s own error message', () => {
-    expect(checkAnswer(job, '{"error":"chat search is off"}')).toEqual({ ok: false, problems: ['Claude says: “chat search is off”'] });
+  it('shows Claude’s own error message, with the job’s explanation', () => {
+    expect(checkAnswer(job, '{"error":"chat search is off"}')).toEqual({ ok: false, problems: ['Claude says: “chat search is off”'], claudeError: 'chat search is off' });
+    const r = checkAnswer({ ...job, explainError: (m) => (m.includes('search') ? 'Turn on “Search and reference chats”.' : undefined) }, '{"error":"chat search is off"}');
+    expect(r).toEqual({ ok: false, problems: ['Claude says: “chat search is off”', 'Turn on “Search and reference chats”.'], claudeError: 'chat search is off' });
   });
 
   it('runs the job’s extra checks after the schema', () => {

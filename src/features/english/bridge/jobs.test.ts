@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { checkAnswer } from '../../../core/bridge/bridge';
 import type { UseItAnswer } from '../model/types';
-import { enrichJob, gradeJob } from './jobs';
+import { enrichJob, explainChatSearchError, gradeJob } from './jobs';
 import { extractVocabSchema, mnemonicSchema } from './schemas';
 
 const answer = (id: string, sentence: string): UseItAnswer => ({
@@ -77,5 +77,16 @@ describe('extract-vocab and mnemonic schemas', () => {
     const ok = { mnemonic: 'A PIT you FALL into.', soundAlike: { lang: 'none', word: null }, imagePrompt: 'a pit under leaves' };
     expect(mnemonicSchema.safeParse(ok).success).toBe(true);
     expect(mnemonicSchema.safeParse({ ...ok, mnemonic: 'word '.repeat(41) }).success).toBe(false);
+  });
+});
+
+describe('chat search turned off', () => {
+  it('explains how to switch on chat search, and only for that error', () => {
+    const r = checkAnswer({ schema: extractVocabSchema, describe: () => '', explainError: explainChatSearchError }, '{"error": "chat search is off"}');
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.claudeError).toBe('chat search is off');
+    expect(r.problems[1]).toMatch(/Settings → Capabilities → “Search and reference chats”/);
+    expect(explainChatSearchError('something else went wrong')).toBeUndefined();
   });
 });

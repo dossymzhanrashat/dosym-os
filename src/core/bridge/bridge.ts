@@ -22,6 +22,8 @@ export interface BridgeJob<T> {
   describe: (data: T) => string;
   /** Saves a valid answer and returns a short confirmation. */
   save: (data: T) => Promise<string>;
+  /** Plain-words help for an {"error": "…"} answer, e.g. how to switch on chat search. */
+  explainError?: (message: string) => string | undefined;
 }
 
 /** Any job, for state that holds whichever job the user opened. */
@@ -78,14 +80,20 @@ export function describeIssues(error: z.ZodError, max = 8): string[] {
   return lines.length > max ? [...lines.slice(0, max), `…and ${lines.length - max} more`] : lines;
 }
 
-export type CheckResult<T> = { ok: true; data: T; summary: string } | { ok: false; problems: string[] };
+export type CheckResult<T> =
+  | { ok: true; data: T; summary: string }
+  /** `claudeError`: Claude answered {"error": "…"} — it could not do the job, so there is nothing to fix in the JSON. */
+  | { ok: false; problems: string[]; claudeError?: string };
 
 /** Parse + zod + the job's own checks. Pure, so it is unit-tested. */
-export function checkAnswer<T>(job: Pick<BridgeJob<T>, 'schema' | 'check' | 'describe'>, text: string): CheckResult<T> {
+export function checkAnswer<T>(job: Pick<BridgeJob<T>, 'schema' | 'check' | 'describe' | 'explainError'>, text: string): CheckResult<T> {
   const parsed = extractJson(text);
   if (!parsed.ok) return { ok: false, problems: [parsed.problem] };
   const v = parsed.value as Record<string, unknown> | null;
-  if (v && typeof v === 'object' && typeof v.error === 'string' && Object.keys(v).length === 1) return { ok: false, problems: [`Claude says: “${v.error}”`] };
+  if (v && typeof v === 'object' && typeof v.error === 'string' && Object.keys(v).length === 1) {
+    const help = job.explainError?.(v.error);
+    return { ok: false, problems: [`Claude says: “${v.error}”`, ...(help ? [help] : [])], claudeError: v.error };
+  }
   const result = job.schema.safeParse(parsed.value);
   if (!result.success) return { ok: false, problems: describeIssues(result.error) };
   const extra = job.check?.(result.data) ?? [];

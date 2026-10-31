@@ -135,7 +135,20 @@ export function BridgeSheet<T>({ job, onClose, onSaved }: { job: BridgeJob<T> | 
           </li>
         </ol>
 
-        {result && !result.ok && (
+        {result && !result.ok && result.claudeError !== undefined && (
+          <div className="notice notice--warm grid gap-2" role="alert">
+            <p className="m-0">
+              <strong>Claude could not do this job.</strong> Nothing was saved.
+            </p>
+            {result.problems.map((p) => (
+              <p key={p} className="m-0">
+                {p}
+              </p>
+            ))}
+          </div>
+        )}
+
+        {result && !result.ok && result.claudeError === undefined && (
           <div className="notice notice--danger grid gap-2" role="alert">
             <p className="m-0">
               <strong>Nothing was saved.</strong> The answer does not match what this job needs:

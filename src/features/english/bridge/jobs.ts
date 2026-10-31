@@ -82,6 +82,12 @@ async function saveExtract(items: { item: ExtractItem; source: SourceRef }[], ki
 
 // ---------- extract-vocab: Claude searches my past chats ----------
 
+/** Claude answered {"error": "chat search is off"}: say how to switch it on. */
+export function explainChatSearchError(message: string): string | undefined {
+  if (!/search/i.test(message)) return undefined;
+  return 'Chat search is switched off in your Claude account, so Claude cannot read your past chats. Turn it on: claude.ai → Settings → Capabilities → “Search and reference chats” (the name may differ slightly). Then go back to step 01, start a NEW chat with Open Claude and send the prompt again.';
+}
+
 export async function chatSearchJob(opts: { maxItems: number; since?: string }): Promise<BridgeJob<ExtractVocab>> {
   const since = opts.since ? ` from ${new Date(opts.since).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })} onwards` : '';
   const prompt = [
@@ -102,6 +108,7 @@ export async function chatSearchJob(opts: { maxItems: number; since?: string }):
     prompt,
     schema: extractVocabSchema,
     describe: describeExtract,
+    explainError: explainChatSearchError,
     save: (d) =>
       saveExtract(
         d.items.map((item) => ({ item, source: { kind: 'claudeExport', title: item.sourceTitle ?? 'Claude chat', date: date(item.sourceDate) } })),
