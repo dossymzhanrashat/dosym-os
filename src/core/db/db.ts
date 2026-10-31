@@ -63,6 +63,15 @@ db.version(5).stores({
   radarChanges: 'id, oppId, state',
 });
 
+// Phase 5 (FrostPure): media, BOM, build steps, runs, competitions; typed accessors in features/frostpure/data/db.ts.
+db.version(6).stores({
+  fpAssets: 'id, kind',
+  fpBom: 'id, status',
+  fpSteps: 'id, order',
+  fpRuns: 'id, status',
+  fpComps: 'id',
+});
+
 /** Records the first time this device opened the app and returns it. */
 export async function firstOpenedAt(): Promise<string> {
   const row = await db.meta.get('firstOpenedAt');

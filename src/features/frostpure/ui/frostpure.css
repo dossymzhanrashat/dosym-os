@@ -1,0 +1,58 @@
+/* Module 2 — FrostPure. Deep Blue tokens only (brand/DESIGN.md). */
+
+.fp-nav {
+  margin-bottom: var(--space-4);
+}
+.fp-nav .seg-btn {
+  text-decoration: none;
+}
+.fp-nav .seg-btn.active {
+  background: var(--chip);
+  border-color: var(--ice);
+  color: var(--text);
+}
+.fp-warm {
+  color: var(--warm);
+}
+.fp-big {
+  margin: 0;
+  font: 800 2.75rem/1 var(--font-display);
+  font-stretch: 125%;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.fp-big.fp-warm {
+  color: var(--warm);
+}
+.fp-big-unit {
+  display: block;
+  font: 600 0.75rem/1.2 var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.fp-week {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.fp-week li {
+  display: grid;
+  gap: var(--space-1);
+}
+.fp-tag {
+  font: 700 0.6875rem/1 var(--font-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--card-border);
+}
+.fp-tag--measured {
+  color: var(--good);
+}
+.fp-tag--target {
+  color: var(--text-3);
+  border-style: dashed;
+}

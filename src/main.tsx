@@ -8,6 +8,7 @@ import { startSync } from './core/db/sync';
 import './core/planner/reminderSync';
 import './features/english/register';
 import './features/radar/register';
+import './features/frostpure/register';
 
 applySavedTheme();
 startSync();
