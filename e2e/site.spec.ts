@@ -14,6 +14,19 @@ test('the 3D unit renders, with labels, timeline and toggles', async ({ page }) 
   await expect(canvas).toBeVisible({ timeout: 20_000 });
   await expect(page.getByText('illustration', { exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: /V2 drain valve/ })).toBeVisible();
+  // Dragging to turn the model never opens a part (it used to open whatever the finger started on).
+  const box = (await canvas.boundingBox())!;
+  for (const [x0, y0, x1, y1] of [
+    [0.5, 0.5, 0.2, 0.55],
+    [0.3, 0.7, 0.8, 0.4],
+    [0.6, 0.3, 0.6, 0.8],
+  ]) {
+    await page.mouse.move(box.x + box.width * x0, box.y + box.height * y0);
+    await page.mouse.down();
+    await page.mouse.move(box.x + box.width * x1, box.y + box.height * y1, { steps: 8 });
+    await page.mouse.up();
+  }
+  await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('button', { name: 'Play' }).click();
   await page.getByRole('button', { name: 'X-ray' }).click();
   await page.getByRole('button', { name: 'Cross-section' }).click();

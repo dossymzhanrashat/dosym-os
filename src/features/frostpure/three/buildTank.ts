@@ -90,6 +90,22 @@ export function hatchTexture() {
   });
 }
 
+/** Not tappable: big see-through surfaces (tank wall, jacket, water layers, ground) would catch every touch. */
+const noPick = (o: THREE.Object3D) => {
+  o.raycast = () => {};
+  return o;
+};
+
+/** An invisible, slightly larger touch area for a thin part (a finger is ~1 cm wide). */
+function hitProxy(tag: string, radius: number, length: number, at: THREE.Vector3, axis: 'x' | 'y' = 'y') {
+  const geo = new THREE.CylinderGeometry(radius, radius, length, 8);
+  if (axis === 'x') geo.rotateZ(Math.PI / 2);
+  const m = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ visible: false }));
+  m.position.copy(at);
+  m.userData = { tag, proxy: true };
+  return m;
+}
+
 const tagged = <T extends THREE.Object3D>(o: T, tag: string): T => {
   o.userData.tag = tag;
   o.traverse((c) => (c.userData.tag = tag));
@@ -119,22 +135,22 @@ export function buildTank(): Tank {
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -0.2;
   ground.name = 'ground';
-  group.add(ground);
+  group.add(noPick(ground));
   const snow = new THREE.Mesh(new THREE.CircleGeometry(1.6, 48), std(COLORS.snow, { roughness: 1, transparent: true, opacity: 0.18 }));
   snow.rotation.x = -Math.PI / 2;
   snow.position.y = -0.195;
   snow.name = 'ground';
-  group.add(snow);
+  group.add(noPick(snow));
 
   // Tank wall: transparent, thin, double-sided.
   const wallMat = std(COLORS.wall, { transparent: true, opacity: 0.25, roughness: 0.15, side: THREE.DoubleSide, depthWrite: false }, true);
   const wall = new THREE.Mesh(new THREE.CylinderGeometry(R, R, H, SEG, 1, true), wallMat);
   wall.position.y = H / 2;
-  add('1', wall);
+  add('1', noPick(wall));
   const bottom = new THREE.Mesh(new THREE.CircleGeometry(R, SEG), wallMat);
   bottom.rotation.x = -Math.PI / 2;
   bottom.position.y = 0.002;
-  add('1', bottom);
+  add('1', noPick(bottom));
 
   // Insulation jacket (sides and bottom; top open with mesh).
   const hatch = hatchTexture();
@@ -142,15 +158,15 @@ export function buildTank(): Tank {
   const jacketMat = std(COLORS.jacket, { map: hatch ?? undefined, transparent: true, opacity: 0.85, side: THREE.DoubleSide, roughness: 0.9 }, true);
   const jacket = new THREE.Mesh(new THREE.CylinderGeometry(R + 0.06, R + 0.06, H * 0.95, SEG, 1, true), jacketMat);
   jacket.position.y = (H * 0.95) / 2 - 0.05;
-  add('2', jacket);
+  add('2', noPick(jacket));
   const jacketBase = new THREE.Mesh(new THREE.CylinderGeometry(R + 0.06, R + 0.06, 0.06, SEG), jacketMat);
   jacketBase.position.y = -0.05;
-  add('2', jacketBase);
+  add('2', noPick(jacketBase));
 
   // Inside: ice (top), freeze front (wavy glowing ring), brine (bottom).
   const iceMat = std(COLORS.ice, { transparent: true, opacity: 0.9, roughness: 0.2, emissive: COLORS.iceEdge, emissiveIntensity: 0.08 }, true);
   const ice = new THREE.Mesh(new THREE.CylinderGeometry(R - 0.02, R - 0.02, 1, SEG), iceMat);
-  group.add(ice);
+  group.add(noPick(ice));
 
   const frontGeo = new THREE.CylinderGeometry(R - 0.015, R - 0.015, 0.03, 64, 1, true);
   const pos = frontGeo.attributes.position as THREE.BufferAttribute;
@@ -160,7 +176,7 @@ export function buildTank(): Tank {
   }
   const frontMat = std(COLORS.front, { emissive: COLORS.front, emissiveIntensity: 1.2, side: THREE.DoubleSide }, true);
   const front = new THREE.Mesh(frontGeo, frontMat);
-  group.add(front);
+  group.add(noPick(front));
 
   const brineGeo = new THREE.CylinderGeometry(R - 0.02, R - 0.02, 1, SEG, 4);
   const colors: number[] = [];
@@ -174,7 +190,7 @@ export function buildTank(): Tank {
   brineGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
   const brineMat = std('#ffffff', { vertexColors: true, transparent: true, opacity: 0.7, roughness: 0.3 }, true);
   const brine = new THREE.Mesh(brineGeo, brineMat);
-  group.add(brine);
+  group.add(noPick(brine));
 
   // Salt dots sinking from the front into the brine (one instanced mesh).
   const SALT = 140;
@@ -184,7 +200,7 @@ export function buildTank(): Tank {
     const a = (i * 2.399963) % (Math.PI * 2);
     return { x: Math.cos(a) * r, z: Math.sin(a) * r, phase: ((i * 104729) % 1000) / 1000 };
   });
-  group.add(salt);
+  group.add(noPick(salt));
   const dummy = new THREE.Object3D();
 
   // Temperature string with 5 beads.
@@ -197,6 +213,7 @@ export function buildTank(): Tank {
     bead.position.set(0.18, H * 0.85 - 0.06 - i * 0.12, 0);
     stringGroup.add(bead);
   }
+  stringGroup.add(hitProxy('3', 0.05, 1.0, new THREE.Vector3(0.18, H - 0.35, 0)));
   add('3', stringGroup);
 
   // EC1 probe near the bottom.
@@ -207,6 +224,7 @@ export function buildTank(): Tank {
   const probeTip = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.08, 12), std(COLORS.metal, { metalness: 0.6 }));
   probeTip.position.set(-0.25, 0.18, 0.15);
   probe.add(probeTip);
+  probe.add(hitProxy('4', 0.06, 0.95, new THREE.Vector3(-0.25, 0.62, 0.15)));
   add('4', probe);
 
   // Level sensor above the water.
@@ -225,6 +243,7 @@ export function buildTank(): Tank {
   pipe.rotation.z = Math.PI / 2;
   pipe.position.set(R + 0.3, 0.06, 0);
   add('6', pipe);
+  group.add(tagged(hitProxy('6', 0.07, 0.55, new THREE.Vector3(R + 0.3, 0.06, 0), 'x'), '6'));
   const v2 = new THREE.Group();
   v2.position.set(R + 0.25, 0.06, 0);
   const v2Body = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 12), std(COLORS.warm, { metalness: 0.5, roughness: 0.3 }));
@@ -285,10 +304,11 @@ export function buildTank(): Tank {
   for (const [tag, objs] of parts) {
     for (const o of objs) {
       o.traverse((m) => {
-        if (!(m instanceof THREE.Mesh) || tag === '1' || tag === '2') return;
+        if (!(m instanceof THREE.Mesh) || tag === '1' || tag === '2' || m.userData.proxy) return;
         const line = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, 30), dashed);
         line.computeLineDistances();
         line.visible = false;
+        noPick(line); // lines catch touches up to a metre away, even hidden: never let them
         line.userData = { tag, outline: true };
         m.add(line);
         outlines.push(line);
@@ -339,7 +359,7 @@ export function buildTank(): Tank {
     if (tag === '1' || tag === '2') continue;
     for (const o of objs)
       o.traverse((m) => {
-        if (!(m instanceof THREE.Mesh)) return;
+        if (!(m instanceof THREE.Mesh) || m.userData.proxy) return;
         const mat = m.material as THREE.MeshStandardMaterial;
         if (partMats.some((x) => x.mat === mat && x.tag === tag)) return;
         partMats.push({ tag, mat, transparent: mat.transparent, opacity: mat.opacity, emissive: mat.emissive.getHex(), intensity: mat.emissiveIntensity });

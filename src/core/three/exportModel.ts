@@ -15,7 +15,7 @@ function arCopy(root: THREE.Object3D, metres: number): THREE.Group {
   const size = box.getSize(new THREE.Vector3());
   const scale = metres / Math.max(size.x, size.y, size.z, 1e-6);
   root.traverse((o) => {
-    if (!(o instanceof THREE.Mesh) || o instanceof THREE.InstancedMesh || !o.visible || o.name === 'ground') return;
+    if (!(o instanceof THREE.Mesh) || o instanceof THREE.InstancedMesh || !o.visible || o.name === 'ground' || (o.material as THREE.Material).visible === false) return;
     let visible = true;
     o.traverseAncestors((a) => (visible &&= a.visible));
     if (!visible) return;

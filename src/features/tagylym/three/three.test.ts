@@ -74,3 +74,29 @@ describe('3D budgets (built in code, no model files)', () => {
     b.dispose();
   });
 });
+
+describe('tapping the 3D unit', async () => {
+  const THREE = await import('three');
+  const tank = buildTank();
+  tank.update(demoState(0.5), 0);
+  tank.group.updateMatrixWorld(true);
+  const ray = new THREE.Raycaster();
+  const firstTag = (from: [number, number, number], to: [number, number, number]) => {
+    const o = new THREE.Vector3(...from);
+    ray.set(o, new THREE.Vector3(...to).sub(o).normalize());
+    return ray.intersectObject(tank.group, true).find((h) => h.object.userData.tag)?.object.userData.tag as string | undefined;
+  };
+  const eye: [number, number, number] = [3.6, 2.5, 4.3]; // the page's camera
+
+  it('the big see-through tank wall, jacket and water layers never catch a touch', () => {
+    // straight through the middle of the tank, past the inner parts: nothing is picked
+    expect(firstTag(eye, [0, 0.9, -0.2])).not.toMatch(/^[12]$/);
+    expect(firstTag([0, 3, 0], [0, 0, 0.3])).toBeUndefined(); // from above, into the open water
+  });
+
+  it('aiming at a part picks that part, thin ones included', () => {
+    expect(firstTag(eye, [0.75, 0.06, 0])).toBe('6'); // V2 valve / pipe
+    expect(firstTag(eye, [-0.95, 0.72, 0])).toBe('10'); // controller box
+    expect(firstTag([0.18, 0.9, 3], [0.18, 0.9, 0])).toBe('3'); // 1.6 cm rod, easy to hit now
+  });
+});

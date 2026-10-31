@@ -22,6 +22,8 @@ import { FrostNav, money } from './common';
  */
 
 const DEMO_SECONDS = 20;
+/** Movement (px) still counted as a tap rather than a drag. */
+const TAP_SLOP = 6;
 const TIME = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Almaty' });
 
 function TankModel({ tank, state, onPick }: { tank: Tank; state: TankState; onPick: (tag: string) => void }) {
@@ -33,12 +35,12 @@ function TankModel({ tank, state, onPick }: { tank: Tank; state: TankState; onPi
   return (
     <primitive
       object={tank.group}
-      onPointerDown={(e: ThreeEvent<PointerEvent>) => {
+      // A tap opens a part; a drag (to turn the model) never does. `delta` = pixels moved since touch-down.
+      onClick={(e: ThreeEvent<MouseEvent>) => {
         const tag = e.object.userData.tag as string | undefined;
-        if (tag) {
-          e.stopPropagation();
-          onPick(tag);
-        }
+        if (!tag || e.delta > TAP_SLOP) return;
+        e.stopPropagation();
+        onPick(tag);
       }}
     />
   );
@@ -119,7 +121,7 @@ export function ModelPage() {
 
       <div className="grid gap-3">
         <div className="fp-3d" onDoubleClick={() => controls.current?.reset()}>
-          <Canvas dpr={dpr} camera={{ position: [3.6, 2.5, 4.3], fov: 45 }} gl={{ localClippingEnabled: true, antialias: true }} onPointerMissed={() => setPicked(null)}>
+          <Canvas dpr={dpr} camera={{ position: [3.6, 2.5, 4.3], fov: 45 }} gl={{ localClippingEnabled: true, antialias: true }} onPointerMissed={(e) => (e as MouseEvent).type === 'click' && setPicked(null)}>
             <PerformanceMonitor onDecline={() => setDpr(1)} onIncline={() => setDpr(Math.min(2, window.devicePixelRatio))} />
             <color attach="background" args={['#050a16']} />
             <hemisphereLight args={['#bcd4ff', '#050a16', 0.9]} />
