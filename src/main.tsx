@@ -9,6 +9,7 @@ import './core/planner/reminderSync';
 import './features/english/register';
 import './features/radar/register';
 import './features/frostpure/register';
+import './features/tagylym/register';
 
 applySavedTheme();
 startSync();

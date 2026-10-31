@@ -72,6 +72,13 @@ db.version(6).stores({
   fpComps: 'id',
 });
 
+// Phase 6 (Tagylym Kit Studio): options, decisions, projects; typed accessors in features/tagylym/data/db.ts.
+db.version(7).stores({
+  tgOptions: 'id, status',
+  tgDecisions: 'id',
+  tgProjects: 'id, optionId',
+});
+
 /** Records the first time this device opened the app and returns it. */
 export async function firstOpenedAt(): Promise<string> {
   const row = await db.meta.get('firstOpenedAt');

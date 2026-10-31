@@ -1,0 +1,255 @@
+/* Module 3 — Tagylym Kit Studio. Deep Blue tokens only (brand/DESIGN.md). */
+
+.tg-nav {
+  margin-bottom: var(--space-4);
+}
+.tg-nav .seg-btn {
+  text-decoration: none;
+}
+.tg-nav .seg-btn.active {
+  border-color: var(--ice);
+  color: var(--text);
+}
+.tg-warm {
+  color: var(--warm);
+  font-weight: 700;
+}
+.tg-done {
+  text-decoration: line-through;
+  color: var(--text-3);
+}
+.tg-approx {
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+.tg-inline-chip {
+  margin: 0 0.2rem;
+  font-size: 0.75rem;
+}
+.tg-narrow {
+  width: 9rem;
+}
+.tg-ai {
+  font-style: italic;
+}
+.tg-big {
+  margin: var(--space-1) 0;
+  font: 800 1.75rem/1.1 var(--font-display);
+  font-stretch: 115%;
+  color: var(--text);
+}
+.tg-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: var(--space-1);
+}
+.tg-check {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+}
+
+/* ---------- Options ---------- */
+.tg-options {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 40rem) {
+  .tg-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.tg-option-card {
+  display: grid;
+  gap: var(--space-2);
+  height: 100%;
+  box-sizing: border-box;
+  padding: var(--space-3) var(--space-4);
+  color: inherit;
+  text-decoration: none;
+}
+.tg-score-line {
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+.tg-score-line .tnum {
+  font: 800 1.25rem var(--font-display);
+  color: var(--text);
+}
+.tg-scores {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+}
+
+/* ---------- Tables ---------- */
+.tg-table-wrap {
+  overflow-x: auto;
+}
+.tg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.tg-table th,
+.tg-table td {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--card-border-soft);
+  text-align: left;
+  vertical-align: middle;
+}
+.tg-table th {
+  color: var(--text-3);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tg-nowrap {
+  white-space: nowrap;
+}
+.tg-cell {
+  width: 5.5rem;
+  min-height: 2.5rem;
+  padding: 0.2rem 0.5rem;
+}
+.tg-cell-wide {
+  min-width: 12rem;
+  min-height: 2.5rem;
+  padding: 0.2rem 0.5rem;
+}
+
+/* ---------- Decide ---------- */
+.tg-sliders {
+  display: grid;
+  gap: var(--space-2);
+}
+.tg-slider {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) 1fr 2rem;
+  align-items: center;
+  gap: var(--space-3);
+}
+.tg-slider input[type='range'] {
+  width: 100%;
+  min-height: 2.75rem;
+  accent-color: var(--ice);
+}
+.tg-slider-v {
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+}
+.tg-ranking {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tg-rank-card {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  transition: transform 200ms ease;
+}
+.tg-rank-score {
+  font: 800 2.5rem/1 var(--font-display);
+  font-stretch: 125%;
+  color: var(--text);
+}
+.tg-rank-name {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+}
+.tg-stack {
+  display: flex;
+  height: 0.7rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--chip);
+}
+.tg-stack span {
+  height: 100%;
+}
+.tg-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 0.75rem;
+  color: var(--text-3);
+}
+.tg-legend i {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+.tg-radar {
+  width: 100%;
+  height: 20rem;
+}
+.tg-chart {
+  width: 100%;
+  height: 14rem;
+}
+
+/* ---------- Pipeline ---------- */
+.tg-board {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(16rem, 18rem);
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-bottom: var(--space-3);
+  scroll-snap-type: x proximity;
+}
+.tg-col {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  scroll-snap-align: start;
+}
+.tg-col--active {
+  border-color: var(--ice);
+}
+.tg-col--done {
+  border-color: color-mix(in srgb, var(--good) 55%, transparent);
+  opacity: 0.85;
+}
+.tg-col--focus {
+  box-shadow: 0 0 0 2px var(--focus);
+}
+.tg-col-head {
+  margin: 0;
+  font: 700 0.9375rem/1.3 var(--font-display);
+  color: var(--text);
+}
+
+/* ---------- Economics ---------- */
+.tg-econ-inputs {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
+.tg-stats {
+  display: grid;
+  gap: var(--space-3);
+}
+@media (min-width: 40rem) {
+  .tg-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
