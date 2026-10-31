@@ -7,8 +7,8 @@ import { TYPE_LABEL } from './CardFace';
 import './english.css';
 
 /*
- * Manual add (SPEC § 6.3). Without the Claude Bridge (Phase 3) the user fills the fields; a word
- * saved without a definition is marked "Needs details" so the Bridge can enrich it later.
+ * Manual add (SPEC § 6.3). The user fills the fields; a word saved without a definition is marked
+ * "Needs details" and Claude fills it later through the Bridge (enrich-word batch).
  */
 
 const POS = ['n', 'v', 'adj', 'adv', 'phrase'];
@@ -95,7 +95,7 @@ export function AddWordPage() {
             <input type="checkbox" className="check" checked={f.spelling} onChange={(e) => set({ spelling: e.target.checked })} />
             <span>Spelling word only (dictation card)</span>
           </label>
-          <p className="m-0 text-sm">No definition yet? Save it anyway — it is marked “Needs details”, and Claude can fill it in through the Bridge (Phase 3).</p>
+          <p className="m-0 text-sm">No definition yet? Save it anyway — it is marked “Needs details”, and fill it in with Claude from the word’s page or the Words list.</p>
           <div className="flex flex-wrap gap-2">
             <PillButton type="submit" disabled={busy || !f.headword.trim()}>
               Add word

@@ -51,6 +51,12 @@ db.version(3).stores({
   reviewLogs: 'id, cardId, noteId, reviewedAt',
 });
 
+// Phase 3 (Claude Bridge and capture): the triage inbox and Use-it sentences.
+db.version(4).stores({
+  vocabCandidates: 'id, key, decision',
+  useItAnswers: 'id, cardId, noteId',
+});
+
 /** Records the first time this device opened the app and returns it. */
 export async function firstOpenedAt(): Promise<string> {
   const row = await db.meta.get('firstOpenedAt');

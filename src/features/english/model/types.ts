@@ -138,3 +138,70 @@ export const DEFAULT_ENGLISH_SETTINGS: EnglishSettings = {
   morningReview: '07:15', // confirmed
   schoolQuiet: { start: '08:00', end: '15:00' }, // confirmed
 };
+
+// ---------- Capture (Phase 3): triage inbox and Use-it sentences ----------
+
+/** What an import found: an extract-vocab item (SPEC § 12.1), or a bare word picked in the browser. */
+export interface CandidateItem {
+  headword: string;
+  lemma?: string;
+  kind: 'word' | 'collocation' | 'phrase';
+  pos?: string;
+  cefr?: string;
+  ieltsTopic?: string;
+  definition?: string; // empty until Claude fills the details
+  glossKK?: string;
+  glossRU?: string;
+  ipa?: string;
+  exampleText?: string;
+  exampleTarget?: string; // the exact words inside exampleText
+  exampleGenerated?: boolean; // topic packs: Claude wrote the sentence
+  moreExamples?: { text: string; target?: string; title?: string; conversationId?: string; date?: string }[]; // other sentences (export picks)
+  family: string[];
+  collocations: string[];
+  synonymLadder: LadderRung[];
+  usefulness?: number; // 0–1
+}
+
+export type CandidateDecision = 'keep' | 'skip' | 'known' | 'later';
+
+/** One card in the triage inbox (SPEC § 3.3). Skipped rows stay, so the key is never suggested again. */
+export interface Candidate {
+  id: string; // uuid
+  key: string; // the note key it would get (6.5)
+  item: CandidateItem;
+  source: SourceRef;
+  decision?: CandidateDecision;
+  decidedAt?: string;
+  importId?: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+}
+
+/** Claude's feedback on one Use-it sentence (SPEC § 12.3). */
+export interface SentenceFeedback {
+  usedCorrectly: boolean;
+  naturalness: number; // 0–3
+  corrected: string;
+  errors: { span: string; type: string; explanation: string }[];
+  suggestedGrade: Grade;
+  tip?: string;
+}
+
+/** A sentence written on a Use-it card, waiting for the weekly feedback batch. */
+export interface UseItAnswer {
+  id: string; // uuid
+  cardId: string;
+  noteId: string;
+  target: string;
+  definition: string;
+  prompt: string; // "about technology"
+  sentence: string;
+  selfGrade?: Grade;
+  writtenAt: string;
+  feedback?: SentenceFeedback;
+  feedbackAt?: string;
+  updatedAt: string;
+  deletedAt?: string;
+}

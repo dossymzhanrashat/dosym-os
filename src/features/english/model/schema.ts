@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { ReviewLog, VocabCard, VocabNote } from './types';
+import type { Candidate, CandidateItem, ReviewLog, SentenceFeedback, UseItAnswer, VocabCard, VocabNote } from './types';
 
 // zod checks for English rows (used by sync on every row pulled from Supabase) and the seed kit file.
 
@@ -104,3 +104,66 @@ export const seedKitSchema = z.object({
   ),
   linkingDevices: z.array(z.object({ job: z.string(), basic: z.array(z.string()), highLevel: z.array(z.string()) })),
 });
+
+const rung = z.object({ band: z.number(), word: z.string(), note: z.string().optional() });
+
+export const candidateItemSchema = z.object({
+  headword: z.string(),
+  lemma: z.string().optional(),
+  kind: z.enum(['word', 'collocation', 'phrase']),
+  pos: z.string().optional(),
+  cefr: z.string().optional(),
+  ieltsTopic: z.string().optional(),
+  definition: z.string().optional(),
+  glossKK: z.string().optional(),
+  glossRU: z.string().optional(),
+  ipa: z.string().optional(),
+  exampleText: z.string().optional(),
+  exampleTarget: z.string().optional(),
+  exampleGenerated: z.boolean().optional(),
+  moreExamples: z
+    .array(z.object({ text: z.string(), target: z.string().optional(), title: z.string().optional(), conversationId: z.string().optional(), date: z.string().optional() }))
+    .optional(),
+  family: z.array(z.string()),
+  collocations: z.array(z.string()),
+  synonymLadder: z.array(rung),
+  usefulness: z.number().optional(),
+}) satisfies z.ZodType<CandidateItem>;
+
+export const candidateSchema = z.object({
+  id: z.string(),
+  key: z.string(),
+  item: candidateItemSchema,
+  source,
+  decision: z.enum(['keep', 'skip', 'known', 'later']).optional(),
+  decidedAt: iso.optional(),
+  importId: z.string().optional(),
+  createdAt: iso,
+  updatedAt: iso,
+  deletedAt: iso.optional(),
+}) satisfies z.ZodType<Candidate>;
+
+export const sentenceFeedbackSchema = z.object({
+  usedCorrectly: z.boolean(),
+  naturalness: z.number().int().min(0).max(3),
+  corrected: z.string(),
+  errors: z.array(z.object({ span: z.string(), type: z.string(), explanation: z.string() })),
+  suggestedGrade: grade,
+  tip: z.string().optional(),
+}) satisfies z.ZodType<SentenceFeedback>;
+
+export const useItSchema = z.object({
+  id: z.string(),
+  cardId: z.string(),
+  noteId: z.string(),
+  target: z.string(),
+  definition: z.string(),
+  prompt: z.string(),
+  sentence: z.string(),
+  selfGrade: grade.optional(),
+  writtenAt: iso,
+  feedback: sentenceFeedbackSchema.optional(),
+  feedbackAt: iso.optional(),
+  updatedAt: iso,
+  deletedAt: iso.optional(),
+}) satisfies z.ZodType<UseItAnswer>;

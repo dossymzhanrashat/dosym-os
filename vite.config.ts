@@ -26,6 +26,12 @@ export default defineConfig({
         orientation: 'any',
         background_color: '#050a16',
         theme_color: '#050a16',
+        // Android / Chrome: "Dosym OS" in the share menu opens /inbox/add?text=… (WEB EDITION).
+        share_target: {
+          action: `${BASE}inbox/add`,
+          method: 'GET',
+          params: { title: 'title', text: 'text', url: 'url' },
+        },
         icons: [
           { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },

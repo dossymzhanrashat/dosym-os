@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Chip, PillButton } from '../../../core/design/components';
 import { collocationTip } from '../data/store';
+import { saveUseItAnswer, useItPrompt } from '../data/useIt';
+import { studyDay } from '../srs/studyDay';
 import type { Grade, VocabCard, VocabNote } from '../model/types';
 import { seededUnit } from '../srs/scheduler';
 import { gradeTyped, letterDiff, splitTarget } from './answer';
@@ -327,7 +329,50 @@ export function CardFace({ card, note, flipped, onReveal, voiceURI }: Props) {
       );
     }
 
+    case 'useIt':
+      return <UseItFace card={card} note={note} flipped={flipped} onReveal={onReveal} voiceURI={voiceURI} />;
+
     default:
       return <Meaning note={note} voiceURI={voiceURI} />;
   }
+}
+
+/** Use it (SPEC § 7): write one sentence; it is saved for the weekly Claude feedback batch. */
+function UseItFace({ card, note, flipped, onReveal, voiceURI }: Props) {
+  const prompt = useMemo(() => useItPrompt(note, card.id, studyDay(new Date())), [note, card.id]);
+  const [sentence, setSentence] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  if (flipped)
+    return (
+      <>
+        {saved ? <p className="rv-sub">You wrote: {sentence}</p> : <p className="rv-sub">No sentence this time.</p>}
+        <Meaning note={note} voiceURI={voiceURI} />
+        {saved && <p className="rv-hint">Saved for this week’s feedback from Claude. For now, grade yourself against the example.</p>}
+      </>
+    );
+
+  return (
+    <>
+      <p className="rv-hint">Write one sentence using</p>
+      <p className="rv-head">{note.headword}</p>
+      <p className="rv-sub">{prompt}</p>
+      <form
+        className="grid gap-2"
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (!sentence.trim()) return onReveal();
+          await saveUseItAnswer(card, note, prompt, sentence);
+          setSaved(true);
+          onReveal();
+        }}
+      >
+        <textarea className="input" rows={3} value={sentence} onChange={(e) => setSentence(e.target.value)} aria-label={`Your sentence with ${note.headword}`} placeholder="Your sentence" autoCapitalize="sentences" />
+        <PillButton type="submit" variant="secondary" className="justify-self-center">
+          {sentence.trim() ? 'Save and check' : 'Show the answer'}
+        </PillButton>
+      </form>
+    </>
+  );
 }

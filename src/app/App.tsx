@@ -31,6 +31,13 @@ const router = createBrowserRouter(
         { path: 'english/words', lazy: async () => ({ Component: (await import('../features/english/ui/WordsPage')).WordsPage }) },
         { path: 'english/word/:id', lazy: async () => ({ Component: (await import('../features/english/ui/WordsPage')).WordPage }) },
         { path: 'english/stats', lazy: async () => ({ Component: (await import('../features/english/ui/StatsPage')).StatsPage }) },
+        { path: 'english/inbox', lazy: async () => ({ Component: (await import('../features/english/ui/InboxPage')).InboxPage }) },
+        { path: 'english/import', lazy: async () => ({ Component: (await import('../features/english/ui/ImportPage')).ImportPage }) },
+        { path: 'english/scan', lazy: async () => ({ Component: (await import('../features/english/ui/ScanPage')).ScanPage }) },
+        { path: 'english/share-setup', lazy: async () => ({ Component: (await import('../features/english/ui/ShareSetupPage')).ShareSetupPage }) },
+        { path: 'english/use-it', lazy: async () => ({ Component: (await import('../features/english/ui/UseItPage')).UseItPage }) },
+        // Share target: iOS Shortcut "Add to Dosym", the Mac bookmarklet and the manifest share_target.
+        { path: 'inbox/add', lazy: async () => ({ Component: (await import('../features/english/ui/ShareAddPage')).ShareAddPage }) },
         { path: 'english/settings', lazy: async () => ({ Component: (await import('../features/english/ui/EnglishSettingsPage')).EnglishSettingsPage }) },
         { path: 'frostpure', element: <FrostPurePage /> },
         { path: 'tagylym', element: <TagylymPage /> },

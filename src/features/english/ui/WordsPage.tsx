@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router';
-import { Chip, GlassCard } from '../../../core/design/components';
+import { BridgeSheet } from '../../../core/bridge/BridgeSheet';
+import type { AnyBridgeJob } from '../../../core/bridge/bridge';
+import { Chip, GlassCard, PillButton } from '../../../core/design/components';
+import { enrichJob } from '../bridge/jobs';
 import { SaltDotsLoader } from '../../../core/design/FreezeFront';
 import { useEnglishData } from '../data/store';
 import { wordState, type WordState } from '../srs/status';
@@ -22,6 +25,8 @@ export function WordsPage() {
   const data = useEnglishData();
   const [q, setQ] = useState('');
   const [filter, setFilter] = useState<WordState | 'all'>('all');
+  const [job, setJob] = useState<AnyBridgeJob | null>(null);
+  const bare = useMemo(() => data.notes.filter((n) => n.needsDetails), [data]);
   const now = useMemo(() => new Date(), [data]);
   const rows = useMemo(
     () =>
@@ -41,6 +46,16 @@ export function WordsPage() {
         <h1 className="ff-title">Words</h1>
       </header>
       <div className="grid gap-3">
+        {bare.length > 0 && (
+          <GlassCard size="md" className="flex flex-wrap items-center justify-between gap-3">
+            <p className="m-0">
+              {bare.length} {bare.length === 1 ? 'word needs' : 'words need'} details.
+            </p>
+            <PillButton variant="secondary" onClick={() => setJob(enrichJob('notes', bare.slice(0, 40).map((n) => ({ id: n.id, headword: n.headword, context: n.examples[0]?.text }))))}>
+              Fill details with Claude{bare.length > 40 ? ' (40)' : ''}
+            </PillButton>
+          </GlassCard>
+        )}
         <input className="input" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search words, glosses, meanings" aria-label="Search words" />
         <div className="seg" role="radiogroup" aria-label="Filter by state">
           {FILTERS.map((f) => (
@@ -71,6 +86,7 @@ export function WordsPage() {
           </ul>
         )}
       </div>
+      <BridgeSheet job={job} onClose={() => setJob(null)} />
     </>
   );
 }

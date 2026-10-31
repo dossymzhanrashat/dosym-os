@@ -18,6 +18,7 @@ import { buildQueue, forecast, type Queue } from '../srs/queue';
 import { newCard, review, toFsrs5, toLadder, type SchedulerConfig } from '../srs/scheduler';
 import { isFrozen } from '../srs/status';
 import { studyDay } from '../srs/studyDay';
+import { afterGrade } from './useIt';
 import { cardSync, cardsTable, logSync, logsTable, noteSync, notesTable } from './db';
 
 // Reading and changing English data. Every write goes through saveLocal(), so it syncs.
@@ -223,7 +224,7 @@ const mergeExamples = (a: Example[], b: Example[]) => {
  * Adds a word, or merges into the existing note with the same key (examples merged, keeping the
  * 5 newest; empty fields filled; the schedule untouched). Deleted notes count as existing.
  */
-export async function addNote(input: NoteInput, createdAt = new Date()): Promise<{ note: VocabNote; created: boolean }> {
+export async function addNote(input: NoteInput, createdAt = new Date(), opts: { known?: boolean } = {}): Promise<{ note: VocabNote; created: boolean }> {
   const key = noteKey(input.headword, input.pos, input.kind);
   const existing = await notesTable.where('key').equals(key).first();
   const iso = new Date().toISOString();
@@ -248,12 +249,16 @@ export async function addNote(input: NoteInput, createdAt = new Date()): Promise
     family: fields.family ?? [],
     collocations: fields.collocations ?? (tip ? [`${tip.base} ${tip.prep}`] : []),
     synonymLadder: fields.synonymLadder ?? [],
-    status: fields.status ?? 'active',
+    status: opts.known ? 'known' : (fields.status ?? 'active'),
     isLeech: false,
     createdAt: createdAt.toISOString(),
     updatedAt: iso,
   };
   await saveLocal(noteSync, note);
+  if (opts.known) {
+    await saveLocal(cardSync, await knownCheckCard(note.id, createdAt));
+    return { note, created: true };
+  }
   for (const type of cardTypesFor(note)) {
     const card = newCard(note.id, type, createdAt);
     if (stableSeed) card.id = await stableId(`card:${stableSeed}:${type}`);
@@ -261,6 +266,27 @@ export async function addNote(input: NoteInput, createdAt = new Date()): Promise
   }
   return { note, created: true };
 }
+
+/**
+ * "Already know" (SPEC § 6.5): one recognition card, treated as reviewed today with a 30-day
+ * interval, so it comes back once as a check in 30 days.
+ */
+export async function knownCheckCard(noteId: string, now: Date): Promise<VocabCard> {
+  const settings = await loadEnglishSettings();
+  const card: VocabCard = {
+    ...newCard(noteId, 'recognition', now),
+    state: 'review',
+    stability: KNOWN_CHECK_DAYS,
+    difficulty: 5,
+    due: new Date(now.getTime() + KNOWN_CHECK_DAYS * 86_400_000).toISOString(),
+    lastReview: now.toISOString(),
+    scheduledDays: KNOWN_CHECK_DAYS,
+    reps: 1,
+    lastGrade: 3, // no introducedAt: a known word does not use up today's new-word cap
+  };
+  return settings.scheduler === 'ladder' ? toLadder(card, settings.maxIntervalDays) : card;
+}
+export const KNOWN_CHECK_DAYS = 30;
 
 // ---------- Grading and undo ----------
 
@@ -292,6 +318,7 @@ export async function gradeCard(cardId: string, grade: Grade, durationMs: number
   await saveLocal(logSync, log);
   const siblings = (await cardsTable.where('noteId').equals(card.noteId).toArray()).map((c) => (c.id === card.id ? card : c));
   const note = await refreshNote(noteBefore, siblings);
+  await afterGrade(note, siblings, card, grade);
   return { undo: { cardBefore, noteBefore, log }, card, froze: !noteBefore.frozenAt && !!note.frozenAt };
 }
 

@@ -1,0 +1,48 @@
+/* Claude Bridge sheet. Deep Blue tokens only (brand/DESIGN.md). */
+
+.bridge-steps {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bridge-step {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-3);
+}
+.bridge-step-title {
+  margin: 0.2rem 0 0;
+  font-weight: 700;
+  color: var(--text);
+}
+.bridge-text {
+  width: 100%;
+  min-height: 6rem;
+  box-sizing: border-box;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  resize: vertical;
+}
+.bridge-details summary {
+  cursor: pointer;
+  color: var(--text-3);
+  font-size: 0.875rem;
+  min-height: 2rem;
+  display: flex;
+  align-items: center;
+}
+.bridge-details[open] summary {
+  margin-bottom: var(--space-2);
+}
+.bridge-problems {
+  margin: 0;
+  padding-left: 1.2rem;
+  overflow-wrap: anywhere;
+}
+.notice--good {
+  border-color: color-mix(in srgb, var(--good) 55%, transparent);
+  background: color-mix(in srgb, var(--good) 10%, transparent);
+}

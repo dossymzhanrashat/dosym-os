@@ -4,13 +4,13 @@ import type { PlannerItem, PlannerItemProvider } from '../../../core/planner/typ
 import { ADMIN_DEADLINES, MOCKS, newCap } from '../srs/phase';
 import { forecast } from '../srs/queue';
 import { studyDay } from '../srs/studyDay';
-import { cardsTable, logsTable, notesTable } from './db';
+import { cardsTable, logsTable, notesTable, useItTable } from './db';
 import { loadEnglishSettings, medianSeconds, minimumDayDays, todayPlan, type EnglishData } from './store';
 
 /*
  * EnglishPlannerProvider (SPEC § 10.4): a daily "Vocab 15 min" item (done when the minimum day is
- * met), the mock weeks, the 31 Jan / 1 Mar admin deadlines and the test day. Quota sessions come
- * with the Practice engine.
+ * met), the mock weeks, the 31 Jan / 1 Mar admin deadlines, the test day, and a Sunday "Use-it
+ * feedback" item while sentences wait for Claude. Quota sessions come with the Practice engine.
  * Plus the morning review notification (SPEC § 10.3): 07:15, only when cards are due, never in
  * quiet hours (22:30–07:00) or school hours on weekdays, skipped once today's minimum day is done.
  */
@@ -59,6 +59,20 @@ export const englishPlannerProvider: PlannerItemProvider = {
       ...ADMIN_DEADLINES.map((a) => base(`admin:${a.id}`, a.title, { importance: 'critical', priority: 3, dueDate: localAt(a.date, '23:59') })),
       base('test', 'IELTS test day', { importance: 'critical', priority: 3, dueDate: localAt(settings.testDate, '09:00') }),
     ];
+    // Weekly Use-it batch through the Claude Bridge, on Sunday with the weekly review, only when sentences wait.
+    const waiting = (await useItTable.toArray()).filter((a) => !a.deletedAt && !a.feedback).length;
+    if (waiting) {
+      const p = almatyParts(new Date());
+      const sunday = studyDay(almatyAt(p.y, p.m, p.d + ((7 - p.weekday) % 7), 12 * 60));
+      items.push(
+        base(`use-it:${sunday}`, `Use-it feedback from Claude · ${waiting} ${waiting === 1 ? 'sentence' : 'sentences'}`, {
+          kind: 'review',
+          sourceRef: '/english/use-it',
+          importance: 'normal',
+          dueDate: localAt(sunday, '18:00'),
+        }),
+      );
+    }
     return items.filter((i) => i.recurrence || (new Date(i.dueDate!) >= range.start && new Date(i.dueDate!) < range.end));
   },
 };

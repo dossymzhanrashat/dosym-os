@@ -11,7 +11,7 @@ import './english.css';
 
 /** English settings (SPEC § 3.10). Synced to every device. */
 
-const TYPES: CardType[] = ['recognition', 'production', 'cloze', 'listening', 'spelling', 'collocation', 'synonymLadder'];
+const TYPES: CardType[] = ['recognition', 'production', 'cloze', 'listening', 'spelling', 'collocation', 'synonymLadder', 'useIt'];
 
 export function EnglishSettingsPage() {
   const saved = useEnglishSettings();
@@ -105,7 +105,7 @@ export function EnglishSettingsPage() {
               </button>
             ))}
           </div>
-          <p className="m-0 text-sm">Switched-off types are skipped in reviews; their progress is kept. Use it, word family and palace cards come with the Claude Bridge.</p>
+          <p className="m-0 text-sm">Switched-off types are skipped in reviews; their progress is kept. A word gets its Use it card once it holds for 7 days; your sentences are marked by Claude in the weekly batch. Word family and palace cards come later.</p>
         </GlassCard>
 
         <GlassCard className="grid gap-3" aria-labelledby="voice-h">

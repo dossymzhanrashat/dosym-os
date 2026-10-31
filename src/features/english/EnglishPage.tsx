@@ -1,10 +1,13 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router';
 import { Chip, GlassCard } from '../../core/design/components';
 import { FreezeFrontBar, FreezeFrontHeader, IceWallGrid, SaltDotsLoader, type IceBrick } from '../../core/design/FreezeFront';
 import { Mascot } from '../../core/design/Mascot';
 import { almatyParts } from '../../core/planner/time';
+import { inboxOrder } from './data/capture';
 import { MIN_DAY_SECONDS, todayPlan, useEnglishData, useEnglishSettings } from './data/store';
+import { ensureUseItCards, waitingAnswers } from './data/useIt';
+import { useCandidates, useUseItAnswers } from './ui/captureHooks';
 import { nextMock, phaseFor, phaseWeek, WEEKLY_PATTERN } from './srs/phase';
 import { wordState } from './srs/status';
 import { studyDay } from './srs/studyDay';
@@ -24,6 +27,14 @@ export function EnglishPage() {
   const settings = useEnglishSettings();
   const now = useMemo(() => new Date(), [data]);
   const plan = useMemo(() => todayPlan(data, settings, now), [data, settings, now]);
+  const candidates = useCandidates();
+  const inbox = useMemo(() => inboxOrder(candidates).length, [candidates]);
+  const waiting = waitingAnswers(useUseItAnswers()).length;
+
+  // Words that already hold for 7+ days get their Use-it card (new ones are added after each grade).
+  useEffect(() => {
+    if (data.loaded) void ensureUseItCards();
+  }, [data.loaded]);
   const day = studyDay(now);
   const phase = phaseFor(day);
   const week = phaseWeek(phase, day);
@@ -65,6 +76,21 @@ export function EnglishPage() {
           </p>
         )}
 
+        {(inbox > 0 || waiting > 0) && (
+          <div className="flex flex-wrap gap-2">
+            {inbox > 0 && (
+              <Link to="/english/inbox" className="pill pill--secondary">
+                {inbox} {inbox === 1 ? 'word' : 'words'} to triage
+              </Link>
+            )}
+            {waiting > 0 && (
+              <Link to="/english/use-it" className="pill pill--secondary">
+                {waiting} Use-it {waiting === 1 ? 'sentence' : 'sentences'} for Claude
+              </Link>
+            )}
+          </div>
+        )}
+
         {data.notes.length === 0 ? (
           <GlassCard className="grid gap-4">
             <div className="flex items-center gap-4">
@@ -80,9 +106,9 @@ export function EnglishPage() {
               <Link to="/english/add" className="pill pill--secondary">
                 Add a word
               </Link>
-              <span className="pill pill--secondary" aria-disabled="true" style={{ opacity: 0.55 }}>
-                Import Claude chats · Phase 3
-              </span>
+              <Link to="/english/import" className="pill pill--secondary">
+                Import Claude chats
+              </Link>
             </div>
           </GlassCard>
         ) : (
@@ -138,8 +164,17 @@ export function EnglishPage() {
           <Link to="/english/words" className="pill pill--secondary">
             Words ({data.notes.length})
           </Link>
+          <Link to="/english/inbox" className="pill pill--secondary">
+            Inbox{inbox ? ` (${inbox})` : ''}
+          </Link>
+          <Link to="/english/import" className="pill pill--secondary">
+            Import
+          </Link>
           <Link to="/english/add" className="pill pill--secondary">
             Add a word
+          </Link>
+          <Link to="/english/use-it" className="pill pill--secondary">
+            Use it
           </Link>
           <Link to="/english/packs" className="pill pill--secondary">
             Seed packs

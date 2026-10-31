@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { BridgeSheet } from '../../../core/bridge/BridgeSheet';
+import type { AnyBridgeJob } from '../../../core/bridge/bridge';
 import { Chip, GlassCard, PillButton } from '../../../core/design/components';
+import { enrichJob, mnemonicJob } from '../bridge/jobs';
 import { deleteNote, resetNote, setCardSuspended, setNoteSuspended, updateNote, useEnglishSettings } from '../data/store';
 import type { ReviewLog, VocabCard, VocabNote } from '../model/types';
 import { wordState } from '../srs/status';
@@ -28,6 +31,7 @@ export function WordDetails({ note, cards, logs, compact = false }: { note: Voca
   const chartCard = reviewed.find((c) => c.id === chartCardId) ?? reviewed[0];
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [job, setJob] = useState<AnyBridgeJob | null>(null);
   const [draft, setDraft] = useState({ definition: note.definition, glossKK: note.glossKK ?? '', glossRU: note.glossRU ?? '', mnemonic: note.mnemonic ?? '' });
   const now = new Date();
   const state = STATE_CHIP[wordState(note, cards, now)];
@@ -210,6 +214,14 @@ export function WordDetails({ note, cards, logs, compact = false }: { note: Voca
           <PillButton variant="secondary" onClick={() => setEditing(true)}>
             Edit
           </PillButton>
+          {note.needsDetails && (
+            <PillButton variant="secondary" onClick={() => setJob(enrichJob('notes', [{ id: note.id, headword: note.headword, context: note.examples[0]?.text }]))}>
+              Fill details with Claude
+            </PillButton>
+          )}
+          <PillButton variant="secondary" onClick={() => setJob(mnemonicJob(note))}>
+            {note.mnemonic ? 'New memory hook' : 'Memory hook from Claude'}
+          </PillButton>
           <PillButton variant="secondary" onClick={() => void setNoteSuspended(note, note.status !== 'suspended')}>
             {note.status === 'suspended' ? 'Resume word' : 'Suspend word'}
           </PillButton>
@@ -224,6 +236,7 @@ export function WordDetails({ note, cards, logs, compact = false }: { note: Voca
           </PillButton>
         </div>
       )}
+      <BridgeSheet job={job} onClose={() => setJob(null)} />
     </div>
   );
 }
