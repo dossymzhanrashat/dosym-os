@@ -57,6 +57,12 @@ db.version(4).stores({
   useItAnswers: 'id, cardId, noteId',
 });
 
+// Phase 4 (Radar): opportunities and pending feed changes; typed accessors in features/radar/data/db.ts.
+db.version(5).stores({
+  radarOpps: 'id, status',
+  radarChanges: 'id, oppId, state',
+});
+
 /** Records the first time this device opened the app and returns it. */
 export async function firstOpenedAt(): Promise<string> {
   const row = await db.meta.get('firstOpenedAt');

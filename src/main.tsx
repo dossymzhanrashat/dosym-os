@@ -7,6 +7,7 @@ import { applySavedTheme } from './core/design/theme';
 import { startSync } from './core/db/sync';
 import './core/planner/reminderSync';
 import './features/english/register';
+import './features/radar/register';
 
 applySavedTheme();
 startSync();

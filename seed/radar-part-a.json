@@ -1,0 +1,1281 @@
+{
+ "generatedAt": "2026-10-30T00:00:00Z",
+ "opportunities": [
+  {
+   "id": "himcm-2026",
+   "name": "HiMCM (COMAP)",
+   "category": "mathModeling",
+   "url": "https://www.comap.org/contests/himcm-midmcm",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2026-11-04",
+     "tz": "America/New_York",
+     "status": "confirmed",
+     "sourceUrl": "https://www.comap.org/contests/himcm-midmcm"
+    },
+    {
+     "type": "submission",
+     "date": "2026-11-17",
+     "tz": "America/New_York",
+     "status": "confirmed",
+     "sourceUrl": "https://www.comap.org/contests/himcm-midmcm"
+    }
+   ],
+   "requirements": [
+    "Advisor registers the team first",
+    "Solution paper"
+   ],
+   "cost": "Team fee [TO CONFIRM]",
+   "aid": null,
+   "eligibility": "Any student in high school grades or below; teams of up to 4 + advisor. Team picks any 14 days in Nov 4–17; registration cutoff [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "amc-2026-27",
+   "name": "AMC 10/12 → AIME",
+   "category": "olympiad",
+   "url": "https://maa.org/amc-international",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2026-11-05",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    },
+    {
+     "type": "event",
+     "date": "2026-11-13",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Register via the Central Asia group leader"
+   ],
+   "cost": "Set by host school",
+   "aid": null,
+   "eligibility": "Sit at a school registered with an AMC International partner; AIME age 13+. Dates from a secondary source [TO CONFIRM] with the local partner.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "lumiere-winter-2026",
+   "name": "Lumiere Research Scholar Program (winter cohort)",
+   "category": "research",
+   "url": "https://www.lumiere-education.com",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2026-11-15",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Application",
+    "Interview"
+   ],
+   "cost": "Approx. $2,600–8,900",
+   "aid": "Need-based aid",
+   "eligibility": "High school student.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "physics-brawl-2026",
+   "name": "Physics Brawl Online (Charles University)",
+   "category": "physics",
+   "url": "https://fykos.org",
+   "deadlines": [
+    {
+     "type": "registration",
+     "date": "2026-11-25",
+     "tz": "Europe/Prague",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Register before contest day"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Any high school student; team of 1–5.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "cern-bl4s-2027",
+   "name": "CERN Beamline for Schools",
+   "category": "physics",
+   "url": "https://beamline-for-schools.web.cern.ch",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-03-12",
+     "tz": "Europe/Zurich",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Written experiment proposal",
+    "Proposal video"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "High school teams of 5+ students + adult coach. Opens Dec 1, 2026.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "rsi-2027",
+   "name": "RSI (Research Science Institute, MIT/CEE)",
+   "category": "research",
+   "url": "https://www.cee.org/apply-rsi",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2026-12-11T23:59",
+     "tz": "America/New_York",
+     "status": "confirmed",
+     "sourceUrl": "https://www.cee.org/apply-rsi"
+    }
+   ],
+   "requirements": [
+    "Essays",
+    "2 teacher recommendations",
+    "Transcript",
+    "Test scores"
+   ],
+   "cost": "No tuition for admitted students; travel may cost",
+   "aid": null,
+   "eligibility": "Not a senior; mid-junior year typical. International students apply only through their country’s selection agency — Kazakhstan participation [TO CONFIRM] via the CEE webform.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "ucsb-sra-2027",
+   "name": "UCSB Summer Research Academies",
+   "category": "research",
+   "url": "https://summer.ucsb.edu/sra",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-03-22",
+     "tz": "America/Los_Angeles",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Online application (rolling)"
+   ],
+   "cost": "Approx. $9,900 + $379 international fee",
+   "aid": "Scholarships",
+   "eligibility": "Grades 9–11, ages 14–17. Opens Dec 15, 2026.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "usaco-2026-27",
+   "name": "USACO",
+   "category": "csCyber",
+   "url": "https://usaco.org",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2026-12-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Free account",
+    "Online contests (Bronze → Platinum)"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Open worldwide; free account. 2026–27 schedule not published [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "yygs-2027",
+   "name": "Yale Young Global Scholars (Regular Decision)",
+   "category": "summerProgram",
+   "url": "https://globalscholars.yale.edu",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-01-06T23:59",
+     "tz": "America/New_York",
+     "status": "confirmed",
+     "sourceUrl": "https://globalscholars.yale.edu"
+    }
+   ],
+   "requirements": [
+    "Online application",
+    "Essays",
+    "Recommendation",
+    "Application fee or waiver"
+   ],
+   "cost": "$100 application fee",
+   "aid": "Fee waiver and need-based aid for all countries",
+   "eligibility": "Current sophomore or junior (or equivalent); age 16–18 on Jul 18, 2027; all countries. Sessions Jun 20–Jul 30, 2027.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "conrad-2026-27",
+   "name": "Conrad Challenge — Innovation Stage",
+   "category": "innovation",
+   "url": "https://conrad.spacecenter.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-01-07T23:59",
+     "tz": "America/Chicago",
+     "status": "confirmed",
+     "sourceUrl": "https://conrad.spacecenter.org"
+    },
+    {
+     "type": "event",
+     "date": "2027-04-21",
+     "tz": "America/Chicago",
+     "status": "confirmed",
+     "sourceUrl": "https://conrad.spacecenter.org"
+    }
+   ],
+   "requirements": [
+    "Innovation Brief",
+    "3–5 min video",
+    "Public team website",
+    "Team fee or aid"
+   ],
+   "cost": "$499 per team",
+   "aid": "Aid by quality and need",
+   "eligibility": "Ages 13–18; team of 2–5 + coach over 18. Activation Stage (Lean Canvas) submitted by team Ayaz on Oct 29, 2026. Summit Apr 21–24, 2027, Houston.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "imagine-cup-2027",
+   "name": "Microsoft Imagine Cup",
+   "category": "entrepreneurship",
+   "url": "https://imaginecup.microsoft.com",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-01-08",
+     "tz": "America/Los_Angeles",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Startup-style AI product submission"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Age 18+, enrolled student; team of 1–4.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "earth-prize-2027",
+   "name": "The Earth Prize",
+   "category": "sustainability",
+   "url": "https://theearthprize.org/2027",
+   "deadlines": [
+    {
+     "type": "registration",
+     "date": "2027-01-10",
+     "tz": "Europe/Zurich",
+     "status": "estimated",
+     "sourceUrl": null
+    },
+    {
+     "type": "submission",
+     "date": "2027-01-31",
+     "tz": "Europe/Zurich",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Registration",
+    "Project submission"
+   ],
+   "cost": "Free",
+   "aid": "7 regional winners get $10,000",
+   "eligibility": "Born 2007–2014; enrolled student; any country; solo or team.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "diamond-2027",
+   "name": "Diamond Challenge (Univ. of Delaware)",
+   "category": "entrepreneurship",
+   "url": "https://diamondchallenge.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-01-14T17:00",
+     "tz": "America/New_York",
+     "status": "confirmed",
+     "sourceUrl": "https://horn.udel.edu/deadlines2627"
+    },
+    {
+     "type": "event",
+     "date": "2027-04-29",
+     "tz": "America/New_York",
+     "status": "confirmed",
+     "sourceUrl": "https://horn.udel.edu/deadlines2627"
+    }
+   ],
+   "requirements": [
+    "Concept submission",
+    "Live or virtual pitch (Feb 10–Mar 7)"
+   ],
+   "cost": "Fee not stated [TO CONFIRM]",
+   "aid": null,
+   "eligibility": "Team of 2–4, ages 14–18 at the deadline + advisor 21+; Business or Social Innovation track. Dates “subject to change”.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "rise-2027",
+   "name": "Rise (Schmidt + Rhodes)",
+   "category": "scholarship",
+   "url": "https://www.risefortheworld.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-01-17",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Service project",
+    "Quizzes",
+    "Peer review"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Age 15–17. Cycle existence [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "ssp-2027",
+   "name": "Summer Science Program (SSP)",
+   "category": "research",
+   "url": "https://ssp.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-01-25",
+     "tz": "America/Los_Angeles",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Transcript",
+    "2 teacher recommendations"
+   ],
+   "cost": "Free to apply; up to approx. $11,800",
+   "aid": "Financial aid",
+   "eligibility": "SSP 2027 is for students graduating in 2028; international applicants need a US visa by the deadline. (2026 deadline was Jan 29.)",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "kz-water-prize-2027",
+   "name": "Kazakhstani Junior Water Prize (Stockholm JWP national round)",
+   "category": "sustainability",
+   "url": "https://miras.kz",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-01-15",
+     "tz": "Asia/Almaty",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Water research project"
+   ],
+   "cost": "Free",
+   "aid": "Winner goes to Stockholm",
+   "eligibility": "Ages 14–18 (KZ round); solo or pair. National round at Miras School, Almaty; contact secretary@miras.kz.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "im2c-2027",
+   "name": "IM²C — Kazakhstan selection via NIS",
+   "category": "mathModeling",
+   "url": "https://immchallenge.org",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-02-01",
+     "tz": "Asia/Almaty",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Modeling paper"
+   ],
+   "cost": "Free [TO CONFIRM]",
+   "aid": null,
+   "eligibility": "Team of up to 4 + advisor.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "sumac-2027",
+   "name": "SUMaC (Stanford)",
+   "category": "summerProgram",
+   "url": "https://sumac.spcs.stanford.edu",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-02-02",
+     "tz": "America/Los_Angeles",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Proof-based take-home exam",
+    "Transcript",
+    "Teacher recommendation",
+    "Application fee or waiver"
+   ],
+   "cost": "$65 fee; tuition approx. $8,950 residential / $3,750 online",
+   "aid": "Fee waivers; financial aid",
+   "eligibility": "10th–11th grade at application; 15+ during the program; residential under 18. (2026 deadline was Feb 2.)",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "aime-2027",
+   "name": "AIME (if AMC qualified)",
+   "category": "olympiad",
+   "url": "https://maa.org",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-02-05",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "AMC qualification",
+    "Exam"
+   ],
+   "cost": "Host school",
+   "aid": null,
+   "eligibility": "AMC qualifier, age 13+.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "gmu-assip-2027",
+   "name": "George Mason ASSIP",
+   "category": "research",
+   "url": "https://science.gmu.edu/assip",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-02-15",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Pick up to 3 mentors",
+    "Application",
+    "Application fee"
+   ],
+   "cost": "$25 fee; $1,299 tuition",
+   "aid": null,
+   "eligibility": "Age 15+ (labs often 16+).",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "texas-hsmc-2027",
+   "name": "Texas HSMC",
+   "category": "summerProgram",
+   "url": "https://www.txst.edu/mathworks",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-02-15",
+     "tz": "America/Chicago",
+     "status": "estimated",
+     "sourceUrl": null
+    },
+    {
+     "type": "application",
+     "date": "2027-03-15",
+     "tz": "America/Chicago",
+     "status": "estimated",
+     "sourceUrl": null
+    },
+    {
+     "type": "application",
+     "date": "2027-04-16",
+     "tz": "America/Chicago",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Online application",
+    "Short essays"
+   ],
+   "cost": "Approx. $6,600",
+   "aid": "Need-based aid",
+   "eligibility": "Grades 9–11; international accepted.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "blue-ocean-2027",
+   "name": "Blue Ocean Student Entrepreneur Competition",
+   "category": "entrepreneurship",
+   "url": "https://www.blueoceancompetition.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-02-22",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Mini-course",
+    "5-min video pitch"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Ages 14–18; solo or up to 5.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "mathcamp-2027",
+   "name": "Canada/USA Mathcamp",
+   "category": "summerProgram",
+   "url": "https://www.mathcamp.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-02-23",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Qualifying Quiz",
+    "References"
+   ],
+   "cost": "Free to apply; tuition",
+   "aid": "Financial aid",
+   "eligibility": "Ages 13–18.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "promys-2027",
+   "name": "PROMYS",
+   "category": "summerProgram",
+   "url": "https://promys.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-02-27",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Problem set",
+    "Teacher recommendation",
+    "Transcript"
+   ],
+   "cost": "Approx. $7,000–8,000",
+   "aid": "Financial aid",
+   "eligibility": "Completed 9th grade.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "genius-2027",
+   "name": "GENIUS Olympiad",
+   "category": "sustainability",
+   "url": "https://geniusolympiad.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-03-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Project",
+    "Research paper in English",
+    "Application fee"
+   ],
+   "cost": "$50 application; $500 if finalist",
+   "aid": null,
+   "eligibility": "Grades 8–12; solo or pair. Finals in Rochester, NY.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "swb-challenge-2027",
+   "name": "Science Without Borders Challenge",
+   "category": "artWriting",
+   "url": "https://www.livingoceansfoundation.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-03-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Hand-made 2D artwork"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Ages 11–19.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "samsung-sft-kz-2027",
+   "name": "Samsung Solve for Tomorrow Kazakhstan",
+   "category": "innovation",
+   "url": "https://solvefortomorrow.kz",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-04-30",
+     "tz": "Asia/Almaty",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Team STEM solution",
+    "Mentor sessions"
+   ],
+   "cost": "Free",
+   "aid": "10M tenge fund",
+   "eligibility": "Kazakhstan school students under 18. Runs Mar 1–Apr 30 (2026 pattern [TO CONFIRM]); final in Astana.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "ross-2027",
+   "name": "Ross Mathematics Program",
+   "category": "summerProgram",
+   "url": "https://rossprogram.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-03-08",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Problem set",
+    "Transcript",
+    "Recommendation",
+    "Essays",
+    "Video"
+   ],
+   "cost": "Approx. $7,500",
+   "aid": "Financial aid",
+   "eligibility": "Ages ~15–18.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "ichc-2027",
+   "name": "IChC qualifying round",
+   "category": "olympiad",
+   "url": "https://www.intchc.org",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-03-25",
+     "tz": "Europe/Berlin",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Online qualifying round"
+   ],
+   "cost": "Free qualifier; 12 EUR semi-final",
+   "aid": null,
+   "eligibility": "Age groups by grade.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "pioneer-2027",
+   "name": "Pioneer Research Institute (summer)",
+   "category": "research",
+   "url": "https://pioneeracademics.com",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-03-25",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Application"
+   ],
+   "cost": "$7,465",
+   "aid": "Need-based aid",
+   "eligibility": "Grades 9–12.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "picoctf-2027",
+   "name": "picoCTF",
+   "category": "csCyber",
+   "url": "https://picoctf.org",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-03-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Team of up to 5"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Anyone can play; prizes are not open to Kazakhstan.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "lumiere-summer-2027",
+   "name": "Lumiere (summer cohorts)",
+   "category": "research",
+   "url": "https://www.lumiere-education.com",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-03-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Application"
+   ],
+   "cost": "Approx. $2,600–8,900",
+   "aid": "Need-based aid",
+   "eligibility": "High school student. Deadlines Mar–May 2027.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "ucsc-sip-2027",
+   "name": "UCSC Science Internship Program",
+   "category": "research",
+   "url": "https://www.ucsc.edu",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-03-01",
+     "tz": "America/Los_Angeles",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Application"
+   ],
+   "cost": "Approx. $4,250",
+   "aid": "Financial aid",
+   "eligibility": "Ages 14–17; international depends on visa.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "garcia-2027",
+   "name": "Garcia (Stony Brook)",
+   "category": "research",
+   "url": "https://www.stonybrook.edu/garcia",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-02-25",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Transcript",
+    "3 recommendations",
+    "Application fee"
+   ],
+   "cost": "$50 + $4,000 lab fee + housing",
+   "aid": null,
+   "eligibility": "Age 16+ by Jul 4, 2027; GPA 3.8/4.0; no visa support.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "iaac-2027",
+   "name": "IAAC qualifying round",
+   "category": "olympiad",
+   "url": "https://iaac.space",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-04-15",
+     "tz": "Europe/Berlin",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Online qualifying round"
+   ],
+   "cost": "Free qualifier",
+   "aid": null,
+   "eligibility": "Youth group, under 19.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "hcssim-2027",
+   "name": "HCSSiM",
+   "category": "summerProgram",
+   "url": "https://hcssim.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-04-17",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    },
+    {
+     "type": "event",
+     "date": "2027-04-25",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Application",
+    "Letter",
+    "Interesting Test"
+   ],
+   "cost": "Free to apply; approx. $6,500",
+   "aid": null,
+   "eligibility": "Grades 9–11, international eligible. Location changes (Hampshire closes Dec 2026).",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "purple-comet-2027",
+   "name": "Purple Comet! Math Meet",
+   "category": "olympiad",
+   "url": "https://purplecomet.org",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-04-15",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Team of 1–6 + adult",
+    "Online contest"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Team of 1–6 + adult.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "cty-2027",
+   "name": "Johns Hopkins CTY",
+   "category": "other",
+   "url": "https://cty.jhu.edu",
+   "deadlines": [
+    {
+     "type": "registration",
+     "date": "2027-05-10",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    },
+    {
+     "type": "registration",
+     "date": "2027-06-07",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "98th-percentile qualifying score",
+    "Registration"
+   ],
+   "cost": "Per course",
+   "aid": "Limited aid",
+   "eligibility": "98th-percentile qualifying score.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "collegeadvisor-2027",
+   "name": "CollegeAdvisor Scholars",
+   "category": "applicationSupport",
+   "url": "https://www.collegeadvisor.com",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-05-25",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Short essay",
+    "Financial information"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Rising 12th grader with financial need.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "bow-seat-2027",
+   "name": "Bow Seat Ocean Awareness",
+   "category": "artWriting",
+   "url": "https://bowseat.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-06-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Poem, art or film in English"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Ages 11–18.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "yau-asia-2027",
+   "name": "S.-T. Yau Award (Asia division)",
+   "category": "research",
+   "url": "https://www.yauaward-asia.hk",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-06-11",
+     "tz": "Asia/Hong_Kong",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Research paper",
+    "Supervisor form",
+    "Plagiarism report"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "High school; team of up to 3 from the same school. Online + oral defense.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "zayed-2027",
+   "name": "Zayed Global High Schools Prize",
+   "category": "sustainability",
+   "url": "https://www.zayedsustainabilityprize.com",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-06-15",
+     "tz": "Asia/Dubai",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Student-led project proposal"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "The school applies.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "yau-global-2027",
+   "name": "S.-T. Yau Award (global)",
+   "category": "research",
+   "url": "https://www.yau-awards.com",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-09-15",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Research paper",
+    "Supervisor form",
+    "Plagiarism report"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "High school; team of up to 3 from the same school. Window Jul 1–Sep 15, 2027.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "wharton-2027",
+   "name": "Wharton Global HS Investment Competition",
+   "category": "other",
+   "url": "https://globalyouth.wharton.upenn.edu",
+   "deadlines": [
+    {
+     "type": "registration",
+     "date": "2027-08-15",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Team of 4–6 + teacher",
+    "Registration"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Team of 4–6 + teacher.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "hmmt-2027",
+   "name": "HMMT (lottery registration)",
+   "category": "olympiad",
+   "url": "https://www.hmmt.org",
+   "deadlines": [
+    {
+     "type": "registration",
+     "date": "2027-08-15",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Lottery registration",
+    "Chaperone"
+   ],
+   "cost": "Fee",
+   "aid": null,
+   "eligibility": "Same school or within 150 miles; chaperone.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "breakthrough-2027",
+   "name": "Breakthrough Junior Challenge",
+   "category": "other",
+   "url": "https://breakthroughjuniorchallenge.org",
+   "deadlines": [
+    {
+     "type": "submission",
+     "date": "2027-09-15",
+     "tz": "America/Los_Angeles",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Science video (2 min; page also says 5)"
+   ],
+   "cost": "Free",
+   "aid": "$250,000 scholarship",
+   "eligibility": "Ages 13–18, individuals only.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "iymc-2027",
+   "name": "IYMC",
+   "category": "olympiad",
+   "url": "https://iymc.info",
+   "deadlines": [
+    {
+     "type": "event",
+     "date": "2027-09-25",
+     "tz": "Europe/Berlin",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Online rounds"
+   ],
+   "cost": "Free qualifier; 15 EUR pre-final",
+   "aid": null,
+   "eligibility": "Open.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "stamps-2027-28",
+   "name": "Stamps Scholars",
+   "category": "scholarship",
+   "url": "https://www.stampsscholars.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-11-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "Apply to a partner school"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Per partner school; deadlines Nov 2027–Jan 2028.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "jefferson-2027-28",
+   "name": "Jefferson Scholarship (UVA)",
+   "category": "scholarship",
+   "url": "https://www.jeffersonscholars.org",
+   "deadlines": [
+    {
+     "type": "application",
+     "date": "2027-12-01",
+     "tz": "America/New_York",
+     "status": "estimated",
+     "sourceUrl": null
+    }
+   ],
+   "requirements": [
+    "School nomination",
+    "UVA application"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "The school must hold a nomination slot.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "educationusa-ofp",
+   "name": "EducationUSA Opportunity Funds (Almaty)",
+   "category": "applicationSupport",
+   "url": "https://educationusa.state.gov",
+   "deadlines": [],
+   "requirements": [
+    "Adviser selection"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Strong academics, financial need. Rolling.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "project-access",
+   "name": "Project Access",
+   "category": "applicationSupport",
+   "url": "https://projectaccess.org",
+   "deadlines": [],
+   "requirements": [
+    "Sign-up"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Less-privileged backgrounds. Rolling.",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "kz-science-fairs",
+   "name": "Local / regional KZ science fairs",
+   "category": "other",
+   "url": "",
+   "deadlines": [],
+   "requirements": [
+    "Ask the school research coordinator"
+   ],
+   "cost": "Varies",
+   "aid": null,
+   "eligibility": "Per fair. Rolling [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "isef-2027",
+   "name": "Regeneron ISEF via the national fair",
+   "category": "research",
+   "url": "https://www.societyforscience.org/isef/",
+   "deadlines": [],
+   "requirements": [
+    "Ask the school research coordinator which national fair qualifies"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "Selected through national competitions; the Kazakhstan affiliated fair and its date were not found [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "kz-republican-olympiads-2027",
+   "name": "Republican olympiads in physics / math (IPhO / IMO selection)",
+   "category": "olympiad",
+   "url": "",
+   "deadlines": [],
+   "requirements": [
+    "Ask the NIS olympiad coordinator for dates"
+   ],
+   "cost": "Free",
+   "aid": null,
+   "eligibility": "District → oblast → republican stages; recent cycles ran Feb–Mar online. 2026–27 dates [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  },
+  {
+   "id": "launchx-2027",
+   "name": "MIT Launch / LaunchX",
+   "category": "entrepreneurship",
+   "url": "https://www.launchx.com",
+   "deadlines": [],
+   "requirements": [
+    "Check for a 2027 cycle"
+   ],
+   "cost": null,
+   "aid": null,
+   "eligibility": "No 2027 cycle page found [TO CONFIRM].",
+   "lastVerified": "2026-10-30"
+  }
+ ],
+ "changes": []
+}

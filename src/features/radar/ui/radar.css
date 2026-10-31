@@ -1,0 +1,361 @@
+/* Module 4 — Radar. Deep Blue tokens only (brand/DESIGN.md). */
+
+.rd-warm {
+  color: var(--warm);
+  font-weight: 700;
+}
+.rd-badge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  margin-left: var(--space-1);
+  padding: 0 0.35rem;
+  border-radius: var(--radius-pill);
+  background: var(--warm);
+  color: #050a16;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.rd-done {
+  text-decoration: line-through;
+  color: var(--text-3);
+}
+.rd-dim {
+  opacity: 0.6;
+}
+
+/* ---------- Next up ---------- */
+.rd-next-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+.rd-days {
+  margin: 0;
+  font: 800 3rem/1 var(--font-display);
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.rd-days.rd-warm {
+  color: var(--warm);
+}
+.rd-days-unit {
+  display: block;
+  font: 600 0.75rem/1.2 var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ---------- Glacier timeline ---------- */
+.rd-glacier-card {
+  padding: var(--space-3) 0;
+  overflow: hidden;
+}
+.glacier {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.glacier-svg {
+  display: block;
+}
+.glacier-front {
+  stroke: var(--ice);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 4px var(--ice));
+}
+.glacier-tick {
+  stroke: var(--card-border-soft);
+  stroke-width: 1;
+}
+.glacier-label {
+  fill: var(--text-3);
+  font: 600 10px var(--font-sans);
+}
+.glacier-block {
+  cursor: pointer;
+}
+.glacier-block:focus-visible {
+  outline: none;
+}
+.glacier-block:focus-visible rect {
+  stroke: var(--focus);
+  stroke-width: 3;
+}
+.glacier-drip {
+  fill: var(--ice);
+  opacity: 0.8;
+}
+.glacier-salt {
+  fill: #050a16;
+  stroke: var(--violet);
+  stroke-width: 0.75;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .glacier-drip {
+    animation: gl-drip 2.4s ease-in infinite;
+  }
+  .glacier-salt {
+    animation: gl-sink 6s ease-in-out infinite alternate;
+  }
+}
+@keyframes gl-drip {
+  from {
+    transform: translateY(-6px);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.9;
+  }
+  to {
+    transform: translateY(26px);
+    opacity: 0;
+  }
+}
+@keyframes gl-sink {
+  to {
+    transform: translateY(8px);
+  }
+}
+
+/* ---------- Feed ---------- */
+.rd-filters summary {
+  font-weight: 600;
+}
+.rd-feed {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rd-feed-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+.rd-feed-name {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.rd-feed-name:hover {
+  text-decoration: underline;
+}
+.rd-fit-track {
+  fill: none;
+  stroke: var(--card-border);
+  stroke-width: 4;
+}
+.rd-fit-fill {
+  fill: none;
+  stroke: var(--ice);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.rd-fit-text {
+  fill: var(--text);
+  font: 700 12px var(--font-sans);
+}
+
+/* ---------- Heat strip ---------- */
+.heat {
+  display: grid;
+  grid-template-rows: repeat(7, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 3px;
+  max-width: 34rem;
+  touch-action: none;
+}
+.heat-cell {
+  position: relative;
+  aspect-ratio: 1;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid var(--card-border-soft);
+  border-radius: 4px;
+  background: var(--chip);
+  cursor: pointer;
+}
+.heat-1 {
+  background: color-mix(in srgb, var(--ice) 28%, transparent);
+}
+.heat-2 {
+  background: color-mix(in srgb, var(--sky) 55%, transparent);
+}
+.heat-3 {
+  background: var(--periwinkle);
+}
+.heat-past {
+  opacity: 0.45;
+}
+.heat-today {
+  border-color: var(--text);
+}
+.heat-cell[aria-pressed='true'] {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.heat-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40%;
+  height: 40%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--warm);
+}
+.heat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--text-3);
+}
+.heat-legend .heat-cell {
+  display: inline-block;
+  width: 0.9rem;
+  cursor: default;
+}
+
+/* ---------- Pipeline board: ice layers ---------- */
+.pipe {
+  display: grid;
+  gap: var(--space-3);
+}
+@media (min-width: 56rem) {
+  .pipe {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+.pipe-col {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+}
+.pipe-col--watching {
+  background: color-mix(in srgb, #e4ecff 8%, transparent);
+}
+.pipe-col--preparing {
+  background: color-mix(in srgb, var(--ice) 10%, transparent);
+}
+.pipe-col--submitted {
+  background: color-mix(in srgb, var(--sky) 14%, transparent);
+}
+.pipe-col--result {
+  background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
+}
+.pipe-col--over {
+  border-color: var(--ice);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ice) 40%, transparent);
+}
+.pipe-head {
+  margin: 0;
+  font: 700 0.875rem/1.3 var(--font-display);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.pipe-gloss {
+  display: block;
+  font: 500 0.75rem/1.3 var(--font-sans);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-3);
+}
+.pipe-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.pipe-card {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--card-border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  cursor: grab;
+}
+.pipe-name {
+  color: var(--text);
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.pipe-moves {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+.pipe-move {
+  min-height: 2.75rem;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--card-border-soft);
+  border-radius: var(--radius-pill);
+  background: var(--chip);
+  color: var(--text-2);
+  font: 600 0.8125rem var(--font-sans);
+  cursor: pointer;
+}
+.pipe-move:hover {
+  color: var(--text);
+  border-color: var(--card-border);
+}
+
+/* ---------- Detail ---------- */
+.rd-deadlines,
+.rd-checklist,
+.rd-history,
+.rd-fit-parts {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rd-fit-parts,
+.rd-history {
+  gap: var(--space-1);
+}
+.rd-deadlines li {
+  display: grid;
+  gap: var(--space-1);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--card-border-soft);
+}
+.rd-past {
+  opacity: 0.55;
+}
+.rd-dl-type {
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+/* ---------- Change cards ---------- */
+.rd-diff {
+  font-size: 1.0625rem;
+  overflow-wrap: anywhere;
+}
+.rd-old {
+  color: var(--text-3);
+}
+.rd-diff strong {
+  color: var(--text);
+}

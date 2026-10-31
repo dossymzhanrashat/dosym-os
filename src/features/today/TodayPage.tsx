@@ -9,6 +9,7 @@ import { usePlannerItems } from '../../core/planner/store';
 import { addDays, startOfDay } from '../../core/planner/time';
 import { EntryRow, whenText } from '../planner/EntryRow';
 import { useQuickAdd } from '../planner/QuickAdd';
+import { DailyRadarCard } from '../radar/ui/DailyRadarCard';
 import { todayPlan, useEnglishData, useEnglishSettings } from '../english/data/store';
 import '../planner/planner.css';
 
@@ -21,7 +22,6 @@ const almatyDate = new Intl.DateTimeFormat('en-GB', {
 
 const COMING = [
   { name: "Today's practice quota", phase: 2 },
-  { name: 'Daily Radar card', phase: 4 },
   { name: 'FrostPure test moment', phase: 5 },
 ];
 
@@ -122,6 +122,8 @@ export function TodayPage() {
             <p className="m-0">No deadlines yet. Type “Conrad report deadline 12 Nov !!” in Quick Add.</p>
           )}
         </GlassCard>
+
+        <DailyRadarCard />
 
         <GlassCard className="sm:col-span-2" aria-labelledby="plan">
           <h2 id="plan" className="card-title">
