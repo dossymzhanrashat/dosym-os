@@ -86,7 +86,7 @@ describe('chat search turned off', () => {
     expect(r.ok).toBe(false);
     if (r.ok) return;
     expect(r.claudeError).toBe('chat search is off');
-    expect(r.problems[1]).toMatch(/Settings → Capabilities → “Search and reference chats”/);
+    expect(r.problems[1]).toMatch(/Settings → Your Claude → “Search and reference chats” \(older layout: Settings → Memory\)/);
     expect(explainChatSearchError('something else went wrong')).toBeUndefined();
   });
 });

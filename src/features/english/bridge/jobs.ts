@@ -85,7 +85,7 @@ async function saveExtract(items: { item: ExtractItem; source: SourceRef }[], ki
 /** Claude answered {"error": "chat search is off"}: say how to switch it on. */
 export function explainChatSearchError(message: string): string | undefined {
   if (!/search/i.test(message)) return undefined;
-  return 'Chat search is switched off in your Claude account, so Claude cannot read your past chats. Turn it on: claude.ai → Settings → Capabilities → “Search and reference chats” (the name may differ slightly). Then go back to step 01, start a NEW chat with Open Claude and send the prompt again.';
+  return 'Chat search is switched off in your Claude account, so Claude cannot read your past chats. Turn it on: claude.ai → Settings → Your Claude → “Search and reference chats” (older layout: Settings → Memory). Then go back to step 01, start a NEW chat with Open Claude and send the prompt again.';
 }
 
 export async function chatSearchJob(opts: { maxItems: number; since?: string }): Promise<BridgeJob<ExtractVocab>> {
@@ -104,7 +104,7 @@ export async function chatSearchJob(opts: { maxItems: number; since?: string }):
   return {
     id: 'english.extract-vocab.chats',
     title: 'Words from my Claude chats',
-    intro: 'Claude Pro searches your past chats and picks English words and collocations useful for IELTS. They land in your inbox to keep, skip or mark as known. Chat search must be on in Claude (Settings → Capabilities → “Search and reference chats”).',
+    intro: 'Claude Pro searches your past chats and picks English words and collocations useful for IELTS. They land in your inbox to keep, skip or mark as known. Chat search must be on in Claude (Settings → Your Claude → “Search and reference chats”; older layout: Settings → Memory).',
     prompt,
     schema: extractVocabSchema,
     describe: describeExtract,
