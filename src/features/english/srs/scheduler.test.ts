@@ -334,3 +334,14 @@ describe('queue and caps (SPEC § 5.6)', () => {
     expect(newCap('2026-11-10', 251)).toEqual({ cap: 0, throttled: 'stop' });
   });
 });
+
+describe('streak', async () => {
+  const { streakLength } = await import('../data/store');
+  it('counts days in a row ending today, or yesterday while today is open', () => {
+    const days = new Set(['2026-10-29', '2026-10-30', '2026-10-31']);
+    expect(streakLength(days, '2026-10-31')).toBe(3);
+    expect(streakLength(days, '2026-11-01')).toBe(3); // today not done yet
+    expect(streakLength(days, '2026-11-02')).toBe(0); // a day was missed
+    expect(streakLength(new Set(['2026-02-28', '2026-03-01']), '2026-03-01')).toBe(2);
+  });
+});

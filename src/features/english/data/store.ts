@@ -362,3 +362,24 @@ export async function setCardSuspended(card: VocabCard, suspended: boolean): Pro
   await saveLocal(cardSync, { ...card, suspended, updatedAt: new Date().toISOString() });
 }
 
+
+// ---------- Streak ----------
+
+const shiftDay = (key: string, n: number) => {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10);
+};
+
+/** Days in a row with the minimum day met, ending today (or yesterday, if today is still open). */
+export function streakLength(done: Set<string>, today: string): number {
+  let day = done.has(today) ? today : shiftDay(today, -1);
+  let n = 0;
+  while (done.has(day)) {
+    n++;
+    day = shiftDay(day, -1);
+  }
+  return n;
+}
+
+export const STREAK_MILESTONES = [30, 100];
+export const FROZEN_MILESTONES = [100, 250, 500, 1000];

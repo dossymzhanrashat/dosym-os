@@ -413,3 +413,79 @@
   display: grid;
   gap: var(--space-2);
 }
+
+/* ---------- 3D unit ---------- */
+.fp-3d {
+  position: relative;
+  height: min(70vh, 34rem);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  touch-action: none;
+  background: #050a16;
+}
+.fp-3d-badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-pill);
+  background: rgba(5, 10, 22, 0.7);
+  border: 1px dashed var(--card-border);
+  font: 700 0.6875rem/1 var(--font-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.fp-3d-badge--data {
+  border-style: solid;
+  border-color: var(--good);
+  color: var(--good);
+}
+.fp-3d-label {
+  white-space: nowrap;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  background: rgba(5, 10, 22, 0.78);
+  color: #fff;
+  font: 600 10px/1.3 var(--font-sans);
+  cursor: pointer;
+}
+.fp-3d-label--on {
+  border-color: var(--ice);
+  box-shadow: 0 0 8px var(--ice);
+}
+.fp-3d-tag {
+  color: var(--ice);
+  font-weight: 800;
+}
+.fp-timeline-3d {
+  position: relative;
+  height: 1.5rem;
+}
+.fp-timeline-3d span {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  border-left: 1px solid var(--card-border-soft);
+  font-size: 0.6875rem;
+  color: var(--text-3);
+}
+.fp-timeline-3d span.on {
+  color: var(--text);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--ice) 12%, transparent);
+}
+.fp-scrub {
+  width: 100%;
+  min-height: 2.75rem;
+  accent-color: var(--ice);
+}
+.fp-readout {
+  font-size: 0.875rem;
+  color: var(--text-2);
+}

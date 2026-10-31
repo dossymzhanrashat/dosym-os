@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 import { Chip, GlassCard, PillButton } from '../../../core/design/components';
 import { SaltDotsLoader } from '../../../core/design/FreezeFront';
-import { Mascot } from '../../../core/design/Mascot';
+import { Celebration, useMilestone } from '../../../core/design/Celebration';
 import { Sheet } from '../../../core/design/Sheet';
 import { momentTime } from '../data/planner';
 import { PHASES } from '../data/seed';
@@ -366,6 +366,8 @@ export function RunPage() {
 
   const results = useMemo(() => (run ? computeResults(run) : undefined), [run]);
   const prevBestR = useMemo(() => Math.max(0, ...data.runs.filter((r) => r.id !== id && r.status === 'done').map((r) => (computeResults(r).rejection.ok ? (computeResults(r).rejection as { value: number }).value : 0))), [data.runs, id]);
+  // First clean water: the first run whose measured R passes 70 % (celebrated once).
+  const cleanMoment = useMilestone([{ key: 'frostpure:first-clean', reached: !!results?.rejection.ok && results.rejection.value >= 0.7 && prevBestR < 0.7 }]);
 
   // A running timer shows in the page title.
   const timer = run?.phases.find((p) => p.timerEndsAt && !p.doneAt && Date.parse(p.timerEndsAt) > now.getTime());
@@ -394,7 +396,6 @@ export function RunPage() {
 
   const r = results!;
   const triggered = run.status === 'running' ? triggeredMoments(run, tele.rows, device.probes, device.waterDepthCm, device.iceThresholdC) : [];
-  const firstClean = r.rejection.ok && r.rejection.value >= 0.7 && prevBestR < 0.7;
   const setPhase = (pid: string, patch: Partial<Run['phases'][number]>) => saveRun({ ...run, phases: run.phases.map((p) => (p.id === pid ? { ...p, ...patch } : p)) });
 
   return (
@@ -454,13 +455,10 @@ export function RunPage() {
             </PillButton>
           </p>
         ))}
-        {firstClean && (
-          <div className="notice notice--good flex items-center gap-3" role="status">
-            <Mascot mood="happy" size={48} bounce />
-            <p className="m-0">
-              <strong>First clean water.</strong> Measured salt rejection passed the 70% target.
-            </p>
-          </div>
+        {cleanMoment && (
+          <Celebration title="First clean water" onClose={cleanMoment.dismiss}>
+            Measured salt rejection passed the 70% target in {run.name}.
+          </Celebration>
         )}
 
         <GlassCard className="grid gap-3" aria-labelledby="sheet-h">

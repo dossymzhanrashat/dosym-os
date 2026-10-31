@@ -5,7 +5,9 @@ import { FreezeFrontBar, FreezeFrontHeader, IceWallGrid, SaltDotsLoader, type Ic
 import { Mascot } from '../../core/design/Mascot';
 import { almatyParts } from '../../core/planner/time';
 import { inboxOrder } from './data/capture';
-import { MIN_DAY_SECONDS, todayPlan, useEnglishData, useEnglishSettings } from './data/store';
+import { Celebration, useMilestone } from '../../core/design/Celebration';
+import { useLive } from '../../core/db/useLive';
+import { FROZEN_MILESTONES, MIN_DAY_SECONDS, minimumDayDays, STREAK_MILESTONES, streakLength, todayPlan, useEnglishData, useEnglishSettings } from './data/store';
 import { ensureUseItCards, waitingAnswers } from './data/useIt';
 import { useCandidates, useUseItAnswers } from './ui/captureHooks';
 import { nextMock, phaseFor, phaseWeek, WEEKLY_PATTERN } from './srs/phase';
@@ -43,6 +45,12 @@ export function EnglishPage() {
   const states = useMemo(() => data.notes.map((n) => ({ note: n, state: wordState(n, data.cardsByNote.get(n.id) ?? [], now) })), [data, now]);
   const count = (s: string) => states.filter((x) => x.state === s).length;
   const salt = count('salt');
+  const frozenCount = count('frozen') + count('thawing');
+  const streak = useLive(async () => streakLength(await minimumDayDays(data.logs), day), [data.logs, day], 0);
+  const milestone = useMilestone([
+    ...STREAK_MILESTONES.map((n) => ({ key: `english:streak:${n}`, reached: streak >= n })),
+    ...FROZEN_MILESTONES.map((n) => ({ key: `english:frozen:${n}`, reached: frozenCount >= n })),
+  ]);
   const bricks: IceBrick[] = states
     .filter((x) => x.state === 'frozen' || x.state === 'thawing' || x.state === 'salt')
     .map((x) => ({ id: x.note.id, label: x.note.headword, state: x.state === 'frozen' ? 'frozen' : x.state === 'thawing' ? 'thawing' : 'salt' }));
@@ -68,6 +76,19 @@ export function EnglishPage() {
       </FreezeFrontHeader>
 
       <div className="grid gap-3">
+        {milestone && (
+          <Celebration
+            title={milestone.key.includes('streak') ? `${milestone.key.split(':')[2]}-day streak!` : `${milestone.key.split(':')[2]} words frozen!`}
+            onClose={milestone.dismiss}
+          >
+            {milestone.key.includes('streak') ? 'Every day, at least ten minutes. The ice keeps getting thicker.' : 'They hold for 30+ days now. The wall keeps growing.'}
+          </Celebration>
+        )}
+        {streak > 1 && (
+          <p className="m-0 text-sm">
+            Streak: <strong className="tnum">{streak}</strong> days in a row
+          </p>
+        )}
         {plan.throttled !== 'none' && (
           <p className="notice notice--warm m-0" role="status">
             {plan.throttled === 'stop'

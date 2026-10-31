@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router';
 import { Chip, GlassCard, PillButton } from '../../core/design/components';
 import { FreezeFrontHeader } from '../../core/design/FreezeFront';
@@ -9,8 +9,9 @@ import { usePlannerItems } from '../../core/planner/store';
 import { addDays, startOfDay } from '../../core/planner/time';
 import { EntryRow, whenText } from '../planner/EntryRow';
 import { useQuickAdd } from '../planner/QuickAdd';
-import { DailyRadarCard } from '../radar/ui/DailyRadarCard';
-import { todayPlan, useEnglishData, useEnglishSettings } from '../english/data/store';
+// Module cards load just after the page shell, so Today paints first.
+const TodayEnglishCard = lazy(async () => ({ default: (await import('../english/ui/TodayEnglishCard')).TodayEnglishCard }));
+const DailyRadarCard = lazy(async () => ({ default: (await import('../radar/ui/DailyRadarCard')).DailyRadarCard }));
 import '../planner/planner.css';
 
 const almatyDate = new Intl.DateTimeFormat('en-GB', {
@@ -40,11 +41,6 @@ export function TodayPage() {
     () => entriesInRange(items, now, addDays(today, 120)).filter((e) => e.kind === 'deadline' && !e.done).slice(0, 3),
     [items, today.getTime()],
   );
-
-  const english = useEnglishData();
-  const englishSettings = useEnglishSettings();
-  const englishPlan = useMemo(() => todayPlan(english, englishSettings, now), [english, englishSettings, now]);
-  const englishLeft = englishPlan.queue.order.length;
 
   const done = todays.filter((e) => e.done).length;
   const timed = todays.filter((e) => e.start && !e.done);
@@ -90,22 +86,9 @@ export function TodayPage() {
           )}
         </GlassCard>
 
-        <GlassCard aria-labelledby="due-reviews">
-          <h2 id="due-reviews" className="card-title">
-            Due reviews · English
-          </h2>
-          {!english.notes.length ? (
-            <p className="m-0">
-              No words yet. <Link to="/english/packs">Add a seed pack</Link> to start.
-            </p>
-          ) : englishLeft ? (
-            <Link to="/english/review" className="pill">
-              Start · {englishLeft} due · ~{englishPlan.minutes} min
-            </Link>
-          ) : (
-            <p className="m-0">All of today's cards are done.</p>
-          )}
-        </GlassCard>
+        <Suspense fallback={<GlassCard aria-busy="true" className="today-placeholder" />}>
+          <TodayEnglishCard />
+        </Suspense>
 
         <GlassCard aria-labelledby="deadlines">
           <h2 id="deadlines" className="card-title">
@@ -122,7 +105,9 @@ export function TodayPage() {
           )}
         </GlassCard>
 
-        <DailyRadarCard />
+        <Suspense fallback={<GlassCard aria-busy="true" className="today-placeholder" />}>
+          <DailyRadarCard />
+        </Suspense>
 
         <GlassCard className="sm:col-span-2" aria-labelledby="plan">
           <h2 id="plan" className="card-title">

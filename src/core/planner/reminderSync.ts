@@ -1,5 +1,5 @@
 import { db, getMeta, setMeta } from '../db/db';
-import { supabase } from '../db/supabase';
+import { sb } from '../db/supabase';
 import { onSynced } from '../db/sync';
 import { computeReminders, type ReminderDraft } from './reminderEngine';
 import { allPlannerItems, FIXED_BLOCKS, schoolDays } from './store';
@@ -36,13 +36,13 @@ export async function uploadReminders(): Promise<void> {
   if (last?.signature === signature && Date.now() - last.at < REFRESH_MS) return;
 
   const nowIso = new Date().toISOString();
-  const { data: existing, error } = await supabase.from('reminders').select('id').is('sent_at', null).gt('fire_at', nowIso);
+  const { data: existing, error } = await (await sb()).from('reminders').select('id').is('sent_at', null).gt('fire_at', nowIso);
   if (error) throw new Error(error.message);
 
   const wanted = new Set(drafts.map((d) => d.id));
   const stale = existing.map((r) => r.id as string).filter((id) => !wanted.has(id));
   for (let i = 0; i < stale.length; i += 100) {
-    const { error: delError } = await supabase.from('reminders').delete().in('id', stale.slice(i, i + 100)).is('sent_at', null);
+    const { error: delError } = await (await sb()).from('reminders').delete().in('id', stale.slice(i, i + 100)).is('sent_at', null);
     if (delError) throw new Error(delError.message);
   }
 
@@ -56,7 +56,7 @@ export async function uploadReminders(): Promise<void> {
     alarm: d.alarm,
   }));
   for (let i = 0; i < rows.length; i += 200) {
-    const { error: upError } = await supabase.from('reminders').upsert(rows.slice(i, i + 200), { onConflict: 'user_id,id' });
+    const { error: upError } = await (await sb()).from('reminders').upsert(rows.slice(i, i + 200), { onConflict: 'user_id,id' });
     if (upError) throw new Error(upError.message);
   }
   await setMeta('reminders:uploaded', { signature, at: Date.now() });

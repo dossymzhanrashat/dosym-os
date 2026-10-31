@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
@@ -8,6 +9,8 @@ const BASE = '/dosym-os/';
 
 export default defineConfig({
   base: BASE,
+  // Vitest: logic tests only; the browser flows in e2e/ run with Playwright (npm run e2e).
+  test: { exclude: ['e2e/**', 'node_modules/**', 'dist/**'] },
   plugins: [
     react(),
     tailwindcss(),

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../core/db/supabase';
+import { sb } from '../../../core/db/supabase';
 import type { TelemetryRow } from '../model/types';
 
 /*
@@ -11,7 +11,7 @@ import type { TelemetryRow } from '../model/types';
 const COLS = 'id, device_id, run_id, seq, ts, phase, payload, flags, received_at';
 
 export async function fetchTelemetry(from: Date, to?: Date, limit = 5000): Promise<TelemetryRow[]> {
-  let q = supabase.from('telemetry').select(COLS).gte('ts', from.toISOString()).order('ts', { ascending: true }).limit(limit);
+  let q = (await sb()).from('telemetry').select(COLS).gte('ts', from.toISOString()).order('ts', { ascending: true }).limit(limit);
   if (to) q = q.lte('ts', to.toISOString());
   const { data, error } = await q;
   if (error) throw new Error(error.message);
@@ -19,7 +19,7 @@ export async function fetchTelemetry(from: Date, to?: Date, limit = 5000): Promi
 }
 
 export async function latestTelemetry(): Promise<TelemetryRow | undefined> {
-  const { data } = await supabase.from('telemetry').select(COLS).order('ts', { ascending: false }).limit(1);
+  const { data } = await (await sb()).from('telemetry').select(COLS).order('ts', { ascending: false }).limit(1);
   return (data?.[0] as TelemetryRow | undefined) ?? undefined;
 }
 
@@ -47,19 +47,21 @@ export function useTelemetry(from: Date | undefined, to?: Date): TelemetryState 
     void load();
     if (to) return () => void (alive = false);
     // Live: new rows arrive through Realtime; a 60 s poll covers a dropped connection.
-    const channel = supabase
-      .channel(`telemetry-${fromKey}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'telemetry' }, (msg) => {
-        const row = msg.new as TelemetryRow;
-        if (!alive || row.ts < fromKey!) return;
-        setState((s) => (s.rows.some((r) => r.id === row.id) ? s : { ...s, rows: [...s.rows, row].sort((a, b) => a.ts.localeCompare(b.ts)) }));
-      })
-      .subscribe();
+    const channel = sb().then((c) =>
+      c
+        .channel(`telemetry-${fromKey}`)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'telemetry' }, (msg) => {
+          const row = msg.new as TelemetryRow;
+          if (!alive || row.ts < fromKey!) return;
+          setState((s) => (s.rows.some((r) => r.id === row.id) ? s : { ...s, rows: [...s.rows, row].sort((a, b) => a.ts.localeCompare(b.ts)) }));
+        })
+        .subscribe(),
+    );
     const poll = setInterval(load, 60_000);
     return () => {
       alive = false;
       clearInterval(poll);
-      void supabase.removeChannel(channel);
+      void Promise.all([sb(), channel]).then(([c, ch]) => c.removeChannel(ch));
     };
   }, [fromKey, toKey]);
   return state;

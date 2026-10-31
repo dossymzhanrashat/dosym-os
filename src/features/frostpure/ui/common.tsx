@@ -7,11 +7,12 @@ const SECTIONS = [
   ['/frostpure', 'Hub'],
   ['/frostpure/lab', 'Lab'],
   ['/frostpure/build', 'Build'],
+  ['/frostpure/model', '3D'],
   ['/frostpure/media', 'Media'],
   ['/frostpure/compete', 'Compete'],
 ] as const;
 
-/** Section bar (the 3D Model arrives in Phase 7; Market comes later). */
+/** Section bar (Market comes later). */
 export function FrostNav() {
   return (
     <nav className="seg fp-nav" aria-label="FrostPure sections">

@@ -2,7 +2,7 @@ import { useState, type DragEvent } from 'react';
 import { Link } from 'react-router';
 import { Chip, PillButton } from '../../../core/design/components';
 import { FreezeFrontBar } from '../../../core/design/FreezeFront';
-import { Mascot } from '../../../core/design/Mascot';
+import { Celebration, isMilestoneSeen, markMilestone } from '../../../core/design/Celebration';
 import { Sheet } from '../../../core/design/Sheet';
 import { moveTo } from '../data/store';
 import { nextDeadline, progress } from '../engine/plan';
@@ -29,7 +29,7 @@ export function PipelineBoard({ opps, now, onMessage, single = false }: { opps: 
   const [ask, setAsk] = useState<Ask>(null);
   const [confirmation, setConfirmation] = useState('');
   const [outcome, setOutcome] = useState<ResultOutcome>('accepted');
-  const [celebrate, setCelebrate] = useState(false);
+  const [celebrate, setCelebrate] = useState<null | 'submitted' | 'won'>(null);
   const [over, setOver] = useState<PipelineStatus | null>(null);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
@@ -51,10 +51,20 @@ export function PipelineBoard({ opps, now, onMessage, single = false }: { opps: 
 
   const confirmAsk = async () => {
     if (!ask) return;
-    if (ask.to === 'submitted') await moveTo(ask.opp, 'submitted', { confirmationNumber: confirmation.trim() || undefined });
-    else {
+    if (ask.to === 'submitted') {
+      await moveTo(ask.opp, 'submitted', { confirmationNumber: confirmation.trim() || undefined });
+      const key = `radar:submitted:${ask.opp.id}`;
+      if (!(await isMilestoneSeen(key))) {
+        await markMilestone(key);
+        setCelebrate('submitted');
+      }
+    } else {
       await moveTo(ask.opp, 'result', { result: outcome });
-      if ((outcome === 'accepted' || outcome === 'award') && ask.opp.result !== outcome) setCelebrate(true);
+      const key = `radar:won:${ask.opp.id}`;
+      if ((outcome === 'accepted' || outcome === 'award') && !(await isMilestoneSeen(key))) {
+        await markMilestone(key);
+        setCelebrate('won');
+      }
     }
     onMessage(`${ask.opp.name} moved to ${STATUS[ask.to].label}.`);
     setAsk(null);
@@ -70,15 +80,9 @@ export function PipelineBoard({ opps, now, onMessage, single = false }: { opps: 
   return (
     <>
       {celebrate && (
-        <div className="notice notice--good flex items-center gap-3" role="status">
-          <Mascot mood="happy" size={56} bounce label="Celebrating droplet" />
-          <p className="m-0">
-            <strong>Congratulations!</strong> One more line for your Common App Honors.
-          </p>
-          <PillButton variant="secondary" className="ml-auto" onClick={() => setCelebrate(false)}>
-            Close
-          </PillButton>
-        </div>
+        <Celebration title={celebrate === 'won' ? 'Congratulations!' : 'Application submitted!'} onClose={() => setCelebrate(null)}>
+          {celebrate === 'won' ? 'One more line for your Common App Honors.' : 'Sent before the deadline. Now the waiting part — Radar reminds you on decision day.'}
+        </Celebration>
       )}
       {single && opps[0] && (
         <div className="flex flex-wrap gap-2">

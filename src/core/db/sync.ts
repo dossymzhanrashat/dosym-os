@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import type { RealtimeChannel, Session } from '@supabase/supabase-js';
 import { db, getMeta, setMeta } from './db';
-import { supabase } from './supabase';
+import { sb } from './supabase';
 import { plannerTable, remoteWins, settingsTable, type SyncTableDef } from './syncTables';
 
 /*
@@ -72,7 +72,7 @@ async function push(): Promise<void> {
     if (!entries.length) continue;
     const rows = (await db.table(def.local).bulkGet(entries.map((e) => e.id))).filter(Boolean);
     for (let i = 0; i < rows.length; i += 200) {
-      const { error } = await supabase
+      const { error } = await (await sb())
         .from(def.remote)
         .upsert(rows.slice(i, i + 200).map((r) => def.toRemote(r)), { onConflict: def.onConflict });
       if (error) throw new Error(error.message);
@@ -93,7 +93,7 @@ async function pull(): Promise<void> {
     let cursor = (await getMeta<string>(cursorKey)) ?? '1970-01-01T00:00:00Z';
     let since = new Date(new Date(cursor).getTime() - OVERLAP_MS).toISOString();
     for (;;) {
-      const { data, error } = await supabase
+      const { data, error } = await (await sb())
         .from(def.remote)
         .select('*')
         .gt('server_updated_at', since)
@@ -126,7 +126,7 @@ let again = false;
 
 async function runSync(): Promise<void> {
   if (!navigator.onLine) return setStatus({ state: 'offline' });
-  const { data } = await supabase.auth.getSession();
+  const { data } = await (await sb()).auth.getSession();
   const session = data.session;
   if (!session) return setStatus({ state: 'signed-out', email: undefined });
 
@@ -170,11 +170,12 @@ export function requestSync(delayMs = 0): void {
 }
 
 let channel: RealtimeChannel | null = null;
-function listen(session: Session | null) {
-  if (channel) void supabase.removeChannel(channel);
+async function listen(session: Session | null) {
+  const client = await sb();
+  if (channel) void client.removeChannel(channel);
   channel = null;
   if (!session) return;
-  channel = supabase.channel('dosym-sync');
+  channel = client.channel('dosym-sync');
   for (const def of TABLES) {
     channel.on('postgres_changes', { event: '*', schema: 'public', table: def.remote }, () => requestSync(500));
   }
@@ -186,16 +187,22 @@ let started = false;
 export function startSync(): void {
   if (started) return;
   started = true;
-  supabase.auth.onAuthStateChange((event, session) => {
-    // Supabase advises not to await other Supabase calls inside this callback.
-    setTimeout(() => {
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') listen(session);
-      if (session) {
-        setStatus({ email: session.user.email });
-        if (event !== 'TOKEN_REFRESHED') requestSync();
-      } else setStatus({ state: 'signed-out', email: undefined });
-    }, 0);
-  });
+  // The Supabase library loads after the first paint (it is large); local data shows before that.
+  const begin = () =>
+    void sb().then((client) =>
+      client.auth.onAuthStateChange((event, session) => {
+        // Supabase advises not to await other Supabase calls inside this callback.
+        setTimeout(() => {
+          if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') void listen(session);
+          if (session) {
+            setStatus({ email: session.user.email });
+            if (event !== 'TOKEN_REFRESHED') requestSync();
+          } else setStatus({ state: 'signed-out', email: undefined });
+        }, 0);
+      }),
+    );
+  if (document.readyState === 'complete') setTimeout(begin, 0);
+  else window.addEventListener('load', () => setTimeout(begin, 0), { once: true });
   window.addEventListener('online', () => requestSync());
   window.addEventListener('offline', () => setStatus({ state: 'offline' }));
   document.addEventListener('visibilitychange', () => {

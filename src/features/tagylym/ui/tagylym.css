@@ -253,3 +253,43 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* ---------- 3D Studio ---------- */
+.tg-3d {
+  position: relative;
+  height: min(62vh, 30rem);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  touch-action: none;
+  background: #050a16;
+}
+.tg-3d-label {
+  display: inline-block;
+  white-space: nowrap;
+  padding: 0.12rem 0.45rem;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-pill);
+  background: rgba(5, 10, 22, 0.8);
+  color: #fff;
+  font: 600 11px/1.3 var(--font-sans);
+  pointer-events: none;
+}
+.tg-3d-cost {
+  color: var(--ice);
+}
+.tg-swatch-label {
+  width: 3.5rem;
+  text-transform: capitalize;
+}
+.tg-swatch {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 2px solid var(--card-border);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.tg-swatch[aria-checked='true'] {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}

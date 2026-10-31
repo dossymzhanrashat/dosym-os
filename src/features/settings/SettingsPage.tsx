@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { Chip, GlassCard, PillButton, StepBadge } from '../../core/design/components';
 import { FreezeFrontHeader, SaltDotsLoader } from '../../core/design/FreezeFront';
 import { db } from '../../core/db/db';
-import { supabase } from '../../core/db/supabase';
+import { sb } from '../../core/db/supabase';
 import { syncNow, useSyncStatus } from '../../core/db/sync';
 import { useLive } from '../../core/db/useLive';
 import {
@@ -37,7 +37,7 @@ function Account() {
   const signIn = async () => {
     setBusy(true);
     setMessage('');
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    const { error } = await (await sb()).auth.signInWithPassword({ email: email.trim(), password });
     setBusy(false);
     if (error) setMessage(error.message === 'Invalid login credentials' ? 'Wrong email or password.' : error.message);
     else setPassword('');
@@ -64,7 +64,7 @@ function Account() {
           <PillButton variant="secondary" onClick={() => void syncNow()}>
             Sync now
           </PillButton>
-          <PillButton variant="secondary" onClick={() => void supabase.auth.signOut({ scope: 'local' })}>
+          <PillButton variant="secondary" onClick={() => void sb().then((c) => c.auth.signOut({ scope: 'local' }))}>
             Sign out
           </PillButton>
         </div>
@@ -331,14 +331,16 @@ function FixedBlocks() {
 
 // ---------- Data ----------
 
+/** Every local table (all modules) plus the Pi readings from Supabase; photos stay in Storage (paths are listed). */
 async function exportJson() {
-  const data = {
-    app: 'dosym-os',
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    plannerItems: await db.plannerItems.toArray(),
-    settings: await db.settings.toArray(),
-  };
+  const tables: Record<string, unknown[]> = {};
+  for (const t of db.tables) if (t.name !== 'outbox' && t.name !== 'meta') tables[t.name] = await t.toArray();
+  let telemetry: unknown[] | string = 'not signed in';
+  if ((await (await sb()).auth.getSession()).data.session) {
+    const { data, error } = await (await sb()).from('telemetry').select('device_id, run_id, seq, ts, phase, payload, flags').order('ts').limit(20000);
+    telemetry = error ? `not exported: ${error.message}` : (data ?? []);
+  }
+  const data = { app: 'dosym-os', version: 2, exportedAt: new Date().toISOString(), tables, telemetry };
   const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }));
   const a = document.createElement('a');
   a.href = url;
@@ -351,7 +353,9 @@ export function SettingsPage() {
   const status = useSyncStatus();
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    void supabase.auth.getSession().then(() => setReady(true));
+    void sb()
+      .then((c) => c.auth.getSession())
+      .then(() => setReady(true));
   }, []);
 
   return (
@@ -365,7 +369,7 @@ export function SettingsPage() {
           <h2 id="data-h" className="card-title m-0">
             Your data
           </h2>
-          <p className="m-0 text-sm">The free Supabase plan has no automatic backups. Download a copy now and then.</p>
+          <p className="m-0 text-sm">The free Supabase plan has no automatic backups. Download a copy now and then: every module’s data, plus the Pi’s readings when you are signed in (photos stay in your private storage; their paths are in the file).</p>
           <div className="flex flex-wrap gap-2">
             <PillButton variant="secondary" onClick={() => void exportJson()}>
               Export all data (JSON)

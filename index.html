@@ -13,9 +13,29 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <title>Dosym OS</title>
+    <style>
+      /* First paint before any script: the Deep Blue background and a quiet shell (React replaces #root). */
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #050a16 linear-gradient(160deg, #0d1834 0%, #081022 55%, #050a16 100%) fixed;
+        color: #fff;
+      }
+      .boot {
+        min-height: 100vh;
+        background: radial-gradient(55% 70% at 0% 0%, rgba(70, 110, 255, 0.45), rgba(70, 110, 255, 0) 62%);
+        padding: 24px 16px;
+        box-sizing: border-box;
+        font: 700 12px/1.4 system-ui, sans-serif;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(170, 200, 255, 0.78);
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div class="boot">Dosym OS</div></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

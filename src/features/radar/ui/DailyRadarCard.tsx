@@ -37,7 +37,7 @@ export function DailyRadarCard() {
   const checked = last.generatedAt ? new Date(last.generatedAt) : undefined;
 
   return (
-    <GlassCard aria-labelledby="radar-card">
+    <GlassCard aria-labelledby="radar-card" className="today-module">
       <h2 id="radar-card" className="card-title">
         <Link to="/radar">Daily Radar</Link>
       </h2>

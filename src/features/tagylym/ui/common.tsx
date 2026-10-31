@@ -9,6 +9,7 @@ const SECTIONS = [
   ['/tagylym/decide', 'Decide'],
   ['/tagylym/pipeline', 'Pipeline'],
   ['/tagylym/economics', 'Economics'],
+  ['/tagylym/studio', '3D Studio'],
   ['/tagylym/forge', 'Idea Forge'],
 ] as const;
 

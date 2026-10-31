@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import type { SupabaseClient } from '@supabase/supabase-js';
 
 // Public values only. The publishable key is meant for browsers: Row Level Security on every table
 // (supabase/migrations) limits it to the signed-in user's own rows. The secret/service key and the
@@ -11,10 +11,17 @@ export const VAPID_PUBLIC_KEY = 'BIFje4uSvtk-UbSeWJ2dh8adQuViqKHtBIQG3OvBecOSroW
 // Email + password login (sign-ups are switched off in Supabase; the one account was made in the
 // dashboard). The session is kept in this browser's storage and refreshed automatically, so each
 // device stays signed in until "Sign out".
-export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true,
-    detectSessionInUrl: false, // no login links
-  },
-});
+// The client library is large, so it loads on first use (after the first paint), not with the page.
+let client: Promise<SupabaseClient> | null = null;
+export function sb(): Promise<SupabaseClient> {
+  client ??= import('@supabase/supabase-js').then(({ createClient }) =>
+    createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: false, // no login links
+      },
+    }),
+  );
+  return client;
+}

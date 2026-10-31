@@ -316,3 +316,10 @@
   vertical-align: middle;
   border: 1px solid var(--card-border-soft);
 }
+
+/* Today: room held for a module card while it loads (no layout shift) */
+.today-placeholder,
+.today-module {
+  min-height: 13.5rem;
+  box-sizing: border-box;
+}

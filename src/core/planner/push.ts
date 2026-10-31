@@ -1,4 +1,4 @@
-import { supabase, VAPID_PUBLIC_KEY } from '../db/supabase';
+import { sb, VAPID_PUBLIC_KEY } from '../db/supabase';
 
 /*
  * Web Push on this device (SPEC.md › Notification rules › Settings → Notifications).
@@ -57,7 +57,7 @@ export async function enablePush(label: string): Promise<void> {
     (await reg.pushManager.getSubscription()) ??
     (await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(VAPID_PUBLIC_KEY) }));
   const json = sub.toJSON();
-  const { error } = await supabase.from('push_subscriptions').upsert(
+  const { error } = await (await sb()).from('push_subscriptions').upsert(
     { endpoint: sub.endpoint, p256dh: json.keys?.p256dh, auth: json.keys?.auth, device_label: label.trim() || guessDeviceLabel() },
     { onConflict: 'endpoint' },
   );
@@ -71,7 +71,7 @@ export async function thisEndpoint(): Promise<string | null> {
 }
 
 export async function listDevices(): Promise<PushDevice[]> {
-  const { data, error } = await supabase.from('push_subscriptions').select('id, endpoint, device_label, created_at').order('created_at');
+  const { data, error } = await (await sb()).from('push_subscriptions').select('id, endpoint, device_label, created_at').order('created_at');
   if (error) throw new Error(error.message);
   return data;
 }
@@ -81,13 +81,13 @@ export async function removeDevice(device: PushDevice): Promise<void> {
     const reg = await navigator.serviceWorker.getRegistration();
     await (await reg?.pushManager.getSubscription())?.unsubscribe();
   }
-  const { error } = await supabase.from('push_subscriptions').delete().eq('id', device.id);
+  const { error } = await (await sb()).from('push_subscriptions').delete().eq('id', device.id);
   if (error) throw new Error(error.message);
 }
 
 /** Queues a reminder due now and asks the function to send it straight away. */
 export async function sendTestNotification(): Promise<{ sent: number }> {
-  const { error } = await supabase.from('reminders').insert({
+  const { error } = await (await sb()).from('reminders').insert({
     id: `test:${Date.now()}`,
     fire_at: new Date().toISOString(),
     title: 'Dosym OS test',
@@ -96,7 +96,7 @@ export async function sendTestNotification(): Promise<{ sent: number }> {
     alarm: true, // a test should arrive even inside quiet hours
   });
   if (error) throw new Error(error.message);
-  const { data, error: fnError } = await supabase.functions.invoke<{ sent: number }>('send-reminders', { body: {} });
+  const { data, error: fnError } = await (await sb()).functions.invoke<{ sent: number }>('send-reminders', { body: {} });
   if (fnError) throw new Error(fnError.message);
   return data ?? { sent: 0 };
 }

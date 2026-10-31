@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../core/db/supabase';
+import { sb } from '../../../core/db/supabase';
 import type { Photo } from '../model/types';
 
 /*
@@ -23,7 +23,7 @@ async function shrink(file: Blob, max: number, quality: number): Promise<Blob> {
 }
 
 export async function uploadPhoto(assetId: string, file: File, caption = ''): Promise<Photo> {
-  const { data } = await supabase.auth.getSession();
+  const { data } = await (await sb()).auth.getSession();
   const uid = data.session?.user.id;
   if (!uid) throw new Error('Sign in (Settings) to upload photos — they are stored in your private Supabase space.');
   const id = crypto.randomUUID();
@@ -34,14 +34,14 @@ export async function uploadPhoto(assetId: string, file: File, caption = ''): Pr
     [path, full],
     [thumbPath, thumb],
   ] as const) {
-    const { error } = await supabase.storage.from(BUCKET).upload(p, blob, { contentType: 'image/jpeg', upsert: false });
+    const { error } = await (await sb()).storage.from(BUCKET).upload(p, blob, { contentType: 'image/jpeg', upsert: false });
     if (error) throw new Error(`Upload failed: ${error.message}`);
   }
   return { id, path, thumbPath, caption, byteSize: full.size, createdAt: new Date().toISOString() };
 }
 
 export async function deletePhotoFiles(p: Photo): Promise<void> {
-  await supabase.storage.from(BUCKET).remove([p.path, p.thumbPath]);
+  await (await sb()).storage.from(BUCKET).remove([p.path, p.thumbPath]);
 }
 
 const cache = new Map<string, { url: string; until: number }>();
@@ -62,9 +62,8 @@ export function useSignedUrls(paths: string[]): Record<string, string> {
     }
     setUrls(known);
     if (!missing.length) return;
-    void supabase.storage
-      .from(BUCKET)
-      .createSignedUrls(missing, 3600)
+    void sb()
+      .then((c) => c.storage.from(BUCKET).createSignedUrls(missing, 3600))
       .then(({ data }) => {
         if (!alive || !data) return;
         const next = { ...known };
