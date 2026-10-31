@@ -138,3 +138,23 @@ describe('Conrad', () => {
     expect(a.map((t) => t.slack)).toEqual([...a.map((t) => t.slack)].sort((x, y) => x - y));
   });
 });
+
+describe('media', async () => {
+  const { kindFromUrl, parseDuration, videoWarnings, youtubeEmbed } = await import('./media');
+
+  it('detects the kind from the link', () => {
+    expect(kindFromUrl('https://www.canva.com/design/DAF123/view')).toBe('canva');
+    expect(kindFromUrl('https://youtu.be/abc123')).toBe('video');
+    expect(kindFromUrl('https://docs.google.com/document/d/x')).toBe('document');
+    expect(kindFromUrl('https://claude.ai/artifact/123')).toBe('link');
+    expect(kindFromUrl('not a link')).toBe('link');
+  });
+
+  it('warns outside 3–5 min or over 800 MB', () => {
+    expect(videoWarnings(140, 300 * 1024 * 1024)).toEqual(['2:20 long: the Conrad Innovation Video must be 3–5 min.']);
+    expect(videoWarnings(240, 900 * 1024 * 1024)).toEqual(['900 MB: the Conrad upload must be under 800 MB.']);
+    expect(videoWarnings(240, 100)).toEqual([]);
+    expect(parseDuration('2:20')).toBe(140);
+    expect(youtubeEmbed('https://www.youtube.com/watch?v=abc123', 42)).toBe('https://www.youtube-nocookie.com/embed/abc123?start=42&autoplay=1');
+  });
+});

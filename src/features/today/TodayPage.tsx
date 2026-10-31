@@ -22,7 +22,6 @@ const almatyDate = new Intl.DateTimeFormat('en-GB', {
 
 const COMING = [
   { name: "Today's practice quota", phase: 2 },
-  { name: 'FrostPure test moment', phase: 5 },
 ];
 
 export function TodayPage() {

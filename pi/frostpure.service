@@ -1,0 +1,14 @@
+[Unit]
+Description=FrostPure sender (tank sensors -> Supabase)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+ExecStart=/home/pi/frostpure/venv/bin/python /home/pi/frostpure/frostpure_sender.py --config /etc/frostpure/config.json
+Restart=always
+RestartSec=15
+StateDirectory=frostpure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,31 @@
+{
+  "supabase_url": "https://bxqqqxwcepoidqizyfhq.supabase.co",
+  "anon_key": "sb_publishable_ju-cdaQVUy-UqSZt__rDwA_nKw3yEvv",
+  "email": "PI_EMAIL",
+  "password_file": "/etc/frostpure/password",
+  "device_id": "ayaz-pi-01",
+  "run_id": null,
+  "interval_s": { "freeze": 60, "drain": 10 },
+  "probes": {
+    "T1": { "id": null, "depth_cm": 5 },
+    "T2": { "id": null, "depth_cm": 10 },
+    "T3": { "id": null, "depth_cm": 15 },
+    "T4": { "id": null, "depth_cm": 20 },
+    "T5": { "id": null, "depth_cm": 25 },
+    "air": { "id": null, "depth_cm": null }
+  },
+  "ice_threshold_c": -0.3,
+  "water_depth_cm": null,
+  "ec": {
+    "EC1": { "channel": 0, "slope": 1, "offset": 0 },
+    "EC2": { "channel": 1, "slope": 1, "offset": 0 }
+  },
+  "level": { "trig_gpio": 23, "echo_gpio": 24, "empty_cm": null, "full_cm": null },
+  "servos": {
+    "V2": { "gpio": 18, "closed_deg": 0, "open_deg": 90 },
+    "V3": { "gpio": 19, "closed_deg": 0, "open_deg": 90 }
+  },
+  "solenoid_v1_gpio": 17,
+  "control": { "enabled": false, "target_ice_pct": 65, "ec1_limit_ms": null },
+  "simulate": false
+}
