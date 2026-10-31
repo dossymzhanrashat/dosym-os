@@ -28,3 +28,18 @@ async function boot() {
 const later = (fn: () => void) => ('requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
 if (document.readyState === 'complete') later(() => void boot());
 else window.addEventListener('load', () => later(() => void boot()), { once: true });
+
+// Updates: an installed iPhone app resumed from the background never re-checks for a new version
+// on its own, so check whenever it comes back to the screen, and reload once when the new version
+// takes over (otherwise pages could ask for files the old version no longer has).
+if ('serviceWorker' in navigator) {
+  const check = () => void navigator.serviceWorker.getRegistration().then((r) => r?.update());
+  document.addEventListener('visibilitychange', () => document.visibilityState === 'visible' && check());
+  const hadOldVersion = !!navigator.serviceWorker.controller; // a first install needs no reload
+  let reloaded = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloaded || !hadOldVersion) return;
+    reloaded = true;
+    window.location.reload();
+  });
+}
